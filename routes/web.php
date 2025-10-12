@@ -1,0 +1,65 @@
+<?php
+
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\AdminScheduleController;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ApplicantController;
+use App\Http\Middleware\AdminMiddleware;
+use App\Http\Middleware\ApplicantMiddleware;
+use App\Http\Middleware\RegistrationFormMiddleware;
+
+// Route::redirect('/', '/oprec');
+
+Route::get('/', [ApplicantController::class, 'homepage'])->name('applicant.homepage');
+
+Route::prefix('admin')->group(function () {
+    // Login and Auth Route
+    Route::get('login', [AdminController::class, 'login'])->name('admin.login');
+    Route::get('auth', [AuthController::class, 'googleAuth'])->name('admin.auth');
+    Route::get('processLogin', [AuthController::class, 'processLogin'])->name('admin.processLogin');
+    Route::middleware(AdminMiddleware::class)->group(function () {
+        Route::get('/jadwalInterview', [AdminController::class, 'index'])->name('admin.home');
+
+        //all applicant
+        Route::get('/', [AdminController::class, 'allApplicantIndex'])->name('admin.allApplicant');
+
+        //jadwal wawancara available panitia
+        Route::post('/storeJadwal', [AdminScheduleController::class, 'store'])->name('admin.storeJadwal');
+
+        //jadwal interview panitia
+        Route::get('/myInterview', [AdminController::class, 'myInterviewIndex'])->name('admin.myInterview');
+        Route::post('/myInterview/store', [AdminController::class, 'storeHasil'])->name('admin.hasilInterview.store');
+
+        //jadwal keseluruhan
+        Route::get('/allInterview', [AdminController::class, 'allInterviewIndex'])->name('admin.allInterview');
+
+        //tolak terima
+        Route::get('/accApplicant', [AdminController::class, 'accApplicantIndex'])->name('admin.accApplicant');
+        Route::post('/accApplicant/action', [AdminController::class, 'accApplicantAction'])->name('admin.accApplicant.store');
+
+        Route::get('/detail/{applicantId}', [AdminController::class, 'applicantDetailIndex'])->name('admin.applicantDetail');
+
+    });
+    
+});
+Route::prefix('applicant')->group(function () {
+    Route::get('login', [ApplicantController::class, 'login'])->name('applicant.login');
+    Route::get('auth', [AuthController::class, 'applicantGoogleAuth'])->name('applicant.auth');
+    Route::get('processLogin', [AuthController::class, 'applicantProcessLogin'])->name('applicant.processLogin');
+
+    Route::middleware(ApplicantMiddleware::class)->group(function () {
+        Route::get('biodata', [ApplicantController::class, 'index'])->name('applicant.biodata');
+        Route::post('biodata/store', [ApplicantController::class, 'storeBiodata'])->name('applicant.biodata.store');
+        Route::get('motivasi', [ApplicantController::class, 'motivasiIndex'])->name('applicant.motivasi')->middleware(RegistrationFormMiddleware::class);
+        Route::post('motivasi/store', [ApplicantController::class, 'storeMotivasi'])->name('applicant.motivasi.store');
+        Route::get('berkas', [ApplicantController::class, 'berkasIndex'])->name('applicant.berkas')->middleware(RegistrationFormMiddleware::class);
+        Route::post('berkas/store', [ApplicantController::class, 'storeBerkas'])->name('applicant.berkas.store');
+        Route::post('jadwal/store', [ApplicantController::class, 'storeJadwal'])->name('applicant.jadwal.store');
+        // Route::get('jadwal', [ApplicantController::class, 'jadwalIndex'])->name('applicant.jadwal')->middleware(RegistrationFormMiddleware::class);
+        Route::get('jadwal', [ApplicantController::class, 'jadwalIndex'])->name('applicant.jadwal');
+
+    });
+});
+Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
+

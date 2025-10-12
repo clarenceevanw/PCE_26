@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>BoM 2025</title>
+    <link rel="icon" href="{{ asset('assets/logo.png') }}" type="image/x-icon" />
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tw-elements/dist/css/tw-elements.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tw-elements/css/tw-elements.min.css" />
+    <script src="https://cdn.tailwindcss.com/3.3.0"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.0.2/css/dataTables.dataTables.css" />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="https://unpkg.com/lenis@1.1.13/dist/lenis.css">
+    <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.1/dist/flowbite.min.css" rel="stylesheet" />
+    <script src="https://unpkg.com/split-type"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/2.0.2/anime.min.js"></script>
+    {{-- @vite(['resources/scss/style.scss', 'resources/ts/interactiveElement.ts', 'resources/css/app.css']) --}}
+    @yield('head')
+    <style>
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        @font-face {
+            font-family: 'Squids';
+            src: url('{{ asset('fonts/Game Of Squids.ttf') }}') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'OrganettoRegular';
+            src: url('{{ asset('fonts/organetto-regular.ttf') }}') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'OrganettoUltraLight';
+            src: url('{{ asset('fonts/milker/organetto-ultralight.ttf') }}') format('opentype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        .font-squids {
+            font-family: 'Squids', sans-serif;
+        }
+
+        .font-organetto {
+            font-family: 'OrganettoRegular', sans-serif;
+        }
+
+        .font-organetto-light {
+            font-family: 'OrganettoUltraLight', sans-serif;
+        }
+
+        .text-shadow {
+            text-shadow: -2px 2px 14px rgb(255, 255, 255);
+        }
+
+        .bg-blur {
+            backdrop-filter: blur(13px) brightness(0.85);
+            -webkit-backdrop-filter: blur(13px) brightness(0.85);
+            box-shadow: none;
+        }
+
+        body, html {
+            overflow-x: hidden !important;
+        }
+
+        body {
+            background-image:
+                url('{{ asset('assets/Background WEB OpenRec BOM 25 (1920 x 2047 px).png') }}');
+            background-size: cover;
+            background-attachment: fixed;
+            /* Membuat background tetap saat scroll */
+            background-repeat: no-repeat;
+            background-position: center top;
+        }
+
+        @media screen and (max-width: 800px) {
+            body {
+                background-image:
+                    url('{{ asset('assets/Background WEB OpenRec BOM 25 mobile.png') }}') !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    {{-- <div class="z-60">
+        @include('components.navbar2')
+    </div> --}}
+
+    @yield('content')
+    {{-- @include('components.footer') --}}
+
+    <script src="https://cdn.jsdelivr.net/npm/tw-elements/js/tw-elements.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/tw-elements/dist/js/tw-elements.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/Flip.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script src="https://cdn.datatables.net/2.0.2/js/dataTables.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/MotionPathPlugin.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.1/dist/flowbite.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.1/dist/flowbite.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.8.162/pdf.min.js"></script>
+
+    @yield('script')
+    <script>
+        AOS.init();
+    </script>
+
+</body>
+
+</html>

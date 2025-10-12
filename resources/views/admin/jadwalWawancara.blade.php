@@ -1,0 +1,203 @@
+@extends('admin.layout')
+
+@section('style')
+    <style>
+        .slot {
+            width: 50px;
+            height: 50px;
+            text-align: center;
+            vertical-align: middle;
+            cursor: pointer;
+            border: 1px solid #ccc;
+        }
+        .green {
+            background-color: #4CAF50;
+        }
+        .red {
+            background-color: #f44336;
+        }
+        .orange{
+            background-color: #fada5a;
+        }
+        .transparent {
+            background-color: transparent; /* Tidak ada warna (putih) */
+        }
+    </style>
+@endsection
+
+@section('content')
+<div class="p-10">
+    <h2 class="text-xl mb-4">Jadwal</h2>
+    <form id="scheduleForm" method="POST" action="{{ route('admin.storeJadwal') }}">
+        @csrf
+        <div class="overflow-auto p-4">
+            <table class="table-auto border-collapse border border-gray-400">
+                <thead>
+                    <tr>
+                        <th class="border px-4 py-2">Jam/Hari</th>
+                        <!-- Looping untuk menampilkan tanggal (misal dari 4-18 Oktober) -->
+                        @for ($i = 4; $i <= 18; $i++)
+                            <th class="border px-4 py-2">{{ $i }} November</th>
+                        @endfor
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Looping untuk menampilkan jam dari 10.00 sampai 19.00 -->
+                    @for ($hour = 10; $hour <= 18; $hour++)
+                    <tr>
+                        <td class="border px-4 py-2">{{ $hour }}:00</td>
+                        @for ($i = 4; $i <= 18; $i++)
+                        <td 
+                            class="slot border" 
+                            data-date="{{ '2024-11-' . str_pad($i, 2, '0', STR_PAD_LEFT) }}" 
+                            data-hour="{{ $hour }}" 
+                            id="slot-{{ $i }}-{{ $hour }}"
+                            onclick="toggleSlot(this)">
+                        </td>
+                        @endfor
+                    </tr>
+                    @endfor
+                </tbody>
+            </table>
+        </div>
+        
+        <input type="hidden" id="selectedSlots" name="selectedSlots" value="">
+        <button id="saveButton" type="submit" class="mt-4 bg-blue-500 text-white px-4 py-2 rounded-lg">Save</button>
+    </form>
+</div>
+@endsection
+
+@section('script')
+<script>
+    var datas = JSON.parse(@json($data));
+    if (datas.length > 0) {
+        document.getElementById("saveButton").style.display = "none";
+        let tableElements = document.querySelectorAll('.slot');
+            tableElements.forEach(element => {
+            element.classList.add('red');
+        });
+        datas.forEach(data => {
+            let timeParts = data.schedule.jam_mulai.split(':');
+            let hour = timeParts[0]; 
+            
+            let element = document.querySelector(`[data-date="${data.schedule.tanggal}"][data-hour="${hour}"]`);
+            if(element){
+                element.classList.remove('red');
+                element.classList.add('green');
+            }
+        });
+    }
+</script>
+<script>
+        // Toggle warna slot dan update data yang dipilih
+        function toggleSlot(cell) {
+            if (datas.length === 0) {
+                if (cell.classList.contains('green')) {
+                    cell.classList.remove('green');
+                    cell.classList.add('red');
+                } else if (cell.classList.contains('red')) {
+                    cell.classList.remove('red');
+                    cell.classList.add('green');
+                }else {
+                    cell.classList.add('green');
+                }
+
+                updateSelectedSlots();
+            }
+        }
+
+        // Update input hidden dengan data dari slot yang berwarna hijau
+        function updateSelectedSlots() {
+            let selected = [];
+            let cells = document.querySelectorAll('.slot.green');
+            cells.forEach(cell => {
+                let date = cell.getAttribute('data-date');
+                let hour = cell.getAttribute('data-hour');
+                selected.push({date: date, hour: hour});
+            });
+
+            document.getElementById('selectedSlots').value = JSON.stringify(selected);
+        }
+</script>
+<script>
+    $("#scheduleForm").on('submit', function(e){
+        e.preventDefault();
+
+        Swal.fire({
+            title: "Are you sure want to save Schedule?",
+            text: "Once you save data, the data cannot be changed!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, submit it!"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                var form = $(this)[0];
+                var formData = new FormData(form);
+                var method = $(this).attr('method');
+                var url = $(this).attr('action');
+
+
+                // var loader = document.querySelector(".data-loader");
+                // loader.classList.remove("hidden");
+                // loader.classList.add("flex");
+                $.ajax({
+                    type: method,
+                    url: url,
+                    data: formData,
+                    processData: false, //to prevent jQuery from automatically transforming the data into a query string
+                    contentType: false,
+                    cache: false,
+                    success: async function(response) {
+                        // loader.classList.add("hidden");
+                        // loader.classList.remove("flex");
+                        if (response.success) {
+                            await Swal.fire({
+                                title: "Success!",
+                                text: response.message,
+                                icon: "success",
+                                confirmButtonColor: "#3085d6",
+                                confirmButtonText: "OK"
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    window.location.reload();
+                                }
+                                setTimeout(() => {
+                                    window.location.reload();
+                                }, 1500);
+
+                            });
+                        } else {
+                            await Swal.fire({
+                                icon: "error",
+                                title: "Oops...",
+                                text: response.message,
+                            });
+                        }
+                    },
+                    error: async function(xhr, textStatus, errorThrown) {
+                        // loader.classList.add("hidden");
+                        // loader.classList.remove("flex");
+                        await Swal.fire({
+                            title: 'Oops!',
+                            text: 'Something went wrong: ' + textStatus + '-' +
+                                errorThrown,
+                            icon: 'error',
+                            confirmButtonText: 'OK'
+                        });
+                    }
+                })
+            } else {
+                // User canceled the submission
+                Swal.fire({
+                    title: "Cancelled!",
+                    text: "Your data was not submitted.",
+                    icon: "info",
+                    confirmButtonText: "OK"
+                });
+            }
+        });
+    })
+</script>
+@endsection
