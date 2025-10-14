@@ -11,7 +11,8 @@ class AdminSchedule extends Model
     use HasFactory;
     protected $fillable = [
         'admin_id',
-        'schedule_id'
+        'schedule_id',
+        'isOnline',
     ];
 
     protected $hidden = [

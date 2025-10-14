@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('anonymous_name');
             $table->string('link_gmeet');
+            $table->string('lokasi_wawancara')->nullable();
 
             $table->foreign('division_id')->references('id')->on('divisions');
             $table->timestamps();

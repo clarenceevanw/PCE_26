@@ -6,6 +6,7 @@ use App\Models\AdminSchedule;
 use App\Models\Schedule;
 use App\Models\Admin;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
 
 
@@ -41,24 +42,27 @@ class AdminScheduleController extends Controller
             foreach ($selectedSlots as $slot) {
                 $date = $slot['date'];
                 $hour = $slot['hour'];
+                $isOnline = $slot['isOnline'];
+                Log::info("Processing slot: Date - $date, Hour - $hour, isOnline - $isOnline");
 
                 $existingSchedule = Schedule::where('tanggal', $date)
-                ->where('jam_mulai', sprintf('%02d:00', $hour))
+                ->where('jam_mulai', sprintf('%02d:30', $hour))
                 ->first();
 
                 if (!$existingSchedule) {
                     Schedule::create([
                         'tanggal' => $date,
-                        'jam_mulai' => sprintf('%02d:00', $hour),
+                        'jam_mulai' => sprintf('%02d:30', $hour),
                     ]);
                     $existingSchedule = Schedule::where('tanggal', $date)
-                    ->where('jam_mulai', sprintf('%02d:00', $hour))
+                    ->where('jam_mulai', sprintf('%02d:30', $hour))
                     ->first();
                 }
 
                 AdminSchedule::create([
                     'admin_id' => $adminId,
-                    'schedule_id' => $existingSchedule->id
+                    'schedule_id' => $existingSchedule->id,
+                    'isOnline' => $isOnline,
                 ]);
             };
             return response()->json(['success' => true, 'message' => 'Jadwal berhasil dicatat'], 201);

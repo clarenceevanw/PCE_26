@@ -22,12 +22,32 @@
         .transparent {
             background-color: transparent; /* Tidak ada warna (putih) */
         }
-    </style>
+        </style>
 @endsection
 
 @section('content')
 <div class="p-10">
-    <h2 class="text-xl mb-4">Jadwal</h2>
+    
+    <div class="flex flex-col lg:flex-row justify-between items-center">
+        <div>
+            <h2 class="text-xl mb-4">Jadwal</h2>
+            <h1 class="font-organetto block mb-2 text-md font-medium text-gray-800 mt-4">Notes: Jadwal hanya dapat diset satu kali. Setelah disimpan, tidak dapat diubah kembali.</h1>
+        </div>
+        <div class="flex gap-4 mt-4">
+            <div class="flex gap-2 items-center justify-center">
+                <div class="w-10 h-6 bg-red-500"></div>
+                <span>Tidak bisa</span>
+            </div>
+            <div class="flex gap-2 items-center justify-center">
+                <div class="w-10 h-6 bg-[#fada5a]"></div>
+                <span>Online</span>
+            </div>
+            <div class="flex gap-2 items-center justify-center">
+                <div class="w-10 h-6 bg-green-500"></div>
+                <span>Offline</span>
+            </div>
+        </div>
+    </div>
     <form id="scheduleForm" method="POST" action="{{ route('admin.storeJadwal') }}">
         @csrf
         <div class="overflow-auto p-4">
@@ -36,21 +56,33 @@
                     <tr>
                         <th class="border px-4 py-2">Jam/Hari</th>
                         <!-- Looping untuk menampilkan tanggal (misal dari 4-18 Oktober) -->
-                        @for ($i = 4; $i <= 18; $i++)
+                        @for ($i = 22; $i <= 31; $i++)
+                            <th class="border px-4 py-2">{{ $i }} Oktober</th>
+                        @endfor
+                        @for ($i = 1; $i <= 3; $i++)
                             <th class="border px-4 py-2">{{ $i }} November</th>
                         @endfor
                     </tr>
                 </thead>
                 <tbody>
                     <!-- Looping untuk menampilkan jam dari 10.00 sampai 19.00 -->
-                    @for ($hour = 10; $hour <= 18; $hour++)
+                    @for ($hour = 7; $hour <= 20; $hour++)
                     <tr>
-                        <td class="border px-4 py-2">{{ $hour }}:00</td>
-                        @for ($i = 4; $i <= 18; $i++)
+                        <td class="border px-4 py-2">{{ $hour }}:30</td>
+                        @for ($i = 22; $i <= 31; $i++)
                         <td 
                             class="slot border" 
-                            data-date="{{ '2024-11-' . str_pad($i, 2, '0', STR_PAD_LEFT) }}" 
-                            data-hour="{{ $hour }}" 
+                            data-date="{{ '2025-10-' . str_pad($i, 2, '0', STR_PAD_LEFT) }}" 
+                            data-hour="{{ sprintf('%02d', $hour) }}" 
+                            id="slot-{{ $i }}-{{ $hour }}"
+                            onclick="toggleSlot(this)">
+                        </td>
+                        @endfor
+                         @for ($i = 1; $i <= 3; $i++)
+                        <td 
+                            class="slot border" 
+                            data-date="{{ '2025-11-' . str_pad($i, 2, '0', STR_PAD_LEFT) }}" 
+                            data-hour="{{ sprintf('%02d', $hour) }}" 
                             id="slot-{{ $i }}-{{ $hour }}"
                             onclick="toggleSlot(this)">
                         </td>
@@ -79,11 +111,15 @@
         datas.forEach(data => {
             let timeParts = data.schedule.jam_mulai.split(':');
             let hour = timeParts[0]; 
-            
             let element = document.querySelector(`[data-date="${data.schedule.tanggal}"][data-hour="${hour}"]`);
             if(element){
-                element.classList.remove('red');
-                element.classList.add('green');
+                if (data.isOnline) {
+                    element.classList.remove('red');
+                    element.classList.add('orange');
+                } else {
+                    element.classList.remove('red');
+                    element.classList.add('green');
+                }
             }
         });
     }
@@ -94,6 +130,9 @@
             if (datas.length === 0) {
                 if (cell.classList.contains('green')) {
                     cell.classList.remove('green');
+                    cell.classList.add('orange');
+                } else if (cell.classList.contains('orange')) {
+                    cell.classList.remove('orange');
                     cell.classList.add('red');
                 } else if (cell.classList.contains('red')) {
                     cell.classList.remove('red');
@@ -113,9 +152,16 @@
             cells.forEach(cell => {
                 let date = cell.getAttribute('data-date');
                 let hour = cell.getAttribute('data-hour');
-                selected.push({date: date, hour: hour});
+                selected.push({date: date, hour: hour, isOnline: false});
             });
 
+            let orangeCells = document.querySelectorAll('.slot.orange');
+            orangeCells.forEach(cell => {
+                let date = cell.getAttribute('data-date');
+                let hour = cell.getAttribute('data-hour');
+                selected.push({date: date, hour: hour, isOnline: true});
+            });
+            
             document.getElementById('selectedSlots').value = JSON.stringify(selected);
         }
 </script>

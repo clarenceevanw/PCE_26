@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreign('admin_id')->references('id')->on('admins')->onDelete('cascade');
             $table->uuid('schedule_id');
             $table->foreign('schedule_id')->references('id')->on('schedules')->onDelete('cascade');
-            $table->boolean('isOnline')->default(true);
+            $table->boolean('isOnline')->default(false);
 
             $table->timestamps();
         });
