@@ -111,6 +111,7 @@
             columns: [
             { label: "Date", field: "date",  sort: true},
             { label: "Time", field: "time", sort: false },
+            { label: "Status", field: "status", sort: false },
             { label: "NRP", field: "nrp", sort: false },
             { label: "Name", field: "name", sort: false },
             { label: "ID Line", field: "id_line", sort: false},
@@ -120,6 +121,7 @@
             rows: datas.map((item) => {
                 return {
                     ...item,
+                    status: item.isOnline ? "Online" : "Offline",
                     action : `
                         <button
                         type="button"
