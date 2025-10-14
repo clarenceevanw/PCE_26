@@ -5,12 +5,12 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <link rel="icon" href="{{ asset('assets/logo.png') }}">
+    <link rel="icon" href="{{ asset('assets/logoAja.png') }}">
     <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio,line-clamp"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.css" />
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.js"></script>
-    <title>Admin BOM 2024 | {{ $title }}</title>
+    <title>Admin PCE 2026 | {{ $title }}</title>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tw-elements/dist/css/tw-elements.min.css" />
@@ -99,7 +99,7 @@
         data-te-sidenav-accordion="true">
         <a class="mb-3 flex items-center justify-center border-b-2 border-solid border-gray-100 py-6 outline-none"
             href="#!" data-te-ripple-init data-te-ripple-color="#b8d6a4">
-            <span class="text-center text-black font-bold">Admin Website<br>Battle of Minds 2025</span>
+            <span class="text-center text-black font-bold">Admin Website<br>Petra Civil Expo 2026</span>
         </a>
         <ul class="relative m-0 list-none px-[0.2rem] pb-12" data-te-sidenav-menu-ref>
         <li class="relative">
