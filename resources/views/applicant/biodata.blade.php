@@ -290,7 +290,7 @@
                                     title: "Berhasil!",
                                     text: response.message,
                                     icon: "success",
-                                    confirmButtonColor: "#a855f7",
+                                    confirmButtonColor: "rgba(168, 85, 247, 1)",
                                     confirmButtonText: "OK"
                                 }).then((result) => {
                                     const berkasRoute = "{{ route('applicant.berkas') }}"
