@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('interview_results', function (Blueprint $table) {
-            $table->uuid('id');
+            $table->uuid('id')->primary();
             $table->uuid('admin_schedule_id');
             $table->foreign('admin_schedule_id')->references('id')->on('admin_schedules')->onDelete('cascade');
             $table->uuid('division_id');
