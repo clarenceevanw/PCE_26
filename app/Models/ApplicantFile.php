@@ -12,7 +12,10 @@ class ApplicantFile extends Model
 
     protected $fillable = [
         'applicant_id',
-        'berkas',
+        'ktm',
+        'transkrip',
+        'bukti_kecurangan',
+        'skkk',
         'portofolio',
     ];
 

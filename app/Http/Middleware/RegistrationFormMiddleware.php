@@ -20,7 +20,7 @@ class RegistrationFormMiddleware
         $routeName = $request->route()->getName();
 
         if($routeName === 'applicant.berkas'){
-            if($this->biodataMiddleware($request) && $this->motivasiMiddleware($request)){
+            if($this->biodataMiddleware($request)){
                 return $next($request);
             }else{
                 return redirect()->route('applicant.motivasi')->with('error', 'Kompetensi dan Komitmen Pribadi belum diisi/belum disubmit');
@@ -39,13 +39,6 @@ class RegistrationFormMiddleware
     {
         $nrp = Session::get('nrp');
         $isExists = Applicant::where('nrp', $nrp)->exists();
-        return $isExists;
-    }
-
-    private function motivasiMiddleware(Request $request)
-    {
-        $nrp = Session::get('nrp');
-        $isExists = Applicant::where('nrp', $nrp)->whereHas('motivation')->exists();
         return $isExists;
     }
 

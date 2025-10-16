@@ -15,7 +15,10 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->uuid('applicant_id');
             $table->foreign('applicant_id')->references('id')->on('applicants')->onDelete('cascade');
-            $table->string('berkas');
+            $table->string('ktm')->nullable();
+            $table->string('transkrip')->nullable();
+            $table->string('bukti_kecurangan')->nullable();
+            $table->string('skkk')->nullable();
             $table->string('portofolio')->nullable();
             $table->timestamps();
         });

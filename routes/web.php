@@ -52,7 +52,12 @@ Route::prefix('applicant')->group(function () {
         Route::get('biodata', [ApplicantController::class, 'index'])->name('applicant.biodata');
         Route::post('biodata/store', [ApplicantController::class, 'storeBiodata'])->name('applicant.biodata.store');
         Route::get('berkas', [ApplicantController::class, 'berkasIndex'])->name('applicant.berkas')->middleware(RegistrationFormMiddleware::class);
-        Route::post('berkas/store', [ApplicantController::class, 'storeBerkas'])->name('applicant.berkas.store');
+        Route::post('berkas/ktm/store', [ApplicantController::class, 'storeKtm'])->name('applicant.berkas.ktm.store');
+        Route::post('berkas/transkrip/store', [ApplicantController::class, 'storeTranskrip'])->name('applicant.berkas.transkrip.store');
+        Route::post('berkas/bukti_kecurangan/store', [ApplicantController::class, 'storeBuktiKecurangan'])->name('applicant.berkas.bukti_kecurangan.store');
+        Route::post('berkas/skkk/store', [ApplicantController::class, 'storeSkkk'])->name('applicant.berkas.skkk.store');
+        Route::post('berkas/portofolio/store', [ApplicantController::class, 'storePortofolio'])->name('applicant.berkas.portofolio.store');
+        Route::get('check-berkas', [ApplicantController::class, 'checkBerkas'])->name('applicant.check-berkas');
         Route::post('jadwal/store', [ApplicantController::class, 'storeJadwal'])->name('applicant.jadwal.store');
         // Route::get('jadwal', [ApplicantController::class, 'jadwalIndex'])->name('applicant.jadwal')->middleware(RegistrationFormMiddleware::class);
         Route::get('jadwal', [ApplicantController::class, 'jadwalIndex'])->name('applicant.jadwal');
