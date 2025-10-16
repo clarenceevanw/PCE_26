@@ -35,4 +35,8 @@ class AdminSchedule extends Model
         return $this->belongsTo(Applicant::class);
     }
 
+    public function interviewResult()
+    {
+        return $this->hasMany(InterviewResult::class);
+    }
 }
