@@ -100,6 +100,28 @@
                     </div>
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
+                            <label for="jenis_kelamin"
+                                class="font-organetto block mb-2 text-sm sm:text-base font-semibold text-white uppercase tracking-wider">
+                                Jenis Kelamin
+                            </label>
+                            <select id="jenis_kelamin" name="jenis_kelamin"
+                                class="w-full px-4 py-2.5 bg-transparent border border-purple-500/50 rounded-full text-white text-sm sm:text-base appearance-none cursor-pointer transition-all duration-300 focus:outline-none focus:border-purple-400 focus:shadow-[0_0_12px_rgba(168,85,247,0.4)]">
+                                <option class="bg-purple-950 text-purple-200" disabled selected hidden>Pilih Jenis Kelamin</option>
+                                <option class="bg-purple-950" value="laki-laki">Laki-laki</option>
+                                <option class="bg-purple-950" value="perempuan">Perempuan</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="ipk"
+                                class="font-organetto block mb-2 text-sm sm:text-base font-semibold text-white uppercase tracking-wider">IPK</label>
+                            <input type="number" id="ipk" name="ipk" placeholder="Co: 3.45" step="0.01" min="0" max="4"
+                                class="w-full px-4 py-2.5 bg-transparent border border-purple-500/50 rounded-full text-white text-sm sm:text-base placeholder-purple-300/40 transition-all duration-300 focus:outline-none focus:border-purple-400 focus:shadow-[0_0_12px_rgba(168,85,247,0.4)]"
+                                required />
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <div>
                             <label for="line_id"
                                 class="font-organetto block mb-2 text-sm sm:text-base font-semibold text-white uppercase tracking-wider">ID Line</label>
                             <input type="text" id="line_id" name="line_id" placeholder="ID Line"
@@ -110,6 +132,13 @@
                             <label for="no_hp"
                                 class="font-organetto block mb-2 text-sm sm:text-base font-semibold text-white uppercase tracking-wider">Whatsapp Number</label>
                             <input type="number" id="no_hp" name="no_hp" placeholder="Co: +6281234567890 / 081234567890"
+                                class="w-full px-4 py-2.5 bg-transparent border border-purple-500/50 rounded-full text-white text-sm sm:text-base placeholder-purple-300/40 transition-all duration-300 focus:outline-none focus:border-purple-400 focus:shadow-[0_0_12px_rgba(168,85,247,0.4)]"
+                                required />
+                        </div>
+                        <div>
+                            <label for="instagram"
+                                class="font-organetto block mb-2 text-sm sm:text-base font-semibold text-white uppercase tracking-wider">Instagram</label>
+                            <input type="text" id="instagram" name="instagram" placeholder="Instagram"
                                 class="w-full px-4 py-2.5 bg-transparent border border-purple-500/50 rounded-full text-white text-sm sm:text-base placeholder-purple-300/40 transition-all duration-300 focus:outline-none focus:border-purple-400 focus:shadow-[0_0_12px_rgba(168,85,247,0.4)]"
                                 required />
                         </div>
@@ -241,10 +270,14 @@
             document.getElementById('angkatan').disabled = true;
             document.getElementById('prodi').value = dataMhs.prodi;
             document.getElementById('prodi').disabled = true;
+            document.getElementById('ipk').value = dataMhs.ipk;
+            document.getElementById('ipk').disabled = true;
             document.getElementById('line_id').value = dataMhs.line_id;
             document.getElementById('line_id').disabled = true;
             document.getElementById('no_hp').value = dataMhs.no_hp;
             document.getElementById('no_hp').disabled = true;
+            document.getElementById('instagram').value = dataMhs.instagram;
+            document.getElementById('instagram').disabled = true;
             document.getElementById('motivasi').value = dataMhs.motivasi;
             document.getElementById('motivasi').readOnly = true;
             document.getElementById('kelebihan').value = dataMhs.kelebihan;
@@ -255,6 +288,8 @@
             document.getElementById('komitmen').readOnly = true;
             document.getElementById('pengalaman').value = dataMhs.pengalaman;
             document.getElementById('pengalaman').readOnly = true;
+            $(`#jenis_kelamin option[value=${dataMhs.jenis_kelamin}]`).attr('selected', 'selected');
+            document.getElementById('jenis_kelamin').disabled = true;
             $(`#division_choice1 option[value=${dataMhs.division_choice1}]`).attr('selected', 'selected');
             document.getElementById('division_choice1').disabled = true;
             $(`#division_choice2 option[value=${dataMhs.division_choice2}]`).attr('selected', 'selected');
