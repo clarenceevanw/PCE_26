@@ -16,7 +16,6 @@
         [type=week]:focus,
         select:focus,
         textarea:focus {
-            /* dari 1px diganti jadi 0px */
             --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(0px + var(--tw-ring-offset-width)) var(--tw-ring-color);
         }
     </style>
@@ -27,119 +26,196 @@
             Swal.fire({
                 title: "ERROR",
                 text: "{{ session('error') }}",
-                confirmButtonColor: "#3085d6",
+                confirmButtonColor: "#a855f7",
                 icon: "error"
             });
         </script>
     @endif
-    <div class="background flex flex-col w-screen h-full sm:min-h-screen items-center p-8 sm:p-14">
-        <div class="flex flex-col w-full sm:w-9/12">
-            <a href="{{ route('applicant.homepage') }}">
-                <button
-                    class="bg-pink-600 px-3 py-1 border-danger border-2 text-yellow-400 text-sm font-extrabold uppercase leading-normal text-white transition duration-300 ease-in-out hover:bg-yellow-400 hover:text-pink-600 hover:border-yellow-400 hover:shadow-yellow-200 focus:bg-yellow-accent-200 focus:outline-none focus:ring-0 active:bg-yellow-600 motion-reduce:transition-none">
-                    Back to Homepage
-                </button>
-            </a>
-            <h1 class="font-squids text-shadow text-white text-4xl font-bold text-center my-8">{{ $title }}</h1>
+
+    <div class="background min-h-screen flex flex-col items-center justify-center px-4 py-6 sm:px-6 lg:px-8">
+        <div class="w-full max-w-5xl">
+            <!-- Back Button -->
+            <div class="mb-6 sm:mb-8 text-left">
+                <a href="{{ route('applicant.homepage') }}">
+                    <button
+                        class="px-6 py-2 border-2 border-purple-500 text-white font-bold uppercase tracking-widest rounded-full text-sm sm:text-base transition-all duration-300 hover:bg-white hover:text-purple-500 hover:shadow-lg hover:shadow-purple-500/40">
+                        ← Back
+                    </button>
+                </a>
+            </div>
+
+            <!-- Title -->
+            <h1
+                class="font-return-grid text-white text-2xl sm:text-4xl font-bold text-center mb-8 sm:mb-10 tracking-wider drop-shadow-[0_0_25px_rgba(168,85,247,0.8)]">
+                {{ $title }}
+            </h1>
+
+            <!-- Form Container -->
             <div
-                class="flex flex-col w-full border-4 bg-transparent bg-blur py-4 px-5 flex mx-auto block shadow-4 justify-center items-center">
-                <form id="form_biodata" class="w-full" method="post" action="{{ route('applicant.biodata.store') }}">
+                class="neon-border bg-purple-950/40 backdrop-blur-sm rounded-2xl p-5 sm:p-8 border border-purple-500/40 transition-all duration-500 neon-glow">
+                <form id="form_biodata" method="post" action="{{ route('applicant.biodata.store') }}" class="space-y-6">
                     @csrf
-                    <div class="w-full mb-10">
-                        <label for="nama_lengkap" class="font-organetto block mb-2 text-md font-medium text-yellow-400">Nama
-                            Lengkap</label>
-                        <input type="text" id="nama_lengkap" name="nama_lengkap"
-                            class="border border-white font-organetto-light bg-transparent text-white text-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                            placeholder="Nama Lengkap" required />
+                    <!-- Nama Lengkap -->
+                    <div>
+                        <label for="nama_lengkap"
+                            class="font-organetto block mb-2 text-sm sm:text-base font-semibold text-white uppercase tracking-wider">
+                            Nama Lengkap
+                        </label>
+                        <input type="text" id="nama_lengkap" name="nama_lengkap" placeholder="Masukkan nama lengkap"
+                            class="w-full px-4 py-2.5 bg-transparent border border-purple-500/50 rounded-full text-white text-sm sm:text-base placeholder-purple-300/40 transition-all duration-300 focus:outline-none focus:border-purple-400 focus:shadow-[0_0_12px_rgba(168,85,247,0.4)]" />
                     </div>
 
-                    <div class="grid md:grid-cols-3 gap-6 mb-10">
-                        <div class="w-full">
+                    <!-- Grid NRP, Angkatan, Prodi -->
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <div>
                             <label for="nrp"
-                                class="font-organetto block mb-2 text-md font-medium text-yellow-400">NRP</label>
-                            <input type="text" id="nrp" name="nrp"
-                                class="border border-white font-organetto-light bg-transparent text-white text-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                                placeholder="NRP" required />
+                                class="font-organetto block mb-2 text-sm sm:text-base font-semibold text-white uppercase tracking-wider">NRP</label>
+                            <input type="text" id="nrp" name="nrp" placeholder="NRP"
+                                class="w-full px-4 py-2.5 bg-transparent border border-purple-500/50 rounded-full text-white text-sm sm:text-base placeholder-purple-300/40 transition-all duration-300 focus:outline-none focus:border-purple-400 focus:shadow-[0_0_12px_rgba(168,85,247,0.4)]"
+                                required />
                         </div>
-                        <div class="w-full">
+                        <div>
                             <label for="angkatan"
-                                class="font-organetto block mb-2 text-md font-medium text-yellow-400">Angkatan</label>
-                            <input type="number" id="angkatan" name="angkatan"
-                                class="border border-white font-organetto-light bg-transparent text-white text-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                                placeholder="Angkatan" required />
+                                class="font-organetto block mb-2 text-sm sm:text-base font-semibold text-white uppercase tracking-wider">Angkatan</label>
+                            <input type="number" id="angkatan" name="angkatan" placeholder="2024"
+                                class="w-full px-4 py-2.5 bg-transparent border border-purple-500/50 rounded-full text-white text-sm sm:text-base placeholder-purple-300/40 transition-all duration-300 focus:outline-none focus:border-purple-400 focus:shadow-[0_0_12px_rgba(168,85,247,0.4)]"
+                                required />
                         </div>
-                        <div class="w-full">
+                        <div>
                             <label for="prodi"
-                                class="font-organetto block mb-2 text-md font-medium text-yellow-400">Program Studi</label>
-                            <input type="text" id="prodi" name="prodi"
-                                class="border border-white font-organetto-light bg-transparent text-white text-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                                placeholder="Program Studi" required />
+                                class="font-organetto block mb-2 text-sm sm:text-base font-semibold text-white uppercase tracking-wider">Prodi</label>
+                            <input type="text" id="prodi" name="prodi" placeholder="Informatika"
+                                class="w-full px-4 py-2.5 bg-transparent border border-purple-500/50 rounded-full text-white text-sm sm:text-base placeholder-purple-300/40 transition-all duration-300 focus:outline-none focus:border-purple-400 focus:shadow-[0_0_12px_rgba(168,85,247,0.4)]"
+                                required />
                         </div>
                     </div>
-
-                    <div class="grid md:grid-cols-3 gap-6 mb-10">
-                        <div class="w-full">
-                            <label for="line_id" class="font-organetto block mb-2 text-md font-medium text-yellow-400">ID
-                                Line</label>
-                            <input type="text" id="line_id" name="line_id"
-                                class="border border-white font-organetto-light bg-transparent text-white text-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                                placeholder="ID Line" required />
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label for="line_id"
+                                class="font-organetto block mb-2 text-sm sm:text-base font-semibold text-white uppercase tracking-wider">ID Line</label>
+                            <input type="text" id="line_id" name="line_id" placeholder="ID Line"
+                                class="w-full px-4 py-2.5 bg-transparent border border-purple-500/50 rounded-full text-white text-sm sm:text-base placeholder-purple-300/40 transition-all duration-300 focus:outline-none focus:border-purple-400 focus:shadow-[0_0_12px_rgba(168,85,247,0.4)]"
+                                required />
                         </div>
-                        <div class="w-full md:col-span-2">
+                        <div>
                             <label for="no_hp"
-                                class="font-organetto block mb-2 text-md font-medium text-yellow-400">Nomor
-                                WhatsApp</label>
-                            <input type="text" id="no_hp" name="no_hp"
-                                class="border border-white font-organetto-light bg-transparent text-white text-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                                placeholder="Nomor WhatsApp" required />
+                                class="font-organetto block mb-2 text-sm sm:text-base font-semibold text-white uppercase tracking-wider">Whatsapp Number</label>
+                            <input type="number" id="no_hp" name="no_hp" placeholder="Your Phone Number"
+                                class="w-full px-4 py-2.5 bg-transparent border border-purple-500/50 rounded-full text-white text-sm sm:text-base placeholder-purple-300/40 transition-all duration-300 focus:outline-none focus:border-purple-400 focus:shadow-[0_0_12px_rgba(168,85,247,0.4)]"
+                                required />
                         </div>
                     </div>
 
-                    <div class="grid md:grid-cols-2 gap-6 mb-10">
+                    <!-- Textarea Section -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label for="motivasi"
+                                class="font-organetto block mb-2 text-sm sm:text-base font-semibold text-white uppercase tracking-wider">
+                                Motivasi Bergabung
+                            </label>
+                            <textarea id="motivasi" name="motivasi" rows="3"
+                                placeholder="Apa yang memotivasi Anda untuk bergabung?"
+                                class="w-full px-4 py-3 bg-transparent border border-purple-500/50 rounded-2xl text-white text-sm sm:text-base placeholder-purple-300/40 resize-none transition-all duration-300 focus:outline-none focus:border-purple-400 focus:shadow-[0_0_12px_rgba(168,85,247,0.4)]"></textarea>
+                        </div>
+
+                        <div>
+                            <label for="komitmen"
+                                class="font-organetto block mb-2 text-sm sm:text-base font-semibold text-white uppercase tracking-wider">
+                                Komitmen
+                            </label>
+                            <textarea id="komitmen" name="komitmen" rows="3"
+                                placeholder="Bagaimana komitmen Anda jika diterima?"
+                                class="w-full px-4 py-3 bg-transparent border border-purple-500/50 rounded-2xl text-white text-sm sm:text-base placeholder-purple-300/40 resize-none transition-all duration-300 focus:outline-none focus:border-purple-400 focus:shadow-[0_0_12px_rgba(168,85,247,0.4)]"></textarea>
+                        </div>
+
+                        <div>
+                            <label for="kelebihan"
+                                class="font-organetto block mb-2 text-sm sm:text-base font-semibold text-white uppercase tracking-wider">
+                                Kelebihan
+                            </label>
+                            <textarea id="kelebihan" name="kelebihan" rows="3"
+                                placeholder="Tuliskan kelebihan Anda"
+                                class="w-full px-4 py-3 bg-transparent border border-purple-500/50 rounded-2xl text-white text-sm sm:text-base placeholder-purple-300/40 resize-none transition-all duration-300 focus:outline-none focus:border-purple-400 focus:shadow-[0_0_12px_rgba(168,85,247,0.4)]"></textarea>
+                        </div>
+
+                        <div>
+                            <label for="kekurangan"
+                                class="font-organetto block mb-2 text-sm sm:text-base font-semibold text-white uppercase tracking-wider">
+                                Kekurangan
+                            </label>
+                            <textarea id="kekurangan" name="kekurangan" rows="3"
+                                placeholder="Tuliskan kekurangan Anda"
+                                class="w-full px-4 py-3 bg-transparent border border-purple-500/50 rounded-2xl text-white text-sm sm:text-base placeholder-purple-300/40 resize-none transition-all duration-300 focus:outline-none focus:border-purple-400 focus:shadow-[0_0_12px_rgba(168,85,247,0.4)]"></textarea>
+                        </div>
+
+                        <div class="sm:col-span-2">
+                            <label for="pengalaman"
+                                class="font-organetto block mb-2 text-sm sm:text-base font-semibold text-white uppercase tracking-wider">
+                                Pengalaman Organisasi / Kepanitiaan
+                            </label>
+                            <textarea id="pengalaman" name="pengalaman" rows="3"
+                                placeholder="Ceritakan pengalaman Anda dalam organisasi atau kepanitiaan sebelumnya"
+                                class="w-full px-4 py-3 bg-transparent border border-purple-500/50 rounded-2xl text-white text-sm sm:text-base placeholder-purple-300/40 resize-none transition-all duration-300 focus:outline-none focus:border-purple-400 focus:shadow-[0_0_12px_rgba(168,85,247,0.4)]"></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Divisi Selection -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
                             <label for="division_choice1"
-                                class="font-organetto block mb-2 text-md font-medium text-yellow-400">Divisi 1</label>
+                                class="font-organetto block mb-2 text-sm sm:text-base font-semibold text-white uppercase tracking-wider">
+                                Divisi 1
+                            </label>
                             <select id="division_choice1" name="division_choice1"
-                                class="border border-white font-organetto-light bg-transparent text-white text-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
-                                <option class="font-organetto-light bg-black" selected readonly hidden value="">Divisi
-                                    1</option>
-                                <option class="font-organetto-light bg-black" value="acara">Acara</option>
-                                <option class="font-organetto-light bg-black" value="materi">Materi</option>
-                                <option class="font-organetto-light bg-black" value="creative">Kreatif</option>
-                                <option class="font-organetto-light bg-black" value="sponsor">Sponsorship</option>
-                                <option class="font-organetto-light bg-black" value="sekkonkes">Sekkonkes</option>
-                                <option class="font-organetto-light bg-black" value="transkapman">Transkapman</option>
-                                <option class="font-organetto-light bg-black" value="it">IT</option>
+                                class="w-full px-4 py-2.5 bg-transparent border border-purple-500/50 rounded-full text-white text-sm sm:text-base appearance-none cursor-pointer transition-all duration-300 focus:outline-none focus:border-purple-400 focus:shadow-[0_0_12px_rgba(168,85,247,0.4)]">
+                                <option class="bg-purple-950 text-purple-200" disabled selected hidden>Pilih Divisi Pertama</option>
+                                <option class="bg-purple-950" value="acara">Acara</option>
+                                <option class="bg-purple-950" value="materi">Materi</option>
+                                <option class="bg-purple-950" value="creative">Kreatif</option>
+                                <option class="bg-purple-950" value="sponsor">Sponsorship</option>
+                                <option class="bg-purple-950" value="sekkonkes">Sekkonkes</option>
+                                <option class="bg-purple-950" value="transkapman">Transkapman</option>
+                                <option class="bg-purple-950" value="it">IT</option>
                             </select>
                         </div>
                         <div>
                             <label for="division_choice2"
-                                class="font-organetto block mb-2 text-md font-medium text-yellow-400">Divisi 2</label>
+                                class="font-organetto block mb-2 text-sm sm:text-base font-semibold text-white uppercase tracking-wider">
+                                Divisi 2
+                            </label>
                             <select id="division_choice2" name="division_choice2"
-                                class="border border-white font-organetto-light bg-transparent text-white text-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
-                                <option class="font-organetto-light bg-black" selected readonly hidden value="">Divisi
-                                    2</option>
-                                <option class="font-organetto-light bg-black" value="">-</option>
-                                <option class="font-organetto-light bg-black" value="acara">Acara</option>
-                                <option class="font-organetto-light bg-black" value="materi">Materi</option>
-                                <option class="font-organetto-light bg-black" value="creative">Kreatif</option>
-                                <option class="font-organetto-light bg-black" value="sponsor">Sponsorship</option>
-                                <option class="font-organetto-light bg-black" value="sekkonkes">Sekkonkes</option>
-                                <option class="font-organetto-light bg-black" value="transkapman">Transkapman</option>
-                                <option class="font-organetto-light bg-black" value="it">IT</option>
+                                class="w-full px-4 py-2.5 bg-transparent border border-purple-500/50 rounded-full text-white text-sm sm:text-base appearance-none cursor-pointer transition-all duration-300 focus:outline-none focus:border-purple-400 focus:shadow-[0_0_12px_rgba(168,85,247,0.4)]">
+                                <option class="bg-purple-950 text-purple-200" disabled selected hidden>Pilih Divisi Kedua</option>
+                                <option class="bg-purple-950" value="acara">Acara</option>
+                                <option class="bg-purple-950" value="materi">Materi</option>
+                                <option class="bg-purple-950" value="creative">Kreatif</option>
+                                <option class="bg-purple-950" value="sponsor">Sponsorship</option>
+                                <option class="bg-purple-950" value="sekkonkes">Sekkonkes</option>
+                                <option class="bg-purple-950" value="transkapman">Transkapman</option>
+                                <option class="bg-purple-950" value="it">IT</option>
                             </select>
                         </div>
                     </div>
-                    <button type="submit" id="submitBiodata"
-                        class="bg-pink-600 w-full border-danger border-2 px-6 pb-2 pt-2.5 text-yellow-400 text-lg font-extrabold uppercase leading-normal text-white transition duration-300 ease-in-out hover:bg-yellow-400 hover:text-pink-600 hover:border-yellow-400 hover:shadow-yellow-200 focus:bg-yellow-accent-200 focus:outline-none focus:ring-0 active:bg-yellow-600 motion-reduce:transition-none">Submit</button>
+
+                    <!-- Submit Button -->
+                    <div class="pt-4">
+                        <button type="submit" id="submitBiodata"
+                            class="w-full px-6 py-3 border-2 border-purple-500 text-white text-base sm:text-lg font-bold uppercase tracking-widest rounded-full transition-all duration-300 hover:bg-white hover:text-purple-500">
+                            Submit
+                        </button>
+                        <button type="button" id="nextPage" class="w-full px-6 py-3 border-2 border-purple-500 text-white text-base sm:text-lg font-bold uppercase tracking-widest rounded-full transition-all duration-300 hover:bg-white hover:text-purple-500 hidden">Next Page</button>
+                    </div>
                 </form>
-                <button id="nextPage" onclick="window.location.href='{{ route('applicant.motivasi') }}'"
-                    class="hidden bg-pink-600 w-full border-danger border-2 px-6 pb-2 pt-2.5 text-yellow-400 text-lg font-extrabold uppercase leading-normal text-white transition duration-300 ease-in-out hover:bg-yellow-400 hover:text-pink-600 hover:border-yellow-400 hover:shadow-yellow-200 focus:bg-yellow-accent-200 focus:outline-none focus:ring-0 active:bg-yellow-600 motion-reduce:transition-none">Next
-                    Page</button>
             </div>
+
+            <!-- Info Text -->
+            <p class="text-center text-white text-xs sm:text-sm mt-6 font-organetto tracking-wide">
+                Pastikan semua data yang dimasukkan sudah benar sebelum submit
+            </p>
         </div>
     </div>
 @endsection
+
 @section('script')
     <script>
         var dataMhs = JSON.parse(@json($dataMhs));
@@ -160,6 +236,16 @@
             document.getElementById('line_id').disabled = true;
             document.getElementById('no_hp').value = dataMhs.no_hp;
             document.getElementById('no_hp').disabled = true;
+            document.getElementById('motivasi').value = dataMhs.motivasi;
+            document.getElementById('motivasi').readOnly = true;
+            document.getElementById('kelebihan').value = dataMhs.kelebihan;
+            document.getElementById('kelebihan').readOnly = true;
+            document.getElementById('kekurangan').value = dataMhs.kekurangan;
+            document.getElementById('kekurangan').readOnly = true;
+            document.getElementById('komitmen').value = dataMhs.komitmen;
+            document.getElementById('komitmen').readOnly = true;
+            document.getElementById('pengalaman').value = dataMhs.pengalaman;
+            document.getElementById('pengalaman').readOnly = true;
             $(`#division_choice1 option[value=${dataMhs.division_choice1}]`).attr('selected', 'selected');
             document.getElementById('division_choice1').disabled = true;
             $(`#division_choice2 option[value=${dataMhs.division_choice2}]`).attr('selected', 'selected');
@@ -168,18 +254,22 @@
             document.getElementById('nextPage').classList.remove('hidden');
         };
 
+        $("#nextPage").on('click', function() {
+            window.location.href = "{{ route('applicant.berkas') }}";
+        });
 
         $("#form_biodata").on('submit', function(e) {
             e.preventDefault();
 
             Swal.fire({
-                title: "Are you sure want to submit?",
-                text: "Make sure the data is correct. Once you submit, the data cannot be changed!",
+                title: "Konfirmasi Submit",
+                text: "Pastikan data sudah benar. Setelah submit, data tidak dapat diubah!",
                 icon: "warning",
                 showCancelButton: true,
-                confirmButtonColor: "#3085d6",
-                cancelButtonColor: "#d33",
-                confirmButtonText: "Yes, submit it!"
+                confirmButtonColor: "#a855f7",
+                cancelButtonColor: "#e11d48",
+                confirmButtonText: "Ya, Submit!",
+                cancelButtonText: "Batal"
             }).then((result) => {
                 if (result.isConfirmed) {
                     var form = $(this)[0];
@@ -187,68 +277,55 @@
                     var method = $(this).attr('method');
                     var url = $(this).attr('action');
 
-
-                    // var loader = document.querySelector(".data-loader");
-                    // loader.classList.remove("hidden");
-                    // loader.classList.add("flex");
                     $.ajax({
                         type: method,
                         url: url,
                         data: formData,
-                        processData: false, //to prevent jQuery from automatically transforming the data into a query string
+                        processData: false,
                         contentType: false,
                         cache: false,
                         success: async function(response) {
-                            // loader.classList.add("hidden");
-                            // loader.classList.remove("flex");
                             if (response.success) {
                                 await Swal.fire({
-                                    title: "Success!",
+                                    title: "Berhasil!",
                                     text: response.message,
                                     icon: "success",
-                                    confirmButtonColor: "#3085d6",
+                                    confirmButtonColor: "#a855f7",
                                     confirmButtonText: "OK"
                                 }).then((result) => {
-                                    const motivasiRoute =
-                                        "{{ route('applicant.motivasi') }}"
-                                    console.log(motivasiRoute);
+                                    const berkasRoute = "{{ route('applicant.berkas') }}"
                                     if (result.isConfirmed) {
-                                        window.location.href = motivasiRoute;
+                                        window.location.href = berkasRoute;
                                     }
                                     setTimeout(() => {
-                                        window.location.href = motivasiRoute;
+                                        window.location.href = berkasRoute;
                                     }, 1500);
-
                                 });
                             } else {
                                 await Swal.fire({
                                     icon: "error",
                                     title: "Oops...",
                                     html: response.message,
-                                    confirmButtonColor: "#3085d6"
+                                    confirmButtonColor: "#a855f7"
                                 });
                             }
                         },
                         error: async function(xhr, textStatus, errorThrown) {
-                            // loader.classList.add("hidden");
-                            // loader.classList.remove("flex");
                             await Swal.fire({
                                 title: 'Oops!',
-                                text: 'Something went wrong: ' + textStatus + '-' +
-                                    errorThrown,
+                                text: 'Something went wrong: ' + textStatus + '-' + errorThrown,
                                 icon: 'error',
-                                confirmButtonColor: "#3085d6",
+                                confirmButtonColor: "#a855f7",
                                 confirmButtonText: 'OK'
                             });
                         }
                     })
                 } else {
-                    // User canceled the submission
                     Swal.fire({
-                        title: "Cancelled!",
-                        text: "Your data was not submitted.",
+                        title: "Dibatalkan!",
+                        text: "Data tidak disubmit.",
                         icon: "info",
-                        confirmButtonColor: "#3085d6",
+                        confirmButtonColor: "#a855f7",
                         confirmButtonText: "OK"
                     });
                 }

@@ -19,15 +19,8 @@ class RegistrationFormMiddleware
     {
         $routeName = $request->route()->getName();
 
-        if ($routeName === 'applicant.motivasi') {
-            if($this->biodataMiddleware($request)){
-                return $next($request);
-            }else{
-                return redirect()->route('applicant.biodata')->with('error', 'Biodata belum diisi/belum disubmit');
-            }
-        }
-        elseif($routeName === 'applicant.berkas'){
-            if($this->motivasiMiddleware($request)){
+        if($routeName === 'applicant.berkas'){
+            if($this->biodataMiddleware($request) && $this->motivasiMiddleware($request)){
                 return $next($request);
             }else{
                 return redirect()->route('applicant.motivasi')->with('error', 'Kompetensi dan Komitmen Pribadi belum diisi/belum disubmit');

@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('no_hp');
             $table->uuid('division_choice1');
             $table->foreign('division_choice1')->references('id')->on('divisions')->onDelete('cascade');
-            $table->uuid('division_choice2')->nullable();
+            $table->uuid('division_choice2');
             $table->foreign('division_choice2')->references('id')->on('divisions')->onDelete('cascade');
 
             $table->timestamps();

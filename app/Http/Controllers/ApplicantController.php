@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\ScheduleNotif;
 use App\Jobs\SendMail;
+use Illuminate\Support\Facades\DB;
 
 class ApplicantController extends Controller
 {
@@ -33,11 +34,16 @@ class ApplicantController extends Controller
 
         $nrp = Session::get('nrp');
         $isExist = Applicant::where('nrp', $nrp)->exists();
-        $applicant = Applicant::where('nrp', $nrp)->first();
+        $applicant = Applicant::with('motivation')->where('nrp', $nrp)->first();
         if($applicant){
             $data['prodi'] = $applicant->prodi;
             $data['line_id'] = $applicant->line_id;
             $data['no_hp'] = $applicant->no_hp;
+            $data['motivasi'] = $applicant->motivation->motivasi;
+            $data['komitmen'] = $applicant->motivation->komitmen;
+            $data['kelebihan'] = $applicant->motivation->kelebihan;
+            $data['kekurangan'] = $applicant->motivation->kekurangan;
+            $data['pengalaman'] = $applicant->motivation->pengalaman;
             $data['division_choice1'] = Division::where('id', $applicant->division_choice1)->first()->slug;
             if ($applicant->division_choice2){
                 $data['division_choice2'] = Division::where('id', $applicant->division_choice2)->first()->slug;
@@ -62,7 +68,13 @@ class ApplicantController extends Controller
             'prodi' => 'required|string|min:1',
             'line_id' => 'required|string|min:1',
             'no_hp' => 'required|string|min:1',
-            'division_choice1' => 'required'
+            'motivasi' => 'required|string|min:1',
+            'komitmen' => 'required|string|min:1',
+            'kelebihan' => 'required|string|min:1',
+            'kekurangan' => 'required|string|min:1',
+            'pengalaman' => 'required|string|min:1',
+            'division_choice1' => 'required',
+            'division_choice2' => 'required',
         ], [
             'nama_lengkap.required' => 'Name is required',
             'nrp.required' => 'NRP is required',
@@ -72,6 +84,11 @@ class ApplicantController extends Controller
             'prodi.required' => 'Program Studi is required',
             'line_id.required' => 'ID Line is required',
             'no_hp.required' => 'Whatsapp Number is required',
+            'motivasi.required' => 'Motivasi is required',
+            'komitmen.required' => 'Komitmen is required',
+            'kelebihan.required' => 'Kelebihan is required',
+            'kekurangan.required' => 'Kekurangan is required',
+            'pengalaman.required' => 'Pengalaman is required',
             'division_choice1.required' => 'Division 1 is required',
         ]);
 
@@ -93,86 +110,36 @@ class ApplicantController extends Controller
         }
 
         $divisionId1 = Division::where('slug', $request->division_choice1)->first()->id;
-        if($request->division_choice2){
-            $divisionId2 = Division::where('slug', $request->division_choice2)->first()->id;
-        }else{
-            $divisionId2 = $request->division_choice2;
-        };
+        $divisionId2 = Division::where('slug', $request->division_choice2)->first()->id;
         
-        Applicant::create([
-            'nama_lengkap' => $request->nama_lengkap,
-            'nrp'  => $request->nrp, 
-            'angkatan' => $request->angkatan,
-            'prodi' => $request->prodi,
-            'line_id' => $request->line_id,
-            'no_hp' => $request->no_hp,
-            'division_choice1' => $divisionId1,
-            'division_choice2' => $divisionId2
-        ]);
-        return response()->json(['success' => true, 'message' => 'Data berhasil di Submit']);
-    }
+        try {
+            DB::beginTransaction();
 
-    public function motivasiIndex()
-    {
-        $title = 'Kompetensi dan Komitmen Pribadi';
-        $data = [];
-        $nrp = Session::get('nrp');
-        $isExists = Applicant::where('nrp', $nrp)->whereHas('motivation')->exists();
-        if($isExists){
-            $motivation = Applicant::with('motivation')->where('nrp', $nrp)->first();
-            $data['motivasi'] = $motivation->motivation->motivasi;
-            $data['komitmen'] = $motivation->motivation->komitmen;
-            $data['kelebihan'] = $motivation->motivation->kelebihan;
-            $data['kekurangan'] = $motivation->motivation->kekurangan;
-            $data['pengalaman'] = $motivation->motivation->pengalaman;
+            $applicant = Applicant::create([
+                'nama_lengkap' => $request->nama_lengkap,
+                'nrp'  => $request->nrp, 
+                'angkatan' => $request->angkatan,
+                'prodi' => $request->prodi,
+                'line_id' => $request->line_id,
+                'no_hp' => $request->no_hp,
+                'division_choice1' => $divisionId1,
+                'division_choice2' => $divisionId2
+            ]);
+
+            Motivation::create([
+                'motivasi' => $request->motivasi,
+                'komitmen' => $request->komitmen,
+                'kelebihan' => $request->kelebihan,
+                'kekurangan' => $request->kekurangan,
+                'pengalaman' => $request->pengalaman,
+                'applicant_id' => $applicant->id
+            ]);
+
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json(['success' => false, 'message' => $e->getMessage()]);
         }
-
-        return view('applicant.motivasi', [
-            'title' => $title,
-            'data' => json_encode($data),
-            'isExists' => json_encode($isExists)
-        ]);
-    }
-
-    public function storeMotivasi(Request $request)
-    {
-        $valid = Validator::make($request->all(), [
-            'motivasi' => 'required|string|min:1',
-            'komitmen' => 'required|string|min:1',
-            'kelebihan' => 'required|string|min:1',
-            'kekurangan' => 'required|string|min:1',
-            'pengalaman' => 'required|string|min:1'
-        ], [
-            'motivasi.required' => 'Motivasi is required',
-            'komitmen.required' => 'Komitmen is required',
-            'kelebihan.required' => 'Kelebihan is required',
-            'kekurangan.required' => 'Kekurangan is required',
-            'pengalaman.required' => 'Pengalaman Kepanitiaan is required'
-        ]);
-
-        if ($valid->fails()) {
-            $errors = $valid->errors()->toArray();
-    
-            // Flatten the error messages into a single string
-            $errorMessages = [];
-            foreach ($errors as $messages) {
-                $errorMessages = array_merge($errorMessages, $messages);
-            }
-            $errorString = implode('<br>', $errorMessages); // Join messages with line breaks
-
-            return response()->json(['success' => false, 'message' => $errorString]);
-        }
-
-        $nrp = Session::get('nrp');
-        $applicantId = Applicant::where('nrp',$nrp)->first()->id;
-        Motivation::create([
-            'applicant_id' => $applicantId,
-            'motivasi' => $request->motivasi,
-            'komitmen' => $request->komitmen,
-            'kelebihan' => $request->kelebihan,
-            'kekurangan' => $request->kekurangan,
-            'pengalaman' => $request->pengalaman,
-        ]);
         return response()->json(['success' => true, 'message' => 'Data berhasil di Submit']);
     }
 
