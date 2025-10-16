@@ -352,213 +352,212 @@ class ApplicantController extends Controller
 
     public function jadwalIndex()
     {
-        $title = 'Jadwal';
+        $title = 'Jadwal Interview';
         $nrp = Session::get('nrp');
-        $divisionId1 = Applicant::where('nrp', $nrp)->first()->division_choice1;
-        $schedules1 = Schedule::select('tanggal', 'jam_mulai')
-        ->whereIn('id', function($query) use ($divisionId1) {
-            $query->select('schedule_id')
-                  ->from('admin_schedules')
-                  ->where('applicant_id', null)
-                  ->whereIn('admin_id', function($subQuery) use ($divisionId1) {
-                      $subQuery->select('id')
-                                ->from('admins')
-                                ->where('division_id', $divisionId1);
-                  });
-        })->orderBy('tanggal', 'asc')->orderBy('jam_mulai', 'asc')->get();
-
-
-        $divisionId2 = Applicant::where('nrp', $nrp)->first()->division_choice2 ?? null;
-        if($divisionId2){
-            $schedules2 = Schedule::select('tanggal', 'jam_mulai')
-            ->whereIn('id', function($query) use ($divisionId2) {
-                $query->select('schedule_id')
-                    ->from('admin_schedules')
-                    ->where('applicant_id', null)
-                    ->whereIn('admin_id', function($subQuery) use ($divisionId2) {
-                        $subQuery->select('id')
-                                    ->from('admins')
-                                    ->where('division_id', $divisionId2);
-                    });
-            })->orderBy('tanggal', 'asc')->orderBy('jam_mulai', 'asc')->get();
-        }else{
-            $schedules2 = null;
+        $applicant = Applicant::where('nrp', $nrp)->first();
+        
+        if (!$applicant) {
+            return redirect()->route('applicant.homepage')->with('error', 'Data applicant tidak ditemukan');
         }
 
-        $schedules = [];
-        $schedules['division1'] = $schedules1;
-        $schedules['division2'] = $schedules2;
-
+        $divisionId1 = $applicant->division_choice1;
+        $divisionId2 = $applicant->division_choice2;
+        
+        // Cek apakah sudah ada interview yang terjadwal
+        $isExists = AdminSchedule::where('applicant_id', $applicant->id)->exists();
+        
         $interviews = [];
-        $interview1 = [];
-        $interview2 = [];
-
-        $applicantId = Applicant::where('nrp', $nrp)->first()->id;
-        $isExists = AdminSchedule::whereHas('admin', function ($query) use ($divisionId1) {
-            $query->where('division_id', $divisionId1);
-        })
-        ->where('applicant_id', $applicantId)
-        ->exists();
-
-        if($isExists){
-            $interviewSched = AdminSchedule::whereHas('admin', function ($query) use ($divisionId1) {
-                $query->where('division_id', $divisionId1);
-            })
-            ->where('applicant_id', $applicantId)
-            ->first();
-            if ($interviewSched) {
-                $interview1['adminName'] = $interviewSched->admin->anonymous_name; // Access admin name
-                $interview1['link_gmeet'] = $interviewSched->admin->link_gmeet; // Access admin id_line
-                $interview1['tanggal'] = $interviewSched->schedule->tanggal; // Access tanggal
-                $interview1['jam'] = $interviewSched->schedule->jam_mulai; // Access jam
+        $schedules = [];
+        $divisionName = '';
+        
+        if ($isExists) {
+            // Jika sudah ada jadwal, tampilkan detail interview
+            $interview = AdminSchedule::with(['admin', 'schedule'])
+                ->where('applicant_id', $applicant->id)
+                ->first();
+                
+            if ($interview) {
+                $interviews['interview1'] = [
+                    'division' => $applicant->division1->name && $applicant->division2->name ? $applicant->division1->name . ' & ' . $applicant->division2->name : $applicant->division1->name ?? 'N/A',
+                    'adminName' => $interview->admin->anonymous_name ?? 'N/A',
+                    'link_gmeet' => $interview->admin->link_gmeet ?? null,
+                    'location' => $interview->admin->location ?? null,
+                    'mode' => $interview->isOnline,
+                    'tanggal' => $interview->schedule->tanggal ?? null,
+                    'jam' => $interview->schedule->jam_mulai ?? null,
+                ];
             }
-
-            //jadwal interview2
-            $interviewSched = AdminSchedule::whereHas('admin', function ($query) use ($divisionId2) {
-                $query->where('division_id', $divisionId2);
-            })
-            ->where('applicant_id', $applicantId)
-            ->first();
-            if ($interviewSched) {
-                $interview2['adminName'] = $interviewSched->admin->anonymous_name; // Access admin name
-                $interview2['link_gmeet'] = $interviewSched->admin->link_gmeet; // Access admin id_line
-                $interview2['tanggal'] = $interviewSched->schedule->tanggal; // Access tanggal
-                $interview2['jam'] = $interviewSched->schedule->jam_mulai; // Access jam
+        } else {
+            // Logika pencarian jadwal dengan prioritas
+            // 1. Coba cari jadwal dari divisi pilihan pertama
+            $schedulesDiv1 = $this->getAvailableSchedules($divisionId1);
+            
+            if ($schedulesDiv1->isNotEmpty()) {
+                // Ada jadwal tersedia di divisi 1
+                $schedules = $schedulesDiv1;
+                $divisionName = Division::where('id',$divisionId1)->first()->name;
+            } elseif ($divisionId2) {
+                // Jika divisi 1 penuh, cek divisi 2
+                $schedulesDiv2 = $this->getAvailableSchedules($divisionId2);
+                
+                if ($schedulesDiv2->isNotEmpty()) {
+                    // Ada jadwal tersedia di divisi 2
+                    $schedules = $schedulesDiv2;
+                    $divisionName = Division::where('id',$divisionId2)->first()->name;
+                } else {
+                    // Jika kedua divisi penuh, tampilkan semua jadwal yang tersedia
+                    $schedules = $this->getAllAvailableSchedules();
+                    $divisionName = 'Semua Divisi (Penuh - Slot Cadangan)';
+                }
+            } else {
+                // Jika tidak ada divisi 2 dan divisi 1 penuh, tampilkan semua jadwal
+                $schedules = $this->getAllAvailableSchedules();
+                $divisionName = 'Semua Divisi (Penuh - Slot Cadangan)';
             }
-
-            $interviews['interview1'] = $interview1;
-            $interviews['interview2'] = $interview2;
-        };
-
+        }
+        // dd($schedules);
         return view('applicant.jadwal', [
             'title' => $title,
             'schedules' => json_encode($schedules),
             'interviews' => json_encode($interviews),
-            'isExists' => json_encode($isExists)
+            'isExists' => json_encode($isExists),
+            'divisionName' => $divisionName
         ]);
+    }
+
+    private function getAvailableSchedules($divisionId)
+    {
+        // [FIX] Pilih 'admin_schedules.id' dan beri alias, ini ID yang akan dipakai untuk booking.
+        return AdminSchedule::select(
+                'admin_schedules.id as admin_schedule_id', 
+                'schedules.tanggal', 
+                'schedules.jam_mulai', 
+                'admin_schedules.isOnline'
+            )
+            ->join('schedules', 'admin_schedules.schedule_id', '=', 'schedules.id')
+            ->join('admins', 'admin_schedules.admin_id', '=', 'admins.id')
+            ->where('admins.division_id', $divisionId)
+            ->whereNull('admin_schedules.applicant_id')
+            ->where('schedules.tanggal', '>=', now()->toDateString())
+            ->orderBy('schedules.tanggal', 'asc')
+            ->orderBy('schedules.jam_mulai', 'asc')
+            ->get();
+    }
+
+    private function getAllAvailableSchedules()
+    {
+        // [FIX] Lakukan hal yang sama untuk fungsi ini.
+        return AdminSchedule::select(
+                'admin_schedules.id as admin_schedule_id', 
+                'schedules.tanggal', 
+                'schedules.jam_mulai', 
+                'admin_schedules.isOnline'
+            )
+            ->join('schedules', 'admin_schedules.schedule_id', '=', 'schedules.id')
+            ->join('admins', 'admin_schedules.admin_id', '=', 'admins.id')
+            ->whereNull('admin_schedules.applicant_id')
+            ->where('schedules.tanggal', '>=', now()->toDateString())
+            ->orderBy('schedules.tanggal', 'asc')
+            ->orderBy('schedules.jam_mulai', 'asc')
+            ->get();
     }
 
     public function storeJadwal(Request $request)
     {
-        $rules = [
-            'hari_choice1' => 'required',
-            'tanggal_choice1' => 'required',
-            'jam_choice1' => 'required',
-        ];
-        $messages = [
-            'hari_choice1.required' => 'Pilihan Hari Divisi Pertama is required',
-            'tanggal_choice1.required' => 'Pilihan Tanggal Divisi Pertama is required',
-            'jam_choice1.required' => 'Pilihan Jam Divisi Pertama is required',
-        ];
+        $val = Validator::make($request->all(), [
+            'interview_mode' => 'required|in:0,1',
+            'tanggal_choice' => 'required|exists:schedules,tanggal',
+            'jam_choice' => 'required|exists:schedules,jam_mulai'
+        ], [
+            'interview_mode.required' => 'Mode interview harus dipilih',
+            'interview_mode.in' => 'Mode interview tidak valid',
+            'tanggal_choice.required' => 'Tanggal interview harus dipilih',
+            'tanggal_choice.exists' => 'Tanggal interview tidak valid',
+            'jam_choice.required' => 'Jam interview harus dipilih',
+            'jam_choice.exists' => 'Jam interview tidak valid'
+        ]);
 
-        $nrp = Session::get('nrp');
-        $applicantId = Applicant::where('nrp', $nrp)->first()->id;
-        // $isHaveDivision2 = Applicant::where('nrp', $nrp)->whereNotNull('division_choice2')->exists();
-        // if($isHaveDivision2){
-        //     $rules['hari_choice2'] = 'required';
-        //     $rules['tanggal_choice2'] = 'required';
-        //     $rules['jam_choice2'] = 'required';
-        //     $messages['hari_choice2.required'] = 'Pilihan Hari Divisi Kedua is required';
-        //     $messages['tanggal_choice2.required'] = 'Pilihan Tanggal Divisi Kedua is required';
-        //     $messages['jam_choice2.required'] = 'Pilihan Jam Divisi Kedua is required';
-        // };
-
-        $valid = Validator::make($request->all(), $rules, $messages);
-        if ($valid->fails()) {
-            $errors = $valid->errors()->toArray();
-    
-            // Flatten the error messages into a single string
-            $errorMessages = [];
-            foreach ($errors as $messages) {
-                $errorMessages = array_merge($errorMessages, $messages);
-            }
-            $errorString = implode('<br>', $errorMessages); // Join messages with line breaks
-
+        if ($val->fails()) {
+            $errorString = implode('<br>', $val->errors()->all());
             return response()->json(['success' => false, 'message' => $errorString]);
         }
 
+        $nrp = Session::get('nrp');
+        $applicant = Applicant::where('nrp', $nrp)->first();
         
-        if (($request->tanggal_choice1 === $request->tanggal_choice2) && ($request->jam_choice1 === $request->jam_choice2)) {
-            return response()->json(['success' => false, 'message' => 'Jadwal tidak boleh sama']);
+        if (!$applicant) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Data applicant tidak ditemukan'
+            ], 404);
         }
 
-        $division1 = Applicant::where('nrp', $nrp)->first()->division_choice1;
-        $division2 = Applicant::where('nrp', $nrp)->first()->division_choice2;
-
-        //pair jadwal1
-        $schedulesReady = AdminSchedule::whereHas('admin', function ($query) use ($division1) {
-            $query->where('division_id', $division1);
-        })
-        ->whereNull('applicant_id')
-        ->with(['admin', 'schedule']) // Load related admin and schedule data
-        ->get(); // Get all relevant schedules
-        $dataUpdated = null;
-        foreach ($schedulesReady as $scheduleReady) {
-            // Check if the related schedule has matching tanggal and jam
-            if ($scheduleReady->schedule->tanggal == $request->tanggal_choice1 && 
-                $scheduleReady->schedule->jam_mulai == $request->jam_choice1) {
-                // Update the applicant_id if the tanggal and jam match
-                
-                AdminSchedule::where('id', $scheduleReady->id)->update([
-                    'applicant_id' => $applicantId,
-                ]);
-                $dataUpdated = $scheduleReady;
-                break;
-            }
+        $existingSchedule = AdminSchedule::where('applicant_id', $applicant->id)->exists();
+        
+        if ($existingSchedule) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Anda sudah memilih jadwal interview sebelumnya'
+            ], 400);
         }
-        $dataMail = [];
-        $dataMail['applicant'] = Session::get('email');
-        $dataMail['admin'] = $dataUpdated->admin->nrp . '@john.petra.ac.id';
-        $message = [];
-        $message['hari'] = $request->hari_choice1;
-        $message['tanggal'] = $request->tanggal_choice1;
-        $message['jam'] = $request->jam_choice1;
-        $message['link_gmeet'] = $dataUpdated->admin->link_gmeet;
-        SendMail::dispatch($dataMail['applicant'], $message);
-        SendMail::dispatch($dataMail['admin'], $message);
-        // Mail::to($dataMail['applicant'])->send(new ScheduleNotif($message));
-        // Mail::to($dataMail['admin'])->send(new ScheduleNotif($message));
 
-
-
-        //pair jadwal2
-        // if($division2) {
-        //     $schedulesReady = AdminSchedule::whereHas('admin', function ($query) use ($division2) {
-        //         $query->where('division_id', $division2);
-        //     })
-        //     ->whereNull('applicant_id')
-        //     ->with(['admin', 'schedule']) // Load related admin and schedule data
-        //     ->get(); // Get all relevant schedules
+        try {
+            DB::beginTransaction();
             
-        //     $dataUpdated = null;
-        //     foreach ($schedulesReady as $scheduleReady) {
-        //         // Check if the related schedule has matching tanggal and jam
-        //         if ($scheduleReady->schedule->tanggal == $request->tanggal_choice2 && 
-        //             $scheduleReady->schedule->jam_mulai == $request->jam_choice2) {
-        //             // Update the applicant_id if the tanggal and jam match
-        //             AdminSchedule::where('id', $scheduleReady->id)->update([
-        //                 'applicant_id' => $applicantId,
-        //             ]);
-        //             $dataUpdated = $scheduleReady;
-        //             break;
-        //         }
-        //     }
-        //     $dataMail = [];
-        //     $dataMail['applicant'] = Session::get('email');
-        //     $dataMail['admin'] = $dataUpdated->admin->nrp . '@john.petra.ac.id';
-        //     $message = [];
-        //     $message['hari'] = $request->hari_choice2;
-        //     $message['tanggal'] = $request->tanggal_choice2;
-        //     $message['jam'] = $request->jam_choice2;
-        //     $message['link_gmeet'] = $dataUpdated->admin->link_gmeet;
-        //     SendMail::dispatch($dataMail['applicant'], $message);
-        //     SendMail::dispatch($dataMail['admin'], $message);
-        //     // Mail::to($dataMail['applicant'])->send(new ScheduleNotif($message));
-        //     // Mail::to($dataMail['admin'])->send(new ScheduleNotif($message));
-        // }
+            // Get schedule details
+            $schedule = Schedule::where('tanggal', $request->tanggal_choice)
+                ->where('jam_mulai', $request->jam_choice)
+                ->first();
+            
+            if (!$schedule) {
+                DB::rollBack();
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Jadwal tidak ditemukan'
+                ], 404);
+            }
 
-        return response()->json(['success' => true, 'message' => 'Jadwal berhasil di Submit']);
+            // Verify schedule is available
+            $adminSchedule = AdminSchedule::where('schedule_id', $schedule->id)
+                ->whereNull('applicant_id')
+                ->lockForUpdate()
+                ->first();
+            
+            if (!$adminSchedule) {
+                DB::rollBack();
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Jadwal yang dipilih sudah penuh. Silakan pilih jadwal lain.'
+                ], 400);
+            }
+            // Verify mode matches
+            if ($adminSchedule->isOnline !== (int) $request->interview_mode) {
+                DB::rollBack();
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Mode interview tidak sesuai dengan jadwal yang dipilih'
+                ], 400);
+            }
 
+            // Assign applicant to the schedule
+            $adminSchedule->applicant_id = $applicant->id;
+            $adminSchedule->save();
+
+            DB::commit();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Jadwal interview berhasil dipilih! Silakan cek detail jadwal Anda.'
+            ]);
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            
+            return response()->json([
+                'success' => false,
+                'message' => 'Terjadi kesalahan: ' . $e->getMessage()
+            ], 500);
+        }
     }
 
     public function login()

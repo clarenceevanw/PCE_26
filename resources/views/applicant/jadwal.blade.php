@@ -1,366 +1,262 @@
 @extends('layout')
-@section('head')
-<style>
-    .custom-dropdown option {
-        background-color: #1f4b46; /* Semi-transparent background */
-        color: #FBBF24; /* Text color */
-        backdrop-filter: blur(5px); /* Blurry background effect */
-    }
-</style>
-@endsection
 @section('content')
-    <div class="background flex flex-col w-screen h-full sm:min-h-screen items-center p-8 sm:p-14">
-        <div class="flex flex-col w-9/12">
-            <div class="flex w-full justify-between">
-                <a href="{{ route('applicant.berkas') }}">
-                    <button
-                        class="bg-pink-600 px-3 py-1 border-danger border-2 text-yellow-400 text-sm font-extrabold uppercase leading-normal text-white transition duration-300 ease-in-out hover:bg-yellow-400 hover:text-pink-600 hover:border-yellow-400 hover:shadow-yellow-200 focus:bg-yellow-accent-200 focus:outline-none focus:ring-0 active:bg-yellow-600 motion-reduce:transition-none">
-                        Back
-                    </button>
-                </a>
-                <a href="{{ route('applicant.homepage') }}" id="backToHomepage">
-                    <button
-                        class="hidden bg-pink-600 px-3 py-1 border-danger border-2 text-yellow-400 text-sm font-extrabold uppercase leading-normal text-white transition duration-300 ease-in-out hover:bg-yellow-400 hover:text-pink-600 hover:border-yellow-400 hover:shadow-yellow-200 focus:bg-yellow-accent-200 focus:outline-none focus:ring-0 active:bg-yellow-600 motion-reduce:transition-none">
-                        Back to Homepage
-                    </button>
-                </a>
-            </div>
-            <h1 class="font-squids text-shadow text-white text-4xl font-bold text-center my-8">{{ $title }}</h1>
-            <div id="containerJadwal" class="flex flex-col w-full border-4 border-white bg-transparent bg-blur py-4 px-5 flex mx-auto block shadow-4 justify-center items-center">
-                <form id="form_jadwal" class="w-full" method="post" action="{{ route('applicant.jadwal.store') }}">
-                    @csrf
-                    <div class="grid grid-cols-1 gap-6 mb-10">
-                        <div>
-                            <h1 class="font-organetto block mb-2 text-md font-medium text-yellow-400">Divisi 1</h1>
-                            <div class="flex">
-                                <select id="hari_choice1" name="hari_choice1"
-                                    class="custom-dropdown mx-2 border border-white font-organetto-light bg-transparent text-white text-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
-                                    <option selected readonly hidden value="">Hari</option>
-                                </select>
-                                <select id="tanggal_choice1" name="tanggal_choice1"
-                                    class="custom-dropdown mx-2 border border-white font-organetto-light bg-transparent text-white text-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" disabled>
-                                    <option selected readonly hidden value="">Tanggal</option>
-                                </select>
-                                <select id="jam_choice1" name="jam_choice1"
-                                    class="custom-dropdown mx-2 border border-white font-organetto-light bg-transparent text-white text-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" disabled>
-                                    <option selected readonly hidden value="">Jam</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div>
-                            <h1 class="font-organetto block mb-2 text-md font-medium text-yellow-400">Divisi 2</h1>
-                            <div id="jadwal_choice2" class="flex">
-                                <select id="hari_choice2" name="hari_choice2"
-                                    class="custom-dropdown mx-2 border border-white font-organetto-light bg-transparent text-white text-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
-                                    <option selected readonly hidden value="">Hari</option>
-                                </select>
-                                <select id="tanggal_choice2" name="tanggal_choice2"
-                                    class="custom-dropdown mx-2 border border-white font-organetto-light bg-transparent text-white text-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" disabled>
-                                    <option selected readonly hidden value="">Tanggal</option>
-                                </select>
-                                <select id="jam_choice2" name="jam_choice2"
-                                    class="custom-dropdown mx-2 border border-white font-organetto-light bg-transparent text-white text-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" disabled>
-                                    <option selected readonly hidden value="">Jam</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
+<div class="background min-h-screen flex flex-col items-center justify-center px-4 py-6 sm:px-5 lg:px-6">
+  <div class="w-full max-w-4xl">
+    <!-- Back Buttons -->
+    <div class="mb-6 flex justify-between items-center">
+      <a href="{{ route('applicant.berkas') }}">
+        <button class="px-5 py-2 border border-purple-500 text-white text-sm sm:text-base font-semibold uppercase rounded-full hover:bg-purple-500 transition-all duration-300">
+          ← Back
+        </button>
+      </a>
+      <a href="{{ route('applicant.homepage') }}" id="backToHomepage" class="hidden">
+        <button class="px-5 py-2 border border-purple-500 text-white text-sm sm:text-base font-semibold uppercase rounded-full hover:bg-purple-500 transition-all duration-300">
+          Back to Homepage
+        </button>
+      </a>
+    </div>
 
-                    <button type="submit" id="submitJadwal"
-                        class="bg-pink-600 w-full border-danger border-2 px-6 pb-2 pt-2.5 text-yellow-400 text-lg font-extrabold uppercase leading-normal text-white transition duration-300 ease-in-out hover:bg-yellow-400 hover:text-pink-600 hover:border-yellow-400 hover:shadow-yellow-200 focus:bg-yellow-accent-200 focus:outline-none focus:ring-0 active:bg-yellow-600 motion-reduce:transition-none">Submit</button>
-                </form>
-                <button id="finishPage" onclick="window.location.href='{{ route('applicant.berkas') }}'"
-                    class="hidden bg-pink-600 w-full border-danger border-2 px-6 pb-2 pt-2.5 text-yellow-400 text-lg font-extrabold uppercase leading-normal text-white transition duration-300 ease-in-out hover:bg-yellow-400 hover:text-pink-600 hover:border-yellow-400 hover:shadow-yellow-200 focus:bg-yellow-accent-200 focus:outline-none focus:ring-0 active:bg-yellow-600 motion-reduce:transition-none">Finish</button>
+    <h1 class="font-return-grid text-white text-2xl sm:text-4xl text-center mb-8 tracking-widest drop-shadow-[0_0_25px_rgba(168,85,247,0.8)]">
+      {{ Str::upper($title); }}
+    </h1>
+
+    <!-- Main Container -->
+    <div class="bg-purple-950/40 backdrop-blur-sm rounded-2xl p-6 border border-purple-500/40">
+      <form id="form_jadwal" method="post" action="{{ route('applicant.jadwal.store') }}" class="space-y-6">
+        @csrf
+
+        <!-- Interview Mode -->
+        <div>
+          <label class="font-organetto block text-white text-sm sm:text-base font-semibold uppercase mb-2">Mode Interview</label>
+          <div class="grid grid-cols-2 gap-3">
+            <label class="cursor-pointer">
+              <input type="radio" name="interview_mode" value="1" class="peer sr-only" checked>
+              <div class="flex items-center justify-center gap-2 px-4 py-2 border border-purple-500/50 rounded-full text-sm sm:text-base text-white peer-checked:bg-purple-500 peer-checked:shadow-[0_0_15px_rgba(168,85,247,0.5)]">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/>
+                </svg>
+                <span>Online</span>
+              </div>
+            </label>
+            <label class="cursor-pointer">
+              <input type="radio" name="interview_mode" value="0" class="peer sr-only">
+              <div class="flex items-center justify-center gap-2 px-4 py-2 border border-purple-500/50 rounded-full text-sm sm:text-base text-white peer-checked:bg-purple-500 peer-checked:shadow-[0_0_15px_rgba(168,85,247,0.5)]">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+                </svg>
+                <span>Offline</span>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <!-- Division Info -->
+        <div class="bg-purple-900/30 border border-purple-500/30 rounded-xl p-4 text-sm sm:text-base text-purple-200">
+          <p><span class="font-semibold">Divisi Interview:</span> <span class="text-white">{{ $divisionName }}</span></p>
+          <p class="text-purple-300/70 text-xs mt-1">Pilih jadwal sesuai ketersediaan Anda.</p>
+        </div>
+
+        <!-- Jadwal Selects -->
+        @foreach (['Tanggal' => 'tanggal_choice', 'Jam' => 'jam_choice'] as $label => $id)
+          <div>
+            <label for="{{ $id }}" class="block mb-2 text-sm text-purple-200 font-organetto">{{ $label }}</label>
+            <div class="relative">
+              <select id="{{ $id }}" name="{{ $id }}" class="w-full px-4 py-3 bg-transparent border border-purple-500/50 rounded-full text-sm sm:text-base text-white focus:border-purple-400">
+                <option class="bg-purple-950" disabled selected hidden>Pilih {{ $label }}</option>
+              </select>
+              <div class="absolute inset-y-0 right-4 flex items-center pointer-events-none">
+                <svg class="w-4 h-4 text-purple-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                </svg>
+              </div>
             </div>
+          </div>
+        @endforeach
+
+        <button type="submit" id="submitJadwal" class="w-full py-3 border border-purple-500 text-white font-semibold uppercase rounded-full hover:bg-purple-500 transition-all">
+          Submit Jadwal
+        </button>
+      </form>
+      <div id="interview_details" class="hidden space-y-8">
+            <!-- Details will be populated by JavaScript -->
         </div>
     </div>
+
+    <p class="text-center text-white text-xs mt-5 font-organetto">Pastikan jadwal sesuai ketersediaan Anda</p>
+  </div>
+</div>
 @endsection
+
 @section('script')
 <script>
     var schedules = JSON.parse(@json($schedules));
-    var hariDiv1 = document.getElementById('hari_choice1');
-    var tanggalDiv1 = document.getElementById('tanggal_choice1');
-    var jamDiv1 = document.getElementById('jam_choice1');
-    var hariDiv2 = document.getElementById('hari_choice2');
-    var tanggalDiv2 = document.getElementById('tanggal_choice2');
-    var jamDiv2 = document.getElementById('jam_choice2');
-    var uniqueDays = new Set();
-    schedules.division1.forEach(sch1 => {
-        let dateString = sch1.tanggal;
-        let currentDateTime = new Date();
-        let date = new Date(dateString);
+    var interviewMode = 1;
+    var tanggalSelect = document.getElementById('tanggal_choice');
+    var jamSelect = document.getElementById('jam_choice');
 
-        //check if current date is lower than the date
-        if (date >= currentDateTime){
-            let options = { weekday: 'long' };
-
-            let formattedDay = new Intl.DateTimeFormat('id-ID', options).format(date);
-            
-            // Check if the day is already in the Set
-            if (!uniqueDays.has(formattedDay)) {
-                // If not, add the day to the Set and the dropdown
-                uniqueDays.add(formattedDay);
-                hariDiv1.innerHTML += `
-                <option value='${formattedDay}'>${formattedDay}</option>
-                `;
-            }
-        }
-    });
-    hariDiv1.addEventListener('change', function() {
-        tanggalDiv1.disabled = false;
-        tanggalDiv1.innerHTML = `<option selected readonly hidden value="">Tanggal</option>`;
-        var selectedValue = this.value;
-        var uniqueDate = new Set();
-        schedules.division1.forEach(sch1 => {
-            let dateString = sch1.tanggal;
-            let currentDateTime = new Date();
-            let date = new Date(dateString);
-
-            //check if current date is lower than the date
-            if (date >= currentDateTime){
-                let options = { weekday: 'long' };
-
-                let formattedDay = new Intl.DateTimeFormat('id-ID', options).format(date);
-                
-                if (formattedDay == selectedValue) {
-                    options = {month: 'long', day: 'numeric'}
-                    formattedDate = new Intl.DateTimeFormat('id-ID', options).format(date);
-                    if (!uniqueDate.has(formattedDate)) {
-                        uniqueDate.add(formattedDate);
-                        console.log(uniqueDate);
-                        tanggalDiv1.innerHTML += `
-                        <option value='${sch1.tanggal}'>${formattedDate}</option>
-                        `;
-                    }
-                }
-            }
-        });
-    });
-    tanggalDiv1.addEventListener('change', function() {
-        jamDiv1.disabled = false;
-        jamDiv1.innerHTML = `<option selected readonly hidden value="">Jam</option>`;
-        var selectedValue = this.value;
-        schedules.division1.forEach(sch1 => {
-            let dateString = sch1.tanggal;
-            let timeString = sch1.jam_mulai;
-            
-            if (dateString == selectedValue) {
-                let [hours, minutes] = timeString.split(':').map(Number);
-                let scheduledTime = new Date(new Date(dateString).setHours(hours, minutes));
-                let currentTime = new Date();
-
-                // Check if the scheduled time is within the next 2 hours
-                let twoHoursFromNow = new Date(currentTime.getTime() + 2 * 60 * 60 * 1000);
-                
-                // Only add the option if the scheduled time is not within the next 2 hours
-                if (scheduledTime >= twoHoursFromNow) {
-                    // Format time to HH:MM
-                    let formattedTime = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`;
-                    jamDiv1.innerHTML += `
-                        <option value='${sch1.jam_mulai}'>${formattedTime}</option>
-                    `;
-                }
-                
-            }
+    // Listen to interview mode change
+    document.querySelectorAll('input[name="interview_mode"]').forEach(radio => {
+        radio.addEventListener('change', function() {
+            interviewMode = this.value;
+            console.log(interviewMode);
+            loadSchedules();
         });
     });
 
-    //untuk divisi 2
-    uniqueDays = new Set();
-    if(schedules.division2){
-        schedules.division2.forEach(sch2 => {
-            let dateString = sch2.tanggal;
-            let currentDateTime = new Date();
-            let date = new Date(dateString);
+    function loadSchedules() {
+        // Reset dropdowns
+        tanggalSelect.innerHTML = '<option class="bg-purple-950" selected disabled hidden value="">Pilih Tanggal</option>';
+        jamSelect.innerHTML = '<option class="bg-purple-950" selected disabled hidden value="">Pilih Jam</option>';
+        jamSelect.disabled = true;
 
-            //check if current date is lower than the date
-            if (date >= currentDateTime){
-                let options = { weekday: 'long' };
+        // Filter schedules berdasarkan mode
+        var filteredSchedules = schedules.filter(sch => sch.isOnline == interviewMode);
+        var currentDateTime = new Date();
+        var uniqueDates = new Set();
 
-                let formattedDay = new Intl.DateTimeFormat('id-ID', options).format(date);
-                
-                // Check if the day is already in the Set
-                if (!uniqueDays.has(formattedDay)) {
-                    // If not, add the day to the Set and the dropdown
-                    uniqueDays.add(formattedDay);
-                    hariDiv2.innerHTML += `
-                    <option value='${formattedDay}'>${formattedDay}</option>
-                    `;
+        filteredSchedules.forEach(sch => {
+            let date = new Date(sch.tanggal);
+
+            if (date >= currentDateTime) {
+                // Format hari dan tanggal
+                let dayOptions = { weekday: 'long' };
+                let dateOptions = { month: 'long', day: 'numeric' };
+                let formattedDay = new Intl.DateTimeFormat('id-ID', dayOptions).format(date);
+                let formattedDate = new Intl.DateTimeFormat('id-ID', dateOptions).format(date);
+
+                let optionText = `${formattedDay}, ${formattedDate}`; // text: Hari, Tanggal
+
+                if (!uniqueDates.has(sch.tanggal)) {
+                    uniqueDates.add(sch.tanggal);
+                    tanggalSelect.innerHTML += `<option class="bg-purple-950" value='${sch.tanggal}'>${optionText}</option>`;
                 }
             }
         });
-        hariDiv2.addEventListener('change', function() {
-            tanggalDiv2.disabled = false;
-            tanggalDiv2.innerHTML = `<option selected readonly hidden value="">Tanggal</option>`;
-            var selectedValue = this.value;
-            var uniqueDate = new Set();
-            schedules.division2.forEach(sch2 => {
-                let dateString = sch2.tanggal;
-                let currentDateTime = new Date();
-                let date = new Date(dateString);
-
-                //check if current date is lower than the date
-                if (date >= currentDateTime){
-                    let options = { weekday: 'long' };
-
-                    let formattedDay = new Intl.DateTimeFormat('id-ID', options).format(date);
-                    
-                    if (formattedDay == selectedValue) {
-                        options = {month: 'long', day: 'numeric'}
-                        formattedDate = new Intl.DateTimeFormat('id-ID', options).format(date);
-                        if (!uniqueDate.has(formattedDate)) {
-                            uniqueDate.add(formattedDate);
-                            console.log(uniqueDate);
-                            tanggalDiv2.innerHTML += `
-                            <option value='${sch2.tanggal}'>${formattedDate}</option>
-                            `;
-                        }
-                    }
-                }
-            });
-        });
-        tanggalDiv2.addEventListener('change', function() {
-            jamDiv2.disabled = false;
-            jamDiv2.innerHTML = `<option selected readonly hidden value="">Jam</option>`;
-            var selectedValue = this.value;
-            schedules.division2.forEach(sch2 => {
-                let dateString = sch2.tanggal;
-                let timeString = sch2.jam_mulai;
-                
-                if (dateString == selectedValue) {
-                    let [hours, minutes] = timeString.split(':').map(Number);
-                    let scheduledTime = new Date(new Date(dateString).setHours(hours, minutes));
-                    let currentTime = new Date();
-
-                    // Check if the scheduled time is within the next 2 hours
-                    let twoHoursFromNow = new Date(currentTime.getTime() + 2 * 60 * 60 * 1000);
-                    
-                    // Only add the option if the scheduled time is not within the next 2 hours
-                    if (scheduledTime >= twoHoursFromNow) {
-                        // Format time to HH:MM
-                        let formattedTime = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`;
-                        jamDiv2.innerHTML += `
-                            <option value='${sch2.jam_mulai}'>${formattedTime}</option>
-                        `;
-                    }
-                    
-                }
-            });
-        });
-    }else{
-        hariDiv2.style.display = 'none';
-        tanggalDiv2.style.display = 'none';
-        jamDiv2.style.display = 'none';
-        document.getElementById('jadwal_choice2').innerHTML+=`
-        <h1 class="font-organetto block mb-2 text-md font-medium text-gray-400">You didn't choice Division 2</h1>
-        `
     }
 
+    tanggalSelect.addEventListener('change', function() {
+        jamSelect.disabled = false;
+        jamSelect.innerHTML = '<option class="bg-purple-950" selected disabled hidden value="">Pilih Jam</option>';
+        
+        var selectedDate = this.value;
+        var currentTime = new Date();
+        var twoHoursFromNow = new Date(currentTime.getTime() + 2 * 60 * 60 * 1000);
+        var filteredSchedules = schedules.filter(sch => sch.isOnline == interviewMode);
 
+        filteredSchedules.forEach(sch => {
+            if (sch.tanggal === selectedDate) {
+                let [hours, minutes] = sch.jam_mulai.split(':').map(Number);
+                let scheduledTime = new Date(new Date(selectedDate).setHours(hours, minutes));
+                
+                if (scheduledTime >= twoHoursFromNow) {
+                    let formattedTime = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`;
+                    jamSelect.innerHTML += `<option class="bg-purple-950" value='${sch.jam_mulai}'>${formattedTime}</option>`;
+                }
+            }
+        });
+    });
 
+    // Load initial schedules
+    loadSchedules();
 
+    // Check if interview already exists
     var interviews = JSON.parse(@json($interviews));
-    //console.log(interviews)
+    console.log(interviews);
     var isExists = JSON.parse(@json($isExists));
     if (isExists) {
-        document.getElementById('backToHomepage').hidden = false;
-        document.getElementById('form_jadwal').hidden = true;
-        const gridContainer = document.createElement("div");
-        gridContainer.className = "grid grid-cols-1 xl:grid-cols-2 gap-6 sm:gap-10 max-w-5xl w-full mx-auto";
-
-        const divisiNames = ["Divisi 1", "Divisi 2"];
-
-        Object.entries(interviews).forEach(([key, value], index) => {
-            let dateString = value.tanggal;
-            let formattedDate = null;
+        document.getElementById('backToHomepage').classList.remove('hidden');
+        document.getElementById('form_jadwal').classList.add('hidden');
+        
+        let detailsHtml = '<div class="space-y-6">';
+        
+        if (interviews.interview1 && Object.keys(interviews.interview1).length > 0) {
+            let dateString = interviews.interview1.tanggal;
+            let formattedDate = '';
             if (dateString) {
                 let date = new Date(dateString);
                 let options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
                 formattedDate = new Intl.DateTimeFormat('id-ID', options).format(date);
             }
             
-            let formattedTime = null;
-            if (value.jam) {
-                let [hours, minutes] = value.jam.split(':');
+            let formattedTime = interviews.interview1.jam || 'N/A';
+            if (formattedTime !== 'N/A') {
+                let [hours, minutes] = formattedTime.split(':');
                 formattedTime = `${hours}:${minutes}`;
             }
 
-            const cell = document.createElement("div");
-            cell.innerHTML = `
-            <div class="space-y-2 p-4 border border-gray-200 rounded-lg text-white">
-                <div class="font-bold text-center">${divisiNames[index]}</div> <!-- Divisi Header -->
-                <div class="grid grid-cols-1 sm:grid-cols-[120px_1fr] gap-y-1 sm:gap-x-2">
-                    <div class="font-semibold">Pewawancara:</div> 
-                    <div class="whitespace-normal break-words">${value.adminName || "N/A"}</div>
+            detailsHtml += `
+            <div class="bg-purple-900/30 border-2 border-purple-500/50 rounded-2xl p-8 space-y-4">
+                <h3 class="font-organetto text-xl font-bold text-center text-white mb-6 uppercase tracking-wider">Detail Interview ${interviews.interview1.division}</h3>
+                <div class="space-y-4">
+                    <div class="flex flex-col sm:flex-row sm:items-center gap-2">
+                        <span class="font-organetto font-semibold text-purple-200 min-w-[140px]">Pewawancara:</span>
+                        <span class="font-organetto text-white">${interviews.interview1.adminName || "N/A"}</span>
+                    </div>
+                    <div class="flex flex-col sm:flex-row sm:items-center gap-2">
+                        <span class="font-organetto font-semibold text-purple-200 min-w-[140px]">Mode:</span>
+                        <span class="font-organetto text-white">${interviews.interview1.mode ? 'Online (Google Meet)' : 'Offline'}</span>
+                    </div>
+                    ${interviews.interview1.mode ? `
+                    <div class="flex flex-col sm:flex-row sm:items-center gap-2">
+                        <span class="font-organetto font-semibold text-purple-200 min-w-[140px]">Link GMeet:</span>
+                        <a href="${interviews.interview1.link_gmeet || '#'}" target="_blank" class="font-organetto text-purple-300 hover:text-purple-100 underline break-all">${interviews.interview1.link_gmeet || "N/A"}</a>
+                    </div>
+                    ` : `
+                    <div class="flex flex-col sm:flex-row sm:items-center gap-2">
+                        <span class="font-organetto font-semibold text-purple-200 min-w-[140px]">Lokasi:</span>
+                        <span class="font-organetto text-white">${interviews.interview1.location || "N/A"}</span>
+                    </div>
+                    `}
+                    <div class="flex flex-col sm:flex-row sm:items-center gap-2">
+                        <span class="font-organetto font-semibold text-purple-200 min-w-[140px]">Hari, Tanggal:</span>
+                        <span class="font-organetto text-white">${formattedDate}</span>
+                    </div>
+                    <div class="flex flex-col sm:flex-row sm:items-center gap-2">
+                        <span class="font-organetto font-semibold text-purple-200 min-w-[140px]">Jam:</span>
+                        <span class="font-organetto text-white">${formattedTime}</span>
+                    </div>
                 </div>
-                <div class="grid grid-cols-1 sm:grid-cols-[120px_1fr] gap-y-1 sm:gap-x-2">
-                    <div class="font-semibold">Link GMeet:</div> 
-                    <div class="whitespace-normal break-words">${value.link_gmeet || "N/A"}</div>
-                </div>
-                <div class="grid grid-cols-1 sm:grid-cols-[120px_1fr] gap-y-1 sm:gap-x-2">
-                    <div class="font-semibold">Hari, Tanggal:</div> 
-                    <div class="whitespace-normal break-words">${formattedDate || "N/A"}</div>
-                </div>
-                <div class="grid grid-cols-1 sm:grid-cols-[120px_1fr] gap-y-1 sm:gap-x-2">
-                    <div class="font-semibold">Jam:</div> 
-                    <div class="whitespace-normal break-words">${formattedTime || "N/A"}</div>
-                </div>
-            </div>
-            `;
-            gridContainer.appendChild(cell);
-        });
-
-
-
-        document.getElementById('containerJadwal').appendChild(gridContainer);
+            </div>`;
+        }
+        
+        detailsHtml += '</div>';
+        document.getElementById('interview_details').innerHTML = detailsHtml;
+        document.getElementById('interview_details').classList.remove('hidden');
     }
 
-
-
-
-
-    $("#form_jadwal").on('submit', function(e){
+    $("#form_jadwal").on('submit', function(e) {
         e.preventDefault();
         document.getElementById('submitJadwal').disabled = true;
 
         Swal.fire({
-            title: "Are you sure want to submit?",
-            text: "Once you submit, the data cannot be changed!",
+            title: "Konfirmasi Submit",
+            text: "Pastikan jadwal yang dipilih sudah benar. Data tidak dapat diubah setelah submit!",
             icon: "warning",
             showCancelButton: true,
-            confirmButtonColor: "#3085d6",
-            cancelButtonColor: "#d33",
-            confirmButtonText: "Yes, submit it!"
+            confirmButtonColor: "#a855f7",
+            cancelButtonColor: "#e11d48",
+            confirmButtonText: "Ya, Submit!",
+            cancelButtonText: "Batal"
         }).then((result) => {
             if (result.isConfirmed) {
                 var form = $(this)[0];
                 var formData = new FormData(form);
                 var method = $(this).attr('method');
                 var url = $(this).attr('action');
-                if (document.getElementById('jadwal_choice2').value === null){
-                    formData.append(document.getElementById('jadwal_choice2').name, null);
-                }
-
-
-                // var loader = document.querySelector(".data-loader");
-                // loader.classList.remove("hidden");
-                // loader.classList.add("flex");
                 $.ajax({
                     type: method,
                     url: url,
                     data: formData,
-                    processData: false, //to prevent jQuery from automatically transforming the data into a query string
+                    processData: false,
                     contentType: false,
                     cache: false,
                     success: async function(response) {
-                        // loader.classList.add("hidden");
-                        // loader.classList.remove("flex");
                         if (response.success) {
                             await Swal.fire({
-                                title: "Success!",
+                                title: "Berhasil!",
                                 text: response.message,
                                 icon: "success",
-                                confirmButtonColor: "#3085d6",
+                                confirmButtonColor: "#a855f7",
                                 confirmButtonText: "OK"
                             }).then((result) => {
                                 if (result.isConfirmed) {
@@ -369,41 +265,39 @@
                                 setTimeout(() => {
                                     window.location.reload();
                                 }, 1500);
-
                             });
                         } else {
+                            document.getElementById('submitJadwal').disabled = false;
                             await Swal.fire({
                                 icon: "error",
                                 title: "Oops...",
-                                confirmButtonColor: "#3085d6",
                                 html: response.message,
+                                confirmButtonColor: "#a855f7"
                             });
                         }
                     },
                     error: async function(xhr, textStatus, errorThrown) {
-                        // loader.classList.add("hidden");
-                        // loader.classList.remove("flex");
+                        document.getElementById('submitJadwal').disabled = false;
                         await Swal.fire({
                             title: 'Oops!',
-                            text: 'Something went wrong: ' + textStatus + '-' +
-                                errorThrown,
+                            text: 'Something went wrong: ' + textStatus + '-' + errorThrown,
                             icon: 'error',
-                            confirmButtonColor: "#3085d6",
+                            confirmButtonColor: "#a855f7",
                             confirmButtonText: 'OK'
                         });
                     }
                 })
             } else {
-                // User canceled the submission
+                document.getElementById('submitJadwal').disabled = false;
                 Swal.fire({
-                    title: "Cancelled!",
-                    text: "Your data was not submitted.",
+                    title: "Dibatalkan!",
+                    text: "Data tidak disubmit.",
                     icon: "info",
-                    confirmButtonColor: "#3085d6",
+                    confirmButtonColor: "#a855f7",
                     confirmButtonText: "OK"
                 });
             }
         });
-    })
+    });
 </script>
 @endsection
