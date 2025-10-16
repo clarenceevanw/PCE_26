@@ -54,6 +54,17 @@
             font-style: normal;
         }
 
+        @font-face{
+            font-family: 'ReturnoftheGrid';
+            src: url('{{ asset('fonts/return-of-the-grid.otf') }}') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        .font-return-grid {
+            font-family: 'ReturnoftheGrid', sans-serif;
+        }
+
         .font-squids {
             font-family: 'Squids', sans-serif;
         }

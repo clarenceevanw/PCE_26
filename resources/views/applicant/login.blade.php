@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>BoM 2025 | Login</title>
+    <title>PCE 2026 | Login</title>
     <link rel="icon" href="{{ asset('assets/logo.png') }}">
 
     {{-- TW Elements --}}
@@ -38,7 +38,7 @@
             padding: 0;
             min-height: 100vh;
             min-width: 100vw;
-            background-image: linear-gradient(to bottom right, #9e1152, #1a5345);
+            background-image: url("{{ asset('assets/lantaiNeon.PNG') }}");
             background-size: 200% 200%; /* Make the background larger for smooth animation */
             position: relative;
             animation: gradient 15s ease infinite;
@@ -115,12 +115,41 @@
             font-family: 'Squids', sans-serif;
         }
 
+        @font-face{
+            font-family: 'ReturnoftheGrid';
+            src: url('{{ asset('fonts/return-of-the-grid.otf') }}') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        .font-return-grid {
+            font-family: 'ReturnoftheGrid', sans-serif;
+        }
+
         .font-organetto {
             font-family: 'OrganettoRegular', sans-serif;
         }
 
         .font-organetto-light {
             font-family: 'OrganettoUltraLight', sans-serif;
+        }
+
+        .glowing {
+            animation: glowing 2s infinite;
+        }
+
+        @keyframes glowing {
+            0% {
+                text-shadow: 0 0 5px rgba(255, 255, 255, 0.8);
+            }
+
+            50% {
+                text-shadow: 0 0 22px rgba(255, 255, 255, 0.9);
+            }
+
+            100% {
+                text-shadow: 0 0 5px rgba(255, 255, 255, 0.8);
+            }
         }
     </style>
 
@@ -156,18 +185,20 @@
     @endif
     <section class="w-screen flex justify-center items-center h-screen absolute">
         <div class=" w-full h-[550px] max-sm:h-[320px] p-8 flex flex-col items-center justify-center">
-            <div class="flex flex-col items-center justify-center w-full p-7 max-sm:p-4 mb-5">
-                <h1
-                    class="font-squids mix-blend-lighten title-text text-yellow-400 drop-shadow-md font-bold text-5xl text-center max-sm:text-2xl uppercase max-sm:w-[300px]">
-                    Open Recruitment</h1>
-                <h1
-                    class="font-squids mix-blend-lighten title-text text-yellow-400 drop-shadow-md font-bold text-5xl text-center max-sm:text-2xl max-sm:w-[300px]">
-                    Battle of Minds 2025</h1>
-            </div>
-            <a href="{{ route('applicant.auth') }}"
-                class="font-organetto text-[#C67097] button-interact border-2 border-[#C67097] active:scale-[0.97] font-semibold drop-shadow-2xl text-2xl max-sm:text-base w-[400px] max-sm:w-[230px] rounded-3xl h-[53px] max-sm:h-[42px] flex justify-center items-center">
-                Sign In with PCU Email</a>
 
+            <div class="bg-[#1c043d] border-2 border-purple-700 rounded-lg shadow-lg p-8 flex flex-col items-center justify-center">
+                <div class="flex flex-col items-center justify-center w-full p-7 max-sm:p-4 mb-5">
+                    <h1
+                        class="font-return-grid mix-blend-lighten glowing title-text text-white drop-shadow-md font-bold text-5xl text-center max-sm:text-2xl uppercase max-sm:w-[300px]">
+                        Open Recruitment</h1>
+                    <h1
+                        class="font-return-grid mix-blend-lighten glowing title-text text-white drop-shadow-md font-bold text-5xl text-center max-sm:text-2xl max-sm:w-[300px]">
+                        Petra Civil Expo 2026</h1>
+                </div>
+                <a href="{{ route('applicant.auth') }}"
+                    class="font-organetto text-[#fff] button-interact border-2 border-[#C67097] active:scale-[0.97] font-semibold drop-shadow-2xl text-2xl max-sm:text-base w-[400px] max-sm:w-[230px] rounded-3xl h-[53px] max-sm:h-[42px] flex justify-center items-center">
+                    Sign In with PCU Email</a>
+            </div>
         </div>
     </section>
 </body>
