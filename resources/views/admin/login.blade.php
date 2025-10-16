@@ -38,8 +38,6 @@
             padding: 0;
             min-height: 100vh;
             min-width: 100vw;
-            background-image: linear-gradient(to bottom right, #9e1152, #1a5345);
-            background-size: 200% 200%; /* Make the background larger for smooth animation */
             position: relative;
             animation: gradient 15s ease infinite;
         }
@@ -66,7 +64,7 @@
         }
 
         .button-interact:hover {
-            box-shadow: 0 0 9px white;
+            box-shadow: 0 0 9px black;
         }
 
         .button-interact:active {
@@ -123,17 +121,17 @@
         </script>
     @endif
     <section class="w-screen flex justify-center items-center h-screen absolute">
-        <div class=" w-full h-[550px] max-sm:h-[320px] p-8 flex flex-col items-center justify-center">
+        <div class=" w-full h-[550px] max-sm:h-[320px] p-8 flex flex-col items-center justify-center border border-[#000000]">
             <div class="flex flex-col items-center justify-center w-full p-7 max-sm:p-4">
                 <h1
-                    class="mix-blend-lighten title-text text-emerald-800 drop-shadow-md font-bold text-5xl w-[500px] text-center max-sm:text-2xl uppercase max-sm:w-[300px]">
+                    class="title-text text-black font-bold text-5xl w-[500px] text-center max-sm:text-2xl uppercase max-sm:w-[300px]">
                     Admin Website</h1>
                 <h1
-                    class="mix-blend-lighten title-text text-emerald-800 drop-shadow-md font-bold text-5xl w-[500px] text-center max-sm:text-2xl max-sm:w-[300px]">
-                    Battle of Minds 2025</h1>
+                    class="title-text text-black font-bold text-5xl w-[550px] text-center max-sm:text-2xl max-sm:w-[300px]">
+                    Petra Civil Expo 2026</h1>
             </div>
             <a href="{{ route('admin.auth') }}"
-                class="text-[#C67097] button-interact border-2 border-[#C67097] active:scale-[0.97] font-semibold drop-shadow-2xl text-2xl max-sm:text-base w-[400px] max-sm:w-[230px] rounded-3xl h-[53px] max-sm:h-[42px] flex justify-center items-center">
+                class="text-[#000] button-interact border-2 border-[#000000] active:scale-[0.97] font-semibold drop-shadow-2xl text-2xl max-sm:text-base w-[400px] max-sm:w-[230px] rounded-3xl h-[53px] max-sm:h-[42px] flex justify-center items-center">
                 Sign In with PCU Email</a>
 
         </div>
