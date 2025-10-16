@@ -385,6 +385,7 @@ class ApplicantController extends Controller
                     'mode' => $interview->isOnline,
                     'tanggal' => $interview->schedule->tanggal ?? null,
                     'jam' => $interview->schedule->jam_mulai ?? null,
+                    'id_line' => $interview->admin->id_line ?? null,
                 ];
             }
         } else {
@@ -562,8 +563,8 @@ class ApplicantController extends Controller
 
     public function login()
     {
-        if (session('email')) {
-            return redirect()->back();
+        if (session('nrp') && session('email')) {
+            return redirect()->route('applicant.homepage');
         }
         return view('applicant.login');
     }
