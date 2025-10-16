@@ -18,7 +18,9 @@ return new class extends Migration
             $table->uuid('schedule_id');
             $table->foreign('schedule_id')->references('id')->on('schedules')->onDelete('cascade');
             $table->boolean('isOnline')->default(false);
-
+            $table->uuid('applicant_id')->nullable();
+            $table->foreign('applicant_id')->references('id')->on('applicants')->onDelete('cascade');
+            $table->boolean('statusInterview')->default(false);
             $table->timestamps();
         });
     }
