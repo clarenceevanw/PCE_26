@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Mail;
 use App\Mail\ScheduleNotif;
 use App\Jobs\SendMail;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class ApplicantController extends Controller
 {
@@ -45,11 +46,7 @@ class ApplicantController extends Controller
             $data['kekurangan'] = $applicant->motivation->kekurangan;
             $data['pengalaman'] = $applicant->motivation->pengalaman;
             $data['division_choice1'] = Division::where('id', $applicant->division_choice1)->first()->slug;
-            if ($applicant->division_choice2){
-                $data['division_choice2'] = Division::where('id', $applicant->division_choice2)->first()->slug;
-            }else{
-                $data['division_choice2'] = null;
-            }
+            $data['division_choice2'] = Division::where('id', $applicant->division_choice2)->first()->slug;
         }
 
         return view('applicant.biodata', [
@@ -63,11 +60,11 @@ class ApplicantController extends Controller
     {
         $valid = Validator::make($request->all(), [
             'nama_lengkap' => 'required|string|min:1',
-            'nrp'  => 'required|string|size:9|unique:applicants', 
-            'angkatan' => 'required|integer|digits:4',
+            'nrp'  => 'required|string|size:9|unique:applicants',
+            'angkatan' => 'required|digits:4',
             'prodi' => 'required|string|min:1',
             'line_id' => 'required|string|min:1',
-            'no_hp' => 'required|string|min:1',
+            'no_hp' => ['required', 'string', 'regex:/^(?:\+62|0)[0-9]{9,13}$/'],
             'motivasi' => 'required|string|min:1',
             'komitmen' => 'required|string|min:1',
             'kelebihan' => 'required|string|min:1',
@@ -76,54 +73,38 @@ class ApplicantController extends Controller
             'division_choice1' => 'required',
             'division_choice2' => 'required',
         ], [
-            'nama_lengkap.required' => 'Name is required',
-            'nrp.required' => 'NRP is required',
-            'nrp.size' => 'NRP size must 9 words',
-            'nrp.unique' => 'NRP must unique',
-            'angkatan.digits' => 'Angkatan must in 4 digits',
-            'prodi.required' => 'Program Studi is required',
-            'line_id.required' => 'ID Line is required',
-            'no_hp.required' => 'Whatsapp Number is required',
-            'motivasi.required' => 'Motivasi is required',
-            'komitmen.required' => 'Komitmen is required',
-            'kelebihan.required' => 'Kelebihan is required',
-            'kekurangan.required' => 'Kekurangan is required',
-            'pengalaman.required' => 'Pengalaman is required',
-            'division_choice1.required' => 'Division 1 is required',
+            'nrp.size' => 'NRP must be exactly 9 characters',
+            'no_hp.regex' => 'Whatsapp Number must start with +62 or 0',
         ]);
 
         if ($valid->fails()) {
-            $errors = $valid->errors()->toArray();
-    
-            // Flatten the error messages into a single string
-            $errorMessages = [];
-            foreach ($errors as $messages) {
-                $errorMessages = array_merge($errorMessages, $messages);
-            }
-            $errorString = implode('<br>', $errorMessages); // Join messages with line breaks
-
+            $errorString = implode('<br>', $valid->errors()->all());
             return response()->json(['success' => false, 'message' => $errorString]);
         }
 
-        if($request->division_choice1 === $request->division_choice2){
+        if ($request->division_choice1 === $request->division_choice2) {
             return response()->json(['success' => false, 'message' => 'Divisi tidak boleh sama']);
         }
 
-        $divisionId1 = Division::where('slug', $request->division_choice1)->first()->id;
-        $divisionId2 = Division::where('slug', $request->division_choice2)->first()->id;
-        
+        $division1 = Division::where('slug', $request->division_choice1)->first();
+        $division2 = Division::where('slug', $request->division_choice2)->first();
+
+        if (!$division1 || !$division2) {
+            return response()->json(['success' => false, 'message' => 'Divisi tidak ditemukan']);
+        }
+
         try {
             DB::beginTransaction();
 
             $applicant = Applicant::create([
                 'nama_lengkap' => $request->nama_lengkap,
-                'nrp'  => $request->nrp, 
+                'nrp' => $request->nrp,
                 'angkatan' => $request->angkatan,
                 'prodi' => $request->prodi,
                 'line_id' => $request->line_id,
                 'no_hp' => $request->no_hp,
-                'division_choice1' => $divisionId1,
-                'division_choice2' => $divisionId2
+                'division_choice1' => $division1->id,
+                'division_choice2' => $division2->id,
             ]);
 
             Motivation::create([
@@ -132,16 +113,18 @@ class ApplicantController extends Controller
                 'kelebihan' => $request->kelebihan,
                 'kekurangan' => $request->kekurangan,
                 'pengalaman' => $request->pengalaman,
-                'applicant_id' => $applicant->id
+                'applicant_id' => $applicant->id,
             ]);
 
             DB::commit();
+            return response()->json(['success' => true, 'message' => 'Data berhasil disubmit']);
         } catch (\Exception $e) {
             DB::rollBack();
-            return response()->json(['success' => false, 'message' => $e->getMessage()]);
+            Log::error('Error in storeBiodata: ' . $e->getMessage());
+            return response()->json(['success' => false, 'message' => 'Terjadi kesalahan internal.']);
         }
-        return response()->json(['success' => true, 'message' => 'Data berhasil di Submit']);
     }
+
 
     public function berkasIndex()
     {
@@ -151,26 +134,26 @@ class ApplicantController extends Controller
         $isExists = Applicant::where('nrp', $nrp)->whereHas('applicantFile')->exists();
         if($isExists){
             $applicant = Applicant::with('applicantFile')->where('nrp', $nrp)->first();
-            $data['berkas'] = Storage::url($applicant->applicantFile->foto_diri);
-            $data['portofolio'] = $applicant->applicantFile->portofolio ?? null;
+            $data['berkas'] = Storage::url($applicant->applicantFile->berkas);
+            $data['portofolio'] = $applicant->applicantFile->portofolio ?? "-";
         }
 
         return view('applicant.berkas', [
             'title' => $title,
-            'data' => json_encode($data),
-            'isExists' => json_encode($isExists)
+            'data' => $data,
+            'isExists' => $isExists
         ]);
     }
 
     public function storeBerkas(Request $request)
     {
         $rules = [
-            'berkas' => 'required|mimes:pdf|max:5120',
+            'berkas' => 'required|mimes:pdf|max:10240',
         ];
         $messages = [
             'berkas.required' => 'Berkas is required',
             'berkas.mimes' => 'Berkas must be .pdf',
-            'berkas.max' => 'Berkas must be under 5 MB',
+            'berkas.max' => 'Berkas must be under 10 MB',
         ];
 
 
@@ -189,12 +172,11 @@ class ApplicantController extends Controller
         if ($valid->fails()) {
             $errors = $valid->errors()->toArray();
     
-            // Flatten the error messages into a single string
             $errorMessages = [];
             foreach ($errors as $messages) {
                 $errorMessages = array_merge($errorMessages, $messages);
             }
-            $errorString = implode('<br>', $errorMessages); // Join messages with line breaks
+            $errorString = implode('<br>', $errorMessages);
 
             return response()->json(['success' => false, 'message' => $errorString]);
         }

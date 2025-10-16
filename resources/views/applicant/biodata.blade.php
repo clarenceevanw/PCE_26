@@ -1,6 +1,15 @@
 @extends('layout')
 @section('head')
     <style>
+        input[type=number]::-webkit-outer-spin-button,
+        input[type=number]::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        input[type=number] {
+            -moz-appearance: textfield;
+        }
         [multiple]:focus,
         [type=date]:focus,
         [type=datetime-local]:focus,
@@ -47,7 +56,7 @@
             <!-- Title -->
             <h1
                 class="font-return-grid text-white text-2xl sm:text-4xl font-bold text-center mb-8 sm:mb-10 tracking-wider drop-shadow-[0_0_25px_rgba(168,85,247,0.8)]">
-                {{ $title }}
+                {{ Str::upper($title); }}
             </h1>
 
             <!-- Form Container -->
@@ -100,7 +109,7 @@
                         <div>
                             <label for="no_hp"
                                 class="font-organetto block mb-2 text-sm sm:text-base font-semibold text-white uppercase tracking-wider">Whatsapp Number</label>
-                            <input type="number" id="no_hp" name="no_hp" placeholder="Your Phone Number"
+                            <input type="number" id="no_hp" name="no_hp" placeholder="Co: +6281234567890 / 081234567890"
                                 class="w-full px-4 py-2.5 bg-transparent border border-purple-500/50 rounded-full text-white text-sm sm:text-base placeholder-purple-300/40 transition-all duration-300 focus:outline-none focus:border-purple-400 focus:shadow-[0_0_12px_rgba(168,85,247,0.4)]"
                                 required />
                         </div>
@@ -331,5 +340,25 @@
                 }
             });
         })
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const numberInputs = document.querySelectorAll('input[type="number"]');
+            numberInputs.forEach(input => {
+                
+                input.addEventListener('focus', () => {
+                input.addEventListener('wheel', preventWheelChange);
+                });
+
+                input.addEventListener('blur', () => {
+                input.removeEventListener('wheel', preventWheelChange);
+                });
+
+            });
+
+            function preventWheelChange(event) {
+                event.preventDefault();
+            }
+        });
     </script>
 @endsection
