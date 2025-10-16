@@ -51,8 +51,6 @@ Route::prefix('applicant')->group(function () {
     Route::middleware(ApplicantMiddleware::class)->group(function () {
         Route::get('biodata', [ApplicantController::class, 'index'])->name('applicant.biodata');
         Route::post('biodata/store', [ApplicantController::class, 'storeBiodata'])->name('applicant.biodata.store');
-        Route::get('motivasi', [ApplicantController::class, 'motivasiIndex'])->name('applicant.motivasi')->middleware(RegistrationFormMiddleware::class);
-        Route::post('motivasi/store', [ApplicantController::class, 'storeMotivasi'])->name('applicant.motivasi.store');
         Route::get('berkas', [ApplicantController::class, 'berkasIndex'])->name('applicant.berkas')->middleware(RegistrationFormMiddleware::class);
         Route::post('berkas/store', [ApplicantController::class, 'storeBerkas'])->name('applicant.berkas.store');
         Route::post('jadwal/store', [ApplicantController::class, 'storeJadwal'])->name('applicant.jadwal.store');
