@@ -15,10 +15,18 @@ class Applicant extends Model
         'nrp',
         'angkatan',
         'prodi',
+        'ipk',
+        'jenis_kelamin',
         'line_id',
         'no_hp',
+        'instagram',
         'division_choice1',
         'division_choice2',
+        'motivasi',
+        'komitmen',
+        'kelebihan',
+        'kekurangan',
+        'pengalaman',
     ];
     protected $hidden = [
         'created_at',
@@ -33,11 +41,6 @@ class Applicant extends Model
     public function division2()
     {
         return $this->belongsTo(Division::class, 'division_choice2', 'id');
-    }
-
-    public function motivation()
-    {
-        return $this->hasOne(Motivation::class);
     }
 
     public function applicantFile()
