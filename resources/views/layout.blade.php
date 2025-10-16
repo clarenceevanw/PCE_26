@@ -93,7 +93,7 @@
 
         body {
             background-image:
-                url('{{ asset('assets/Background WEB OpenRec BOM 25 (1920 x 2047 px).png') }}');
+                url('{{ asset('assets/polos.PNG') }}');
             background-size: cover;
             background-attachment: fixed;
             /* Membuat background tetap saat scroll */
@@ -101,22 +101,53 @@
             background-position: center top;
         }
 
-        @media screen and (max-width: 800px) {
+        /* @media screen and (max-width: 800px) {
             body {
                 background-image:
                     url('{{ asset('assets/Background WEB OpenRec BOM 25 mobile.png') }}') !important;
             }
-        }
+        } */
     </style>
+    <style>
+
+    .swal2-confirm {
+        background-color: rgba(45, 72, 56, 1) !important;
+        color: white !important;
+    }
+
+    .swal2-confirm:hover {
+        background-color: rgb(39, 62, 49) !important;
+    }
+
+    .swal2-cancel {
+        background-color: #e11d48 !important;
+        color: white !important;
+    }
+</style>
+
 </head>
 
 <body>
-    {{-- <div class="z-60">
-        @include('components.navbar2')
-    </div> --}}
+    @if(session('login'))
+        <script>
+            Swal.fire({
+                title: "Success",
+                text: "{{ session('login') }}",
+                icon: "success"
+            });
+        </script>
+    @endif
+    @if(session('logout'))
+        <script>
+            Swal.fire({
+                title: "Success",
+                text: "{{ session('logout') }}",
+                icon: "success"
+            });
+        </script>
+    @endif
 
     @yield('content')
-    {{-- @include('components.footer') --}}
 
     <script src="https://cdn.jsdelivr.net/npm/tw-elements/js/tw-elements.umd.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/tw-elements/dist/js/tw-elements.umd.min.js"></script>
