@@ -44,7 +44,6 @@ class AdminController extends Controller
         ->select('admin_schedules.*', 'schedules.tanggal', 'schedules.jam_mulai') // Select the necessary fields
         ->get();
 
-
         foreach ($schedules as $schedule){
             $try = [];
             $try['applicant_id'] = $schedule->applicant_id;
@@ -57,6 +56,7 @@ class AdminController extends Controller
 
             $try['time'] = Carbon::parse($schedule->schedule->jam_mulai)->format('H:i');
             $try['nrp'] = $schedule->applicant->nrp;
+            $try['isOnline'] = $schedule->isOnline;
             $try['name'] = $schedule->applicant->nama_lengkap;
             $try['id_line'] = $schedule->applicant->line_id;
             $try['no_hp'] = $schedule->applicant->no_hp;
@@ -78,6 +78,7 @@ class AdminController extends Controller
             $data[] = $try;
         }
         $title = 'My Interview';
+        // dd($data);
 
         return view('admin.myInterview', [
             'title' => $title,
@@ -154,8 +155,6 @@ class AdminController extends Controller
             'statusInterview' => true
         ]);
         return response()->json(['success' => true, 'message' => 'Link berhasil di submit'], 201);
-
-        
     }
 
     public function accApplicantIndex()
