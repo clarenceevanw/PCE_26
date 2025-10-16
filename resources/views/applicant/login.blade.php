@@ -39,7 +39,7 @@
             min-height: 100vh;
             min-width: 100vw;
             background-image: url("{{ asset('assets/lantaiNeon.PNG') }}");
-            background-size: 200% 200%; /* Make the background larger for smooth animation */
+            background-size: 150% 150%; /* Make the background larger for smooth animation */
             position: relative;
             animation: gradient 15s ease infinite;
         }

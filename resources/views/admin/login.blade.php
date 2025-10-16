@@ -55,6 +55,10 @@
             background-color: rgba(45, 72, 56, 1);
         }
 
+        .swal2-confirm:hover {
+            background-color: rgba(45, 72, 56, 0.8);
+        }
+
         .swal2-deny {
             background-color: rgb(98, 0, 0);
         }
