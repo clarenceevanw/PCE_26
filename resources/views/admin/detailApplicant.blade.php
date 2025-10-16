@@ -143,10 +143,18 @@
         `; 
     }
     if(data.portofolio){
+        const portofolio = data.portofolio || "#";
+
+        const formattedLink = /^(https?:)?\/\//i.test(portofolio)
+        ? portofolio
+        : `https://${portofolio}`;
         document.getElementById('list_file').innerHTML += `
             <li>
                 <strong>Portofolio:</strong> 
-                <a id="applicant-portofolio" href="${data.portofolio}" class="text-blue-500 hover:underline">Click Here</a>
+                <a id="applicant-portofolio" href="${formattedLink}" target="_blank" rel="noopener noreferrer"
+                class="text-blue-500 hover:underline">
+                    Click Here
+                </a>
             </li>
         `;
     }else{
