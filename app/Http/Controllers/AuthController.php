@@ -59,7 +59,6 @@ class AuthController extends Controller
             session()->put('name', $name);
             session()->put('angkatan', $angkatan);
             return redirect()->route('applicant.biodata')->with('login', 'Login success!');
-            
         }
     }
 
@@ -71,7 +70,7 @@ class AuthController extends Controller
         } else {
             $request->session()->flush();
             // Ganti user.home klo udh ad web utamany
-            return redirect()->route('applicant.login')->with('logout', 'Logout success!');
+            return redirect()->route('applicant.homepage')->with('logout', 'Logout success!');
         }
     }
 }

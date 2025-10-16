@@ -429,6 +429,9 @@ class ApplicantController extends Controller
 
     public function login()
     {
+        if (session('email')) {
+            return redirect()->back();
+        }
         return view('applicant.login');
     }
 }
