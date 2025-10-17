@@ -9,6 +9,7 @@ use App\Models\Admin;
 use App\Models\Division;
 use App\Models\Applicant;
 use App\Models\ApplicantFile;
+use App\Models\InterviewResult;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Storage;
@@ -220,38 +221,42 @@ class AdminController extends Controller
 
     public function allApplicantIndex()
     {
-        $applicants = Applicant::orderBy('nama_lengkap','asc')->get();
+        $applicants = Applicant::with([
+            'division1', 
+            'division2', 
+            'admin_schedule',
+            'admin_schedule.interviewResult'
+        ])
+        ->orderBy('nama_lengkap', 'asc')
+        ->get();
+
+
         $data = [];
-        foreach ($applicants as $applicant){
-            $try= [];
+        foreach ($applicants as $applicant) {
+            $try = [];
             $try['id'] = $applicant->id;
             $try['nrp'] = $applicant->nrp;
             $try['name'] = $applicant->nama_lengkap;
-            $try['divisi1'] = Division::where('id', $applicant->division_choice1)->first()->name;
-            $try['divisi2'] = Division::where('id', $applicant->division_choice2)->first()->name ?? null;
 
-            $divisionId = $applicant->division_choice1;
-            $schedule = AdminSchedule::with('admin', 'applicant')->where('applicant_id', $applicant->id)
-            ->whereHas('admin', function ($query) use ($divisionId) {
-                $query->where('division_id', $divisionId);
-            })
-            ->first();
-            $try['result1'] = $schedule->link_hasil ?? null;
-            $try['status1'] = $schedule->statusTerima ?? null;
+            $try['divisi1'] = $applicant->division1?->name;
+            $try['divisi2'] = $applicant->division2?->name;
 
-            $divisionId = $applicant->division_choice2;
-            $schedule = AdminSchedule::with('admin', 'applicant')->where('applicant_id', $applicant->id)
-            ->whereHas('admin', function ($query) use ($divisionId) {
-                $query->where('division_id', $divisionId);
-            })
-            ->first() ?? null;
-            $try['result2'] = $schedule->link_hasil ?? null;
-            $try['status2'] = $schedule->statusTerima ?? null;
+            $schedule = $applicant->admin_schedule->first();
+
+            $result1 = $schedule?->interviewResult?->firstWhere('division_id', $applicant->division_choice1);
+            $result2 = $schedule?->interviewResult?->firstWhere('division_id', $applicant->division_choice2);
+
+
+            $try['result1'] = $result1?->link_hasil;
+            $try['status1'] = $result1?->statusTerima;
+            $try['result2'] = $result2?->link_hasil;
+            $try['status2'] = $result2?->statusTerima;
+
             $data[] = $try;
         }
-        
-        $title = 'All Applicant';
 
+        // dd($data); // Untuk debugging
+        $title = 'All Applicant';
         return view('admin.allApplicant', [
             'title' => $title,
             'datas' => json_encode($data)
@@ -259,7 +264,7 @@ class AdminController extends Controller
     }
 
     public function applicantDetailIndex($applicantId){
-        $applicant = Applicant::with('division1', 'division2', 'motivation', 'applicantFile')->where('id', $applicantId)->first();
+        $applicant = Applicant::with('division1', 'division2', 'applicantFile')->where('id', $applicantId)->first();
         $data = [];
         if($applicant){
             $data['nama_lengkap'] = $applicant->nama_lengkap;
@@ -270,14 +275,15 @@ class AdminController extends Controller
             $data['no_hp'] = $applicant->no_hp;
             $data['divisi1'] = $applicant->division1->name;
             $data['divisi2'] = $applicant->division2->name ?? 'None';
-            $data['motivasi'] = $applicant->motivation->motivasi ?? 'None';
-            $data['komitmen'] = $applicant->motivation->komitmen ?? 'None';
-            $data['kelebihan'] = $applicant->motivation->kelebihan ?? 'None';
-            $data['kekurangan'] = $applicant->motivation->kekurangan ?? 'None';
-            $data['pengalaman'] = $applicant->motivation->pengalaman ?? 'None';
-            if ($applicant->applicantFile->berkas ?? null){
-                $data['berkas'] = Storage::url($applicant->applicantFile->berkas);
-            }
+            $data['motivasi'] = $applicant->motivasi ?? 'None';
+            $data['komitmen'] = $applicant->komitmen ?? 'None';
+            $data['kelebihan'] = $applicant->kelebihan ?? 'None';
+            $data['kekurangan'] = $applicant->kekurangan ?? 'None';
+            $data['pengalaman'] = $applicant->pengalaman ?? 'None';
+            $data['ktm'] = Storage::url($applicant->applicantFile->ktm);
+            $data['transkrip'] = Storage::url($applicant->applicantFile->transkrip);
+            $data['bukti_kecurangan'] = Storage::url($applicant->applicantFile->bukti_kecurangan);
+            $data['skkk'] = Storage::url($applicant->applicantFile->skkk);
             $data['portofolio'] = $applicant->applicantFile->portofolio ?? null;
         }
         $title = "Detail Applicant";
