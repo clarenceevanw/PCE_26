@@ -15,27 +15,27 @@ class AdminSeeder extends Seeder
     public function run(): void
     {
         $admins = [
+            // [
+            //     'name' => 'Jeanne Darsono',
+            //     'nrp' => 'B12230055',
+            //     'division_id' => Division::where('slug', 'bph')->first()->id,
+            //     'anonymous_name' => 'Alioth',
+            // ],
+            // [
+            //     'name' => 'Arlene Evangeline',
+            //     'nrp' => 'C13230033',
+            //     'division_id' => Division::where('slug', 'bph')->first()->id,
+            //     'anonymous_name' => 'Vega',
+            // ],
+            // [
+            //     'name' => 'Vincent Alexander Langgeng',
+            //     'nrp' => 'C14230135',
+            //     'division_id' => Division::where('slug', 'bph')->first()->id,
+            //     'anonymous_name' => 'Sirius',
+            // ],
             [
-                'name' => 'Jeanne Darsono',
-                'nrp' => 'B12230055',
-                'division_id' => Division::where('slug', 'bph')->first()->id,
-                'anonymous_name' => 'Alioth',
-            ],
-            [
-                'name' => 'Arlene Evangeline',
-                'nrp' => 'C13230033',
-                'division_id' => Division::where('slug', 'bph')->first()->id,
-                'anonymous_name' => 'Vega',
-            ],
-            [
-                'name' => 'Vincent Alexander Langgeng',
-                'nrp' => 'C14230135',
-                'division_id' => Division::where('slug', 'bph')->first()->id,
-                'anonymous_name' => 'Sirius',
-            ],
-            [
-                'name' => 'William Constantine Jioe',
-                'nrp' => 'C14230036',
+                'name' => 'Clarence Evan Wijaya',
+                'nrp' => 'C14240069',
                 'division_id' => Division::where('slug', 'it')->first()->id,
                 'anonymous_name' => 'Atria',
                 'link_gmeet' => 'https://meet.google.com/vvi-stxb-gnu',
@@ -99,7 +99,7 @@ class AdminSeeder extends Seeder
             [
                 'name' => 'Jennifer Kezia Surjaatmadja',
                 'nrp' => 'B12230017',
-                'division_id' => Division::where('slug', 'materi')->first()->id,
+                'division_id' => Division::where('slug', 'pr')->first()->id,
                 'anonymous_name' => 'Antares',
                 'link_gmeet' => 'https://meet.google.com/yct-xjso-xdw',
             ],
