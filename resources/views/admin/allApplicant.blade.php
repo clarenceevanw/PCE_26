@@ -99,7 +99,7 @@
                 ? `<button onclick="resultInformation('${item.result2}', ${item.status2})" class="text-white p-2 bg-blue-500 rounded hover:bg-blue-600 transisition duration-300 ease-in-ou">View Result</button>`
                 : `<span class="text-red-500">No Result</span>`,
         })),
-    }, { hover: true, stripped: true });
+    }, { hover: true, stripped: true , scrollX: true });
 
     // Fungsi menampilkan detail hasil
     function resultInformation(itemResult, itemStatus) {
