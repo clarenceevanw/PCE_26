@@ -22,6 +22,23 @@
 
     <!-- Main Container -->
     <div class="bg-purple-950/40 backdrop-blur-sm rounded-2xl p-6 border border-purple-500/40">
+      @if (isset($noSchedulesAvailable) && $noSchedulesAvailable)
+
+        <div class="text-center text-white py-8">
+            <svg class="w-16 h-16 mx-auto text-yellow-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            <h2 class="font-organetto text-2xl font-bold mb-2">Semua Jadwal Telah Terisi</h2>
+            <p class="text-purple-200 text-base mb-4">
+                Mohon maaf, saat ini semua slot jadwal interview telah penuh.
+            </p>
+            <p class="text-purple-200 text-base">
+                Anda akan segera dihubungi oleh panitia untuk penjadwalan manual.
+            </p>
+            <div class="mt-6 bg-purple-900/50 border border-purple-500/50 rounded-lg p-4">
+                <p class="text-sm text-purple-300">Hubungi Contact Person jika ada pertanyaan:</p>
+                <p class="font-bold text-lg text-white mt-1">LINE ID: <span class="tracking-widest">{{ $contactPersonLineId }}</span></p>
+            </div>
+        </div>
+      @else
       <form id="form_jadwal" method="post" action="{{ route('applicant.jadwal.store') }}" class="space-y-6">
         @csrf
 
@@ -64,11 +81,6 @@
               <select id="{{ $id }}" name="{{ $id }}" class="w-full px-4 py-3 bg-transparent border border-purple-500/50 rounded-full text-sm sm:text-base text-white focus:border-purple-400">
                 <option class="bg-purple-950" disabled selected hidden>Pilih {{ $label }}</option>
               </select>
-              <div class="absolute inset-y-0 right-4 flex items-center pointer-events-none">
-                <svg class="w-4 h-4 text-purple-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                </svg>
-              </div>
             </div>
           </div>
         @endforeach
@@ -77,12 +89,19 @@
           Submit Jadwal
         </button>
       </form>
+      @endif
       <div id="interview_details" class="hidden space-y-8">
             <!-- Details will be populated by JavaScript -->
         </div>
     </div>
 
-    <p class="text-center text-white text-xs mt-5 font-organetto">Pastikan jadwal sesuai ketersediaan Anda</p>
+    <p class="text-center text-white text-xs mt-5 font-organetto">
+        @if (isset($noSchedulesAvailable) && $noSchedulesAvailable)
+            Terima kasih atas pengertian Anda
+        @else
+            Pastikan jadwal sesuai ketersediaan Anda
+        @endif
+    </p>
   </div>
 </div>
 @endsection
@@ -98,7 +117,6 @@
     document.querySelectorAll('input[name="interview_mode"]').forEach(radio => {
         radio.addEventListener('change', function() {
             interviewMode = this.value;
-            console.log(interviewMode);
             loadSchedules();
         });
     });
@@ -114,6 +132,14 @@
         var currentDateTime = new Date();
         var uniqueDates = new Set();
 
+        if (filteredSchedules.length === 0) {
+            tanggalSelect.innerHTML = '<option class="bg-purple-950" selected disabled hidden value="">Tidak ada jadwal yang tersedia</option>';
+            jamSelect.innerHTML = '<option class="bg-purple-950" selected disabled hidden value="">Tidak ada jadwal yang tersedia</option>';
+            jamSelect.disabled = true;
+            $('#submitJadwal').prop('disabled', true);
+            return;
+        }
+        $('#submitJadwal').prop('disabled', false);
         filteredSchedules.forEach(sch => {
             let date = new Date(sch.tanggal);
 
@@ -216,6 +242,18 @@
                         <span class="font-organetto text-white">${formattedTime}</span>
                     </div>
                 </div>
+                <div class="mt-8 pt-6 border-t border-purple-500/30 flex flex-col sm:flex-row justify-center items-center gap-4">
+                    ${interviews.interview1.id_line ? `
+                    <a href="https://line.me/ti/p/~${interviews.interview1.id_line}" target="_blank" class="w-full sm:w-auto flex items-center justify-center gap-2 px-5 py-3 border border-purple-400 text-purple-200 font-semibold uppercase rounded-full hover:bg-purple-500 hover:text-white transition-all duration-300">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a8 8 0 100 16 8 8 0 000-16zM5 10a1 1 0 11-2 0 1 1 0 012 0zm5 0a1 1 0 11-2 0 1 1 0 012 0zm5 0a1 1 0 11-2 0 1 1 0 012 0z"></path></svg>
+                        <span>Contact Person</span>
+                    </a>
+                    ` : ''}
+                    <button id="showSopBtn" type="button" class="w-full sm:w-auto flex items-center justify-center gap-2 px-5 py-3 bg-purple-500 text-white font-semibold uppercase rounded-full hover:bg-purple-600 transition-all duration-300">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M4 4a2 2 0 012-2h8a2 2 0 012 2v12a1 1 0 110 2h-3a1 1 0 01-1-1v-2a1 1 0 00-1-1H9a1 1 0 00-1 1v2a1 1 0 01-1 1H4a1 1 0 110-2V4zm2 1a1 1 0 011-1h6a1 1 0 011 1v2a1 1 0 01-1 1H7a1 1 0 01-1-1V5z" clip-rule="evenodd"></path></svg>
+                        <span>SOP Interview</span>
+                    </button>
+                </div>
             </div>`;
         }
         
@@ -223,6 +261,32 @@
         document.getElementById('interview_details').innerHTML = detailsHtml;
         document.getElementById('interview_details').classList.remove('hidden');
     }
+
+    $(document).on('click', '#showSopBtn', function() {
+        const sopContent = `
+            <div class="text-left text-sm sm:text-base p-2 sm:p-4">
+                <ul class="list-disc list-inside space-y-3">
+                    <li>Peserta wawancara harap hadir <strong>5 menit sebelum</strong> wawancara dimulai.</li>
+                    <li>Batas keterlambatan dengan izin pewawancara adalah <strong>15 menit</strong> setelah waktu wawancara dimulai.</li>
+                    <li>Peserta wawancara mengenakan <strong>pakaian sopan</strong> sesuai standar universitas, minimal kaos berlengan.</li>
+                    <li>Selama sesi wawancara (online), peserta wajib <strong>on camera</strong> dengan memperlihatkan, minimal, sebahu di tempat yang terang dan kondusif.</li>
+                    <li>Peserta <strong>WAJIB</strong> menggunakan kata-kata yang sopan dan bertindak sopan.</li>
+                    <li>Peserta <strong>DILARANG</strong> untuk makan selama proses wawancara.</li>
+                    <li>Harap <strong>menghubungi pewawancara</strong> jika terdapat kendala selama berlangsungnya proses wawancara.</li>
+                </ul>
+            </div>
+        `;
+        
+        Swal.fire({
+            title: '<strong>SOP Interview</strong>',
+            icon: 'info',
+            html: sopContent,
+            width: '90%',
+            maxWidth: '600px',
+            confirmButtonColor: "#a855f7",
+            confirmButtonText: 'Saya Mengerti'
+        });
+    });
 
     $("#form_jadwal").on('submit', function(e) {
         e.preventDefault();

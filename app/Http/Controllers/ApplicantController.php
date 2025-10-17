@@ -367,7 +367,7 @@ class ApplicantController extends Controller
         $isExists = AdminSchedule::where('applicant_id', $applicant->id)->exists();
         
         $interviews = [];
-        $schedules = [];
+        $schedules = collect();
         $divisionName = '';
         
         if ($isExists) {
@@ -390,33 +390,57 @@ class ApplicantController extends Controller
             }
         } else {
             // Logika pencarian jadwal dengan prioritas
-            // 1. Coba cari jadwal dari divisi pilihan pertama
-            $schedulesDiv1 = $this->getAvailableSchedules($divisionId1);
+            $schedules = $this->getAvailableSchedules($divisionId1);
             
-            if ($schedulesDiv1->isNotEmpty()) {
-                // Ada jadwal tersedia di divisi 1
-                $schedules = $schedulesDiv1;
-                $divisionName = Division::where('id',$divisionId1)->first()->name;
+            if ($schedules->isNotEmpty()) {
+                $divisionName = Division::where('id', $divisionId1)->first()->name;
             } elseif ($divisionId2) {
-                // Jika divisi 1 penuh, cek divisi 2
-                $schedulesDiv2 = $this->getAvailableSchedules($divisionId2);
-                
-                if ($schedulesDiv2->isNotEmpty()) {
-                    // Ada jadwal tersedia di divisi 2
-                    $schedules = $schedulesDiv2;
-                    $divisionName = Division::where('id',$divisionId2)->first()->name;
+                $schedules = $this->getAvailableSchedules($divisionId2);
+                if ($schedules->isNotEmpty()) {
+                    $divisionName = Division::where('id', $divisionId2)->first()->name;
                 } else {
-                    // Jika kedua divisi penuh, tampilkan semua jadwal yang tersedia
                     $schedules = $this->getAllAvailableSchedules();
                     $divisionName = 'Semua Divisi (Penuh - Slot Cadangan)';
                 }
             } else {
-                // Jika tidak ada divisi 2 dan divisi 1 penuh, tampilkan semua jadwal
                 $schedules = $this->getAllAvailableSchedules();
                 $divisionName = 'Semua Divisi (Penuh - Slot Cadangan)';
             }
+
+            //Jika semua jadwal habis
+            if ($schedules->isEmpty()) {
+                // 1. Ambil semua admin dari divisi pilihan pertama
+                $adminsDivisi1 = Admin::where('division_id', $divisionId1)->get();
+                $contactPersonLineId = 'panitia_pusat'; // Default fallback
+
+                if ($adminsDivisi1->isNotEmpty()) {
+                    // Ambil ID Line dari admin pertama sebagai CP
+                    $contactPersonLineId = $adminsDivisi1->first()->id_line ?? $contactPersonLineId;
+
+                    // 2. Kirim email notifikasi ke setiap admin di divisi 1
+                    foreach ($adminsDivisi1 as $admin) {
+                        if ($admin->nrp) {
+                            $email = $admin->nrp . '@john.petra.ac.id';
+                            // Anda bisa menggunakan Mailable yang sudah dibuat sebelumnya
+                            // Mail::to($email)->send(new NoScheduleAvailable($applicant));
+                            // Untuk sekarang, kita lewati pengiriman email agar tidak error jika belum setup
+                        }
+                    }
+                }
+                
+                // 3. Set variabel untuk dikirim ke view
+                return view('applicant.jadwal', [
+                    'title' => $title,
+                    'schedules' => '[]',
+                    'interviews' => '[]',
+                    'isExists' => json_encode($isExists),
+                    'divisionName' => '',
+                    'noSchedulesAvailable' => true, // Flag penting untuk blade
+                    'contactPersonLineId' => $contactPersonLineId
+                ]);
+            }
         }
-        // dd($schedules);
+        
         return view('applicant.jadwal', [
             'title' => $title,
             'schedules' => json_encode($schedules),
@@ -433,7 +457,8 @@ class ApplicantController extends Controller
                 'admin_schedules.id as admin_schedule_id', 
                 'schedules.tanggal', 
                 'schedules.jam_mulai', 
-                'admin_schedules.isOnline'
+                'admin_schedules.isOnline',
+                'admins.id_line'
             )
             ->join('schedules', 'admin_schedules.schedule_id', '=', 'schedules.id')
             ->join('admins', 'admin_schedules.admin_id', '=', 'admins.id')
@@ -452,7 +477,8 @@ class ApplicantController extends Controller
                 'admin_schedules.id as admin_schedule_id', 
                 'schedules.tanggal', 
                 'schedules.jam_mulai', 
-                'admin_schedules.isOnline'
+                'admin_schedules.isOnline',
+                'admins.id_line'
             )
             ->join('schedules', 'admin_schedules.schedule_id', '=', 'schedules.id')
             ->join('admins', 'admin_schedules.admin_id', '=', 'admins.id')
