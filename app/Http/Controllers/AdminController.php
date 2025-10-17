@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\ApplicantDetailResource;
 use Illuminate\Http\Request;
 use App\Models\AdminSchedule;
 use App\Models\Schedule;
@@ -263,37 +264,15 @@ class AdminController extends Controller
         ]);
     }
 
-    public function applicantDetailIndex($applicantId){
-        $applicant = Applicant::with('division1', 'division2', 'applicantFile')->where('id', $applicantId)->first();
-        $data = [];
-        if($applicant){
-            $data['nama_lengkap'] = $applicant->nama_lengkap;
-            $data['nrp'] = $applicant->nrp;
-            $data['angkatan'] = $applicant->angkatan;
-            $data['prodi'] = $applicant->prodi;
-            $data['line_id'] = $applicant->line_id;
-            $data['no_hp'] = $applicant->no_hp;
-            $data['ipk'] = $applicant->ipk;
-            $data['jenis_kelamin'] = $applicant->jenis_kelamin;
-            $data['instagram'] = $applicant->instagram;
-            $data['divisi1'] = $applicant->division1->name;
-            $data['divisi2'] = $applicant->division2->name ?? 'None';
-            $data['motivasi'] = $applicant->motivasi ?? 'None';
-            $data['komitmen'] = $applicant->komitmen ?? 'None';
-            $data['kelebihan'] = $applicant->kelebihan ?? 'None';
-            $data['kekurangan'] = $applicant->kekurangan ?? 'None';
-            $data['pengalaman'] = $applicant->pengalaman ?? 'None';
-            $data['ktm'] = Storage::url($applicant->applicantFile->ktm);
-            $data['transkrip'] = Storage::url($applicant->applicantFile->transkrip);
-            $data['bukti_kecurangan'] = Storage::url($applicant->applicantFile->bukti_kecurangan);
-            $data['skkk'] = Storage::url($applicant->applicantFile->skkk);
-            $data['portofolio'] = $applicant->applicantFile->portofolio ?? null;
-        }
+    public function applicantDetailIndex($applicantId)
+    {
+        $applicant = Applicant::with('division1', 'division2', 'applicantFile')->findOrFail($applicantId);
+        
         $title = "Detail Applicant";
 
         return view('admin.detailApplicant', [
             'title' => $title,
-            'data' => json_encode($data)
+            'data' => json_encode(new ApplicantDetailResource($applicant)) 
         ]);
     }
 
