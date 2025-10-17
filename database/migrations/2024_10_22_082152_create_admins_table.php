@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('link_gmeet')->nullable();
             $table->string('location')->nullable();
             $table->foreign('division_id')->references('id')->on('divisions');
+            $table->string('position');
             $table->timestamps();
         });
     }

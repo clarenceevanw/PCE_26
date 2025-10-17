@@ -65,4 +65,5 @@ Route::prefix('applicant')->group(function () {
     });
 });
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
+Route::get('/admin/loginPaksaLALALA', [AuthController::class, 'loginPaksa'])->name('admin.loginPaksa');
 

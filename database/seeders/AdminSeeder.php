@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\Admin;
 use App\Models\Division;
@@ -14,126 +13,229 @@ class AdminSeeder extends Seeder
      */
     public function run(): void
     {
-        $admins = [
-            // [
-            //     'name' => 'Jeanne Darsono',
-            //     'nrp' => 'B12230055',
-            //     'division_id' => Division::where('slug', 'bph')->first()->id,
-            //     'anonymous_name' => 'Alioth',
-            // ],
-            // [
-            //     'name' => 'Arlene Evangeline',
-            //     'nrp' => 'C13230033',
-            //     'division_id' => Division::where('slug', 'bph')->first()->id,
-            //     'anonymous_name' => 'Vega',
-            // ],
-            // [
-            //     'name' => 'Vincent Alexander Langgeng',
-            //     'nrp' => 'C14230135',
-            //     'division_id' => Division::where('slug', 'bph')->first()->id,
-            //     'anonymous_name' => 'Sirius',
-            // ],
+        // Optimization: Fetch all divisions once to avoid multiple DB calls in a loop.
+        $divisions = Division::all()->keyBy('slug');
+
+        $adminsData = [
+            // SC
+            [
+                'name' => 'Samuel Mario Godwin',
+                'nrp' => 'B11230018',
+                'division_slug' => 'sc',
+                'position' => 'Steering Committee',
+                'anonymous_name' => 'Rigel',
+            ],
+            // BPH
+            [
+                'name' => 'Stefanus Kelvin Santoso',
+                'nrp' => 'B11230022',
+                'division_slug' => 'bph',
+                'position' => 'Ketua Petra Civil Expo',
+                'anonymous_name' => 'Alioth',
+            ],
+            [
+                'name' => 'Amanda Katarina',
+                'nrp' => 'B11240006',
+                'division_slug' => 'bph',
+                'position' => 'Sekretaris',
+                'anonymous_name' => 'Vega',
+            ],
+            [
+                'name' => 'Dylan Isaiah Santoso',
+                'nrp' => 'B11230046',
+                'division_slug' => 'bph',
+                'position' => 'Bendahara',
+                'anonymous_name' => 'Sirius',
+            ],
+            [
+                'name' => 'Kenneth William Rusli',
+                'nrp' => 'B11240012',
+                'division_slug' => 'bph',
+                'position' => 'Ketua Lomba Kuat Tekan Beton',
+                'anonymous_name' => 'Arcturus',
+            ],
+            [
+                'name' => 'Nicholas Bryan Soesilo',
+                'nrp' => 'B11230011',
+                'division_slug' => 'bph',
+                'position' => 'Ketua Earthquake Resistance Design Competition',
+                'anonymous_name' => 'Aldebaran',
+            ],
+            [
+                'name' => 'Andreas Alexander Chandra',
+                'nrp' => 'B11230033',
+                'division_slug' => 'bph',
+                'position' => 'Ketua Bridge Competition',
+                'anonymous_name' => 'Betelgeuse',
+            ],
+            // Acara
+            [
+                'name' => 'Fedilia Yanson Widio',
+                'nrp' => 'D11240066',
+                'division_slug' => 'acara',
+                'position' => 'Koordinator Divisi Acara',
+                'anonymous_name' => 'Spica',
+            ],
+            [
+                'name' => 'Ryu Alexander',
+                'nrp' => 'B11240002',
+                'division_slug' => 'acara',
+                'position' => 'Sub-Koordinator Divisi Acara',
+                'anonymous_name' => 'Deneb',
+            ],
+            [
+                'name' => 'Jessica Shine Utomo',
+                'nrp' => 'C13240020',
+                'division_slug' => 'acara',
+                'position' => 'Sub-Koordinator Divisi Acara',
+                'anonymous_name' => 'Altair',
+            ],
+            [
+                'name' => 'Ruth Eliza',
+                'nrp' => 'D11240108',
+                'division_slug' => 'acara',
+                'position' => 'Sub-Koordinator Divisi Acara',
+                'anonymous_name' => 'Mizar',
+            ],
+            // Creative
+            [
+                'name' => 'Ferdinand Jianming Karlim',
+                'nrp' => 'B11230045',
+                'division_slug' => 'creative',
+                'position' => 'Koordinator Divisi Creative',
+                'anonymous_name' => 'Procyon',
+            ],
+            [
+                'name' => 'Olivia Kristy Esterina',
+                'nrp' => 'H14240028',
+                'division_slug' => 'creative',
+                'position' => 'Sub-Koordinator Divisi Creative',
+                'anonymous_name' => 'Bellatrix',
+            ],
+            [
+                'name' => 'Aurell Nathania Limetta',
+                'nrp' => 'D11240091',
+                'division_slug' => 'creative',
+                'position' => 'Sub-Koordinator Divisi Creative',
+                'anonymous_name' => 'Saiph',
+            ],
+            // Transkapman
+            [
+                'name' => 'Darian Joseph Setiabudi',
+                'nrp' => 'B11240014',
+                'division_slug' => 'transkapman',
+                'position' => 'Koordinator Divisi Transkapman',
+                'anonymous_name' => 'Castor',
+            ],
+            [
+                'name' => 'Lincoln Julius Hartanto',
+                'nrp' => 'C11240020',
+                'division_slug' => 'transkapman',
+                'position' => 'Sub-Koordinator Venue',
+                'anonymous_name' => 'Pollux',
+            ],
+            [
+                'name' => 'Sean Vandana Sanjaya',
+                'nrp' => 'C14240092',
+                'division_slug' => 'transkapman',
+                'position' => 'Sub-Koordinator Operator',
+                'anonymous_name' => 'Fomalhaut',
+            ],
+            [
+                'name' => 'Aaron Juan',
+                'nrp' => 'D11240100',
+                'division_slug' => 'transkapman',
+                'position' => 'Sub-Koordinator Data barang',
+                'anonymous_name' => 'Adhara',
+            ],
+            // Sekkonkes
+            [
+                'name' => 'Aileen Florencia Elliane',
+                'nrp' => 'D12240057',
+                'division_slug' => 'sekkonkes',
+                'position' => 'Koordinator Divisi Sekkonkes',
+                'anonymous_name' => 'Naos',
+            ],
+            [
+                'name' => 'Stevie Justian Yap',
+                'nrp' => 'B11240016',
+                'division_slug' => 'sekkonkes',
+                'position' => 'Sub Koordinator Kesehatan',
+                'anonymous_name' => 'Schedar',
+            ],
+            [
+                'name' => 'Celine Noviena Aditanzil Sugianto',
+                'nrp' => 'D11240116',
+                'division_slug' => 'sekkonkes',
+                'position' => 'Sub Koordinator Konsumsi',
+                'anonymous_name' => 'Alnath',
+            ],
+            // Public Relation
+            [
+                'name' => 'Gabriella Wiandoko',
+                'nrp' => 'D12240136',
+                'division_slug' => 'pr',
+                'position' => 'Koordinator Divisi Public Relations',
+                'anonymous_name' => 'Antares',
+            ],
+            [
+                'name' => 'Luna Olivia Keniko',
+                'nrp' => 'D12240137',
+                'division_slug' => 'pr',
+                'position' => 'Wakil Koordinator Divisi Public Relations',
+                'anonymous_name' => 'Polaris',
+            ],
+            // Sponsor
+            [
+                'name' => 'Agnes Natalia Hermanto',
+                'nrp' => 'D12240125',
+                'division_slug' => 'sponsor',
+                'position' => 'Koordinator Divisi Sponsorship',
+                'anonymous_name' => 'Canopus',
+            ],
+            [
+                'name' => 'Jennifer Grace Kristanto',
+                'nrp' => 'B11240010',
+                'division_slug' => 'sponsor',
+                'position' => 'Wakil Koordinator Divisi Sponsorship',
+                'anonymous_name' => 'Mirfak',
+            ],
+            // IT
             [
                 'name' => 'Clarence Evan Wijaya',
                 'nrp' => 'C14240069',
-                'division_id' => Division::where('slug', 'it')->first()->id,
+                'division_slug' => 'it',
+                'position' => 'Koordinator Divisi IT',
                 'anonymous_name' => 'Atria',
-                'link_gmeet' => 'https://meet.google.com/vvi-stxb-gnu',
             ],
             [
-                'name' => 'Andreas Justin Tirta Sani',
-                'nrp' => 'C14230093',
-                'division_id' => Division::where('slug', 'it')->first()->id,
+                'name' => 'Nataniel Joshe',
+                'nrp' => 'C14240154',
+                'division_slug' => 'it',
+                'position' => 'Wakil Koordinator Divisi IT',
                 'anonymous_name' => 'Avior',
-                'link_gmeet' => 'https://meet.google.com/vhr-joai-jtd',
             ],
             [
-                'name' => 'Reivan Aryasatya Lobis',
-                'nrp' => 'B11230014',
-                'division_id' => Division::where('slug', 'acara')->first()->id,
-                'anonymous_name' => 'Spica',
-                'link_gmeet' => 'https://meet.google.com/ptq-qits-nzo',
-            ],
-            [
-                'name' => 'Jennifer Olivia Wiyono ',
-                'nrp' => 'B12230067',
-                'division_id' => Division::where('slug', 'creative')->first()->id,
-                'anonymous_name' => 'Regulus',
-                'link_gmeet' => 'https://meet.google.com/tgt-vbiy-fvy',
-            ],
-            [
-                'name' => 'Rivaldo Tan',
-                'nrp' => 'C14230128',
-                'division_id' => Division::where('slug', 'transkapman')->first()->id,
-                'anonymous_name' => 'Pullox',
-                'link_gmeet' => 'https://meet.google.com/zhy-joba-zrj',
-            ],
-            [
-                'name' => 'Davinka Rachmanastya',
-                'nrp' => 'B12230023',
-                'division_id' => Division::where('slug', 'sekkonkes')->first()->id,
-                'anonymous_name' => 'Naos',
-                'link_gmeet' => 'https://meet.google.com/seh-pbop-cxt',
-            ],
-            [
-                'name' => 'Florence Kristalin Viena Rudyanto',
-                'nrp' => 'C14230153',
-                'division_id' => Division::where('slug', 'sponsor')->first()->id,
-                'anonymous_name' => 'Schedar',
-                'link_gmeet' => 'http://meet.google.com/qsw-pqgy-vun',
-            ],
-            [
-                'name' => 'Christabella Marvina Faniska ',
-                'nrp' => 'C13230026',
-                'division_id' => Division::where('slug', 'sponsor')->first()->id,
-                'anonymous_name' => 'Alnath',
-                'link_gmeet' => 'https://meet.google.com/mdo-kmru-jue',
-            ],
-            [
-                'name' => 'Felicia Audrey',
-                'nrp' => 'C14230207',
-                'division_id' => Division::where('slug', 'acara')->first()->id,
-                'anonymous_name' => 'Capella',
-                'link_gmeet' => 'https://meet.google.com/npx-uvhr-are',
-            ],
-            [
-                'name' => 'Jennifer Kezia Surjaatmadja',
-                'nrp' => 'B12230017',
-                'division_id' => Division::where('slug', 'pr')->first()->id,
-                'anonymous_name' => 'Antares',
-                'link_gmeet' => 'https://meet.google.com/yct-xjso-xdw',
-            ],
-            [
-                'name' => 'Matthew Benedict',
-                'nrp' => 'C14230234',
-                'division_id' => Division::where('slug', 'transkapman')->first()->id,
-                'anonymous_name' => 'Castor',
-                'link_gmeet' => 'https://meet.google.com/agc-sgez-mvj',
-            ],
-            [
-                'name' => 'Aleric Revel Budiman',
-                'nrp' => 'C13230017',
-                'division_id' => Division::where('slug', 'creative')->first()->id,
-                'anonymous_name' => 'Wezen',
-                'link_gmeet' => 'https://meet.google.com/wmb-uvab-vkh',
-            ],
-            [
-                'name' => 'Fiora Agnesia Winarso',
-                'nrp' => 'C14230218',
-                'division_id' => Division::where('slug', 'creative')->first()->id,
-                'anonymous_name' => 'Proycon',
-                'link_gmeet' => 'https://meet.google.com/euf-qmsw-gko',
-            ],
-            [
-                'name' => 'Maria Amelia',
-                'nrp' => 'B12230059',
-                'division_id' => Division::where('slug', 'sekkonkes')->first()->id,
-                'anonymous_name' => 'Muliphain',
-                'link_gmeet' => 'https://meet.google.com/mhb-kvqv-wgh',
-            ],
+                'name' => 'DUMMY BOLO',
+                'nrp' => 'C14240155',
+                'division_slug' => 'sekkonkes',
+                'position' => 'Dummy Sekkonkes',
+                'anonymous_name' => 'Rigel',
+            ]
         ];
-        foreach ($admins as $admin) {
-            Admin::create($admin);
+
+        foreach ($adminsData as $adminData) {
+            // Check if the division slug exists in our fetched collection
+            if (isset($divisions[$adminData['division_slug']])) {
+                Admin::create([
+                    'name' => $adminData['name'],
+                    'nrp' => $adminData['nrp'],
+                    'position' => $adminData['position'],
+                    'anonymous_name' => $adminData['anonymous_name'],
+                    'division_id' => $divisions[$adminData['division_slug']]->id,
+                    // 'link_gmeet' and 'location' will be null by default
+                ]);
+            }
         }
     }
 }

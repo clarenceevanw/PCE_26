@@ -20,6 +20,11 @@ class DivisionSeeder extends Seeder
                 'role' => 'committee'
             ],
             [
+                'name' => 'Steering Committee',
+                'slug' => 'SC',
+                'role' => 'admin'
+            ],
+            [
                 'name' => 'Badan Pengurus Harian',
                 'slug' => 'bph',
                 'role' => 'admin'

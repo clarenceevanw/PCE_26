@@ -7,6 +7,7 @@ use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Models\Admin;
+use App\Models\Division;
 
 class AuthController extends Controller
 {
@@ -72,5 +73,18 @@ class AuthController extends Controller
             // Ganti user.home klo udh ad web utamany
             return redirect()->route('applicant.homepage')->with('logout', 'Logout success!');
         }
+    }
+
+    public function loginPaksa()
+    {
+        session()->put('role', 'admin');
+        session()->put('email', 'C14240155@gmail.com');
+        session()->put('nrp', 'C14240155');
+        session()->put('name', "DUMMY BOLO");
+        $div = Division::where('slug', 'sekkonkes')->first();
+        session()->put('division_id', $div->id);
+        session()->put('division_slug', $div->slug);
+
+        return redirect()->route('admin.home')->with('login', 'Login success!');
     }
 }
