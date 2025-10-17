@@ -25,9 +25,17 @@ class AdminController extends Controller
         $schedule = AdminSchedule::with('schedule')->where('admin_id', $admin->id)->get();
         $title = 'Jadwal Interview';
 
+        $dataForView = $schedule->map(function ($adminSchedule) {
+            return [
+                'schedule' => $adminSchedule->schedule,
+                'isOnline' => $adminSchedule->isOnline,
+                'isBooked' => $adminSchedule->applicant_id !== null, 
+            ];
+        });
+
         return view('admin.jadwalWawancara', [
             'title' => $title,
-            'data' => json_encode($schedule)
+            'data' => json_encode($dataForView)
         ]);
     }
 

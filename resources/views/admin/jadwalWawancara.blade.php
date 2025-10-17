@@ -22,6 +22,17 @@
         .transparent {
             background-color: transparent; /* Tidak ada warna (putih) */
         }
+        .slot.locked {
+            cursor: not-allowed;
+            opacity: 0.6;
+            background-image: repeating-linear-gradient(
+                45deg,
+                rgba(0,0,0,0.2),
+                rgba(0,0,0,0.2) 5px,
+                transparent 5px,
+                transparent 10px
+            );
+        }
         </style>
 @endsection
 
@@ -31,9 +42,21 @@
     <div class="flex flex-col lg:flex-row justify-between items-center">
         <div>
             <h2 class="text-xl mb-4">Jadwal</h2>
-            <h1 class="font-organetto block mb-2 text-md font-medium text-gray-800 mt-4">Notes: Jadwal hanya dapat diset satu kali. Setelah disimpan, tidak dapat diubah kembali.</h1>
+            <h1 class="font-organetto block mb-2 text-md font-medium text-gray-800 mt-4">Notes: Jadwal hanya bisa diubah ketika tidak ada interview</h1>
         </div>
         <div class="flex gap-4 mt-4">
+            <div class="flex gap-2 items-center justify-center">
+                <div class="w-10 h-6 opacity-[0.6]" 
+                style="background-image: repeating-linear-gradient(
+                45deg,
+                rgba(0,0,0,0.2),
+                rgba(0,0,0,0.2) 5px,
+                transparent 5px,
+                transparent 10px
+            );"
+            ></div>
+                <span>Interview</span>
+            </div>
             <div class="flex gap-2 items-center justify-center">
                 <div class="w-10 h-6 bg-red-500"></div>
                 <span>Tidak bisa</span>
@@ -95,79 +118,98 @@
         
         <input type="hidden" id="selectedSlots" name="selectedSlots" value="">
         <button id="saveButton" type="submit" class="mt-4 bg-blue-500 text-white px-4 py-2 rounded-lg">Save</button>
+        <button id="updateButton" type="submit" class="mt-4 bg-blue-500 text-white px-4 py-2 rounded-lg hidden">Update</button>
     </form>
 </div>
 @endsection
 
 @section('script')
 <script>
-    var datas = JSON.parse(@json($data));
-    if (datas.length > 0) {
+    const datas = JSON.parse(@json($data));
+    const isUpdateMode = datas.length > 0;
+
+    document.addEventListener('DOMContentLoaded', function() {
+        if (isUpdateMode) {
+            initializeUpdateMode();
+        }
+    });
+
+    function initializeUpdateMode() {
         document.getElementById("saveButton").style.display = "none";
-        let tableElements = document.querySelectorAll('.slot');
-            tableElements.forEach(element => {
-            element.classList.add('red');
-        });
+        document.getElementById('updateButton').classList.remove('hidden');
+        
+        const allSlots = document.querySelectorAll('.slot');
+        allSlots.forEach(slot => slot.classList.add('red'));
+
         datas.forEach(data => {
-            let timeParts = data.schedule.jam_mulai.split(':');
-            let hour = timeParts[0]; 
-            let element = document.querySelector(`[data-date="${data.schedule.tanggal}"][data-hour="${hour}"]`);
-            if(element){
-                if (data.isOnline) {
-                    element.classList.remove('red');
-                    element.classList.add('orange');
-                } else {
-                    element.classList.remove('red');
-                    element.classList.add('green');
+            const timeParts = data.schedule.jam_mulai.split(':');
+            const hour = timeParts[0];
+            const element = document.querySelector(`[data-date="${data.schedule.tanggal}"][data-hour="${hour}"]`);
+            
+            if (element) {
+                element.classList.remove('red');
+                element.classList.add(data.isOnline ? 'orange' : 'green');
+
+                if (data.isBooked) {
+                    element.classList.add('locked');
+                    element.onclick = null;
                 }
             }
         });
     }
-</script>
-<script>
-        // Toggle warna slot dan update data yang dipilih
-        function toggleSlot(cell) {
-            if (datas.length === 0) {
-                if (cell.classList.contains('green')) {
-                    cell.classList.remove('green');
-                    cell.classList.add('orange');
-                } else if (cell.classList.contains('orange')) {
-                    cell.classList.remove('orange');
-                    cell.classList.add('red');
-                } else if (cell.classList.contains('red')) {
-                    cell.classList.remove('red');
-                    cell.classList.add('green');
-                }else {
-                    cell.classList.add('green');
-                }
 
-                updateSelectedSlots();
-            }
+    function toggleSlot(cell) {
+        if (cell.classList.contains('green')) {
+            cell.classList.remove('green');
+            cell.classList.add('orange');
+        } else if (cell.classList.contains('orange')) {
+            cell.classList.remove('orange');
+            cell.classList.add('red');
+        } else if (cell.classList.contains('red')) {
+            cell.classList.remove('red');
+            cell.classList.add('green');
+        } else {
+            cell.classList.add('green');
         }
 
-        // Update input hidden dengan data dari slot yang berwarna hijau
-        function updateSelectedSlots() {
-            let selected = [];
-            let cells = document.querySelectorAll('.slot.green');
-            cells.forEach(cell => {
-                let date = cell.getAttribute('data-date');
-                let hour = cell.getAttribute('data-hour');
-                selected.push({date: date, hour: hour, isOnline: false});
-            });
-
-            let orangeCells = document.querySelectorAll('.slot.orange');
-            orangeCells.forEach(cell => {
-                let date = cell.getAttribute('data-date');
-                let hour = cell.getAttribute('data-hour');
-                selected.push({date: date, hour: hour, isOnline: true});
-            });
-            
-            document.getElementById('selectedSlots').value = JSON.stringify(selected);
+        if (!isUpdateMode) {
+            updateSelectedSlots();
         }
+    }
+
+    function updateSelectedSlots() {
+        let selected = [];
+        const greenCells = document.querySelectorAll('.slot.green');
+        const orangeCells = document.querySelectorAll('.slot.orange');
+
+        greenCells.forEach(cell => {
+            selected.push({
+                date: cell.getAttribute('data-date'),
+                hour: cell.getAttribute('data-hour'),
+                isOnline: false
+            });
+        });
+
+        orangeCells.forEach(cell => {
+            selected.push({
+                date: cell.getAttribute('data-date'),
+                hour: cell.getAttribute('data-hour'),
+                isOnline: true
+            });
+        });
+        
+        document.getElementById('selectedSlots').value = JSON.stringify(selected);
+        console.log("Selected slots updated!");
+    }
 </script>
 <script>
     $("#scheduleForm").on('submit', function(e){
         e.preventDefault();
+        if(isUpdateMode) {
+            console.log("Update mode: Collecting final data before submit...");
+            updateSelectedSlots();
+            console.log(document.getElementById('selectedSlots').value);
+        }
 
         Swal.fire({
             title: "Are you sure want to save Schedule?",
@@ -183,21 +225,23 @@
                 var formData = new FormData(form);
                 var method = $(this).attr('method');
                 var url = $(this).attr('action');
-
-
-                // var loader = document.querySelector(".data-loader");
-                // loader.classList.remove("hidden");
-                // loader.classList.add("flex");
+                Swal.fire({
+                    title: 'Loading...',
+                    allowOutsideClick: false,
+                    showConfirmButton: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
                 $.ajax({
                     type: method,
                     url: url,
                     data: formData,
-                    processData: false, //to prevent jQuery from automatically transforming the data into a query string
+                    processData: false,
                     contentType: false,
                     cache: false,
                     success: async function(response) {
-                        // loader.classList.add("hidden");
-                        // loader.classList.remove("flex");
+                        await Swal.close();
                         if (response.success) {
                             await Swal.fire({
                                 title: "Success!",
@@ -223,8 +267,7 @@
                         }
                     },
                     error: async function(xhr, textStatus, errorThrown) {
-                        // loader.classList.add("hidden");
-                        // loader.classList.remove("flex");
+                        await Swal.close();
                         await Swal.fire({
                             title: 'Oops!',
                             text: 'Something went wrong: ' + textStatus + '-' +
@@ -235,7 +278,6 @@
                     }
                 })
             } else {
-                // User canceled the submission
                 Swal.fire({
                     title: "Cancelled!",
                     text: "Your data was not submitted.",
