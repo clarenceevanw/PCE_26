@@ -32,17 +32,17 @@ class DivisionSeeder extends Seeder
             [
                 'name' => 'Transportasi dan Keamanan',
                 'slug' => 'transkapman',
-                'role' => 'committee'
+                'role' => 'admin'
             ],
             [
                 'name' => 'Sekretariat, Konsumsi, dan Kesehatan',
                 'slug' => 'sekkonkes',
-                'role' => 'committee'
+                'role' => 'admin'
             ],
             [
                 'name' => 'Acara',
                 'slug' => 'acara',
-                'role' => 'committee'
+                'role' => 'admin'
             ],
             [
                 'name' => 'Information Technology',
@@ -52,17 +52,17 @@ class DivisionSeeder extends Seeder
             [
                 'name' => 'Sponsorship',
                 'slug' => 'sponsor',
-                'role' => 'committee'
+                'role' => 'admin'
             ],
             [
-                'name' => 'Materi',
-                'slug' => 'materi',
-                'role' => 'committee'
+                'name' => 'Public Relation',
+                'slug' => 'pr',
+                'role' => 'admin'
             ],
             [
                 'name' => 'Creative',
                 'slug' => 'creative',
-                'role' => 'committee'
+                'role' => 'admin'
             ],
         ];
 

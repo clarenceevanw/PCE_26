@@ -208,8 +208,8 @@
                                 class="w-full px-4 py-2.5 bg-transparent border border-purple-500/50 rounded-full text-white text-sm sm:text-base appearance-none cursor-pointer transition-all duration-300 focus:outline-none focus:border-purple-400 focus:shadow-[0_0_12px_rgba(168,85,247,0.4)]">
                                 <option class="bg-purple-950 text-purple-200" disabled selected hidden>Pilih Divisi Pertama</option>
                                 <option class="bg-purple-950" value="acara">Acara</option>
-                                <option class="bg-purple-950" value="materi">Materi</option>
-                                <option class="bg-purple-950" value="creative">Kreatif</option>
+                                <option class="bg-purple-950" value="pr">Public Relations</option>
+                                <option class="bg-purple-950" value="creative">Creative</option>
                                 <option class="bg-purple-950" value="sponsor">Sponsorship</option>
                                 <option class="bg-purple-950" value="sekkonkes">Sekkonkes</option>
                                 <option class="bg-purple-950" value="transkapman">Transkapman</option>
@@ -225,8 +225,8 @@
                                 class="w-full px-4 py-2.5 bg-transparent border border-purple-500/50 rounded-full text-white text-sm sm:text-base appearance-none cursor-pointer transition-all duration-300 focus:outline-none focus:border-purple-400 focus:shadow-[0_0_12px_rgba(168,85,247,0.4)]">
                                 <option class="bg-purple-950 text-purple-200" disabled selected hidden>Pilih Divisi Kedua</option>
                                 <option class="bg-purple-950" value="acara">Acara</option>
-                                <option class="bg-purple-950" value="materi">Materi</option>
-                                <option class="bg-purple-950" value="creative">Kreatif</option>
+                                <option class="bg-purple-950" value="pr">Public Relations</option>
+                                <option class="bg-purple-950" value="creative">Creative</option>
                                 <option class="bg-purple-950" value="sponsor">Sponsorship</option>
                                 <option class="bg-purple-950" value="sekkonkes">Sekkonkes</option>
                                 <option class="bg-purple-950" value="transkapman">Transkapman</option>
