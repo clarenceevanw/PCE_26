@@ -273,6 +273,9 @@ class AdminController extends Controller
             $data['prodi'] = $applicant->prodi;
             $data['line_id'] = $applicant->line_id;
             $data['no_hp'] = $applicant->no_hp;
+            $data['ipk'] = $applicant->ipk;
+            $data['jenis_kelamin'] = $applicant->jenis_kelamin;
+            $data['instagram'] = $applicant->instagram;
             $data['divisi1'] = $applicant->division1->name;
             $data['divisi2'] = $applicant->division2->name ?? 'None';
             $data['motivasi'] = $applicant->motivasi ?? 'None';

@@ -14,8 +14,16 @@
                     <div id="applicant-name">: </div>
                 </div>
                 <div class="grid grid-cols-[40%_60%] gap-4">
+                    <strong class="w-3/5">Jenis Kelamin</strong>
+                    <div id="applicant-jenisKelamin">: </div>
+                </div>
+                <div class="grid grid-cols-[40%_60%] gap-4">
                     <strong class="w-3/5">NRP</strong>
                     <div id="applicant-nrp">: </div>
+                </div>
+                <div class="grid grid-cols-[40%_60%] gap-4">
+                    <strong class="w-3/5">Email</strong>
+                    <div id="applicant-email">: </div>
                 </div>
                 <div class="grid grid-cols-[40%_60%] gap-4">
                     <strong class="w-3/5">Angkatan</strong>
@@ -26,12 +34,20 @@
                     <div id="applicant-prodi">: </div>
                 </div>
                 <div class="grid grid-cols-[40%_60%] gap-4">
+                    <strong class="w-3/5">IPK</strong>
+                    <div id="applicant-ipk">: </div>
+                </div>
+                <div class="grid grid-cols-[40%_60%] gap-4">
                     <strong class="w-3/5">ID Line</strong>
                     <div id="applicant-idLine">: </div>
                 </div>
                 <div class="grid grid-cols-[40%_60%] gap-4">
                     <strong class="w-3/5">No. HP</strong>
                     <div id="applicant-no_hp">: </div>
+                </div>
+                <div class="grid grid-cols-[40%_60%] gap-4">
+                    <strong class="w-3/5">Instagram</strong>
+                    <div id="applicant-instagram">: </div>
                 </div>
                 <div class="grid grid-cols-[40%_60%] gap-4">
                     <strong class="w-3/5">Division 1</strong>
@@ -114,81 +130,98 @@
 <script>
     const data = JSON.parse(@json($data));
 
-    document.getElementById('applicant-name').textContent += data.nama_lengkap;
-    document.getElementById('applicant-nrp').textContent += data.nrp;
-    document.getElementById('applicant-angkatan').textContent += data.angkatan;
-    document.getElementById('applicant-prodi').textContent += data.prodi;
-    document.getElementById('applicant-idLine').textContent += data.line_id;
-    document.getElementById('applicant-no_hp').textContent += data.no_hp;
-    document.getElementById('applicant-divisi1').textContent += data.divisi1;
-    document.getElementById('applicant-divisi2').textContent += data.divisi2 ?? 'None';
-    document.getElementById('applicant-motivasi').textContent += data.motivasi;
-    document.getElementById('applicant-kelebihan').textContent += data.kelebihan;
-    document.getElementById('applicant-kekurangan').textContent += data.kekurangan;
-    document.getElementById('applicant-komitmen').textContent += data.komitmen;
-    document.getElementById('applicant-pengalaman').textContent += data.pengalaman;
-    if(data.berkas){
-        document.getElementById('list_file').innerHTML += `
-            <li>
-                <strong>Berkas:</strong> 
-                <a id="applicant-berkas" href="${data.berkas}" class="text-blue-500 hover:underline">Click Here</a>
-            </li>
-        `;
-    }else{
-        document.getElementById('list_file').innerHTML += `
-            <li>
-                <strong>Berkas:</strong> 
-                <span id="applicant-berkas" class="text-red-500 hover:underline">NONE</span>
-            </li>
-        `; 
-    }
-    if(data.portofolio){
-        const portofolio = data.portofolio || "#";
+    // --- 1. Mengisi Biodata & Motivasi dengan Loop ---
+    const fieldsToDisplay = [
+        { id: 'applicant-name',        key: 'nama_lengkap' },
+        { id: 'applicant-jenisKelamin',key: 'jenis_kelamin' },
+        { id: 'applicant-nrp',         key: 'nrp' },
+        { id: 'applicant-email',       key: 'nrp', format: val => `${val}@john.petra.ac.id` },
+        { id: 'applicant-angkatan',    key: 'angkatan' },
+        { id: 'applicant-prodi',       key: 'prodi' },
+        { id: 'applicant-ipk',         key: 'ipk' },
+        { id: 'applicant-idLine',      key: 'line_id' },
+        { id: 'applicant-no_hp',       key: 'no_hp' },
+        { id: 'applicant-instagram',   key: 'instagram' },
+        { id: 'applicant-divisi1',     key: 'divisi1' },
+        { id: 'applicant-divisi2',     key: 'divisi2' },
+        { id: 'applicant-motivasi',    key: 'motivasi' },
+        { id: 'applicant-kelebihan',   key: 'kelebihan' },
+        { id: 'applicant-kekurangan',  key: 'kekurangan' },
+        { id: 'applicant-komitmen',    key: 'komitmen' },
+        { id: 'applicant-pengalaman',  key: 'pengalaman' }
+    ];
 
-        const formattedLink = /^(https?:)?\/\//i.test(portofolio)
-        ? portofolio
-        : `https://${portofolio}`;
-        document.getElementById('list_file').innerHTML += `
-            <li>
-                <strong>Portofolio:</strong> 
-                <a id="applicant-portofolio" href="${formattedLink}" target="_blank" rel="noopener noreferrer"
-                class="text-blue-500 hover:underline">
-                    Click Here
-                </a>
-            </li>
-        `;
-    }else{
-        document.getElementById('list_file').innerHTML += `
-            <li>
-                <strong>Portofolio:</strong> 
-                <span id="applicant-portofolio" class="text-red-500 hover:underline">NONE</span>
-            </li>
-        `; 
-    }
-</script>
-<script>
+    fieldsToDisplay.forEach(field => {
+        const element = document.getElementById(field.id);
+        // Pastikan element ada dan data tidak null/undefined
+        if (element && data[field.key] != null) {
+            const value = field.format ? field.format(data[field.key]) : data[field.key];
+            element.textContent += value;
+        }
+    });
+
+    // --- 2. Mengisi List File dengan Loop ---
+    const fileListElement = document.getElementById('list_file');
+    const filesToDisplay = [
+        { label: 'KTM',              key: 'ktm' },
+        { label: 'Transkrip',        key: 'transkrip' },
+        { label: 'Bukti Kecurangan', key: 'bukti_kecurangan' },
+        { label: 'SKKK',             key: 'skkk' },
+        { label: 'Portofolio',       key: 'portofolio', isLink: true }
+    ];
+
+    filesToDisplay.forEach(file => {
+        const fileUrl = data[file.key];
+        let listItemHtml = '';
+
+        if (fileUrl) {
+            let finalUrl = fileUrl;
+            if (file.isLink && !/^(https?:)?\/\//i.test(finalUrl)) {
+                finalUrl = `https://${finalUrl}`;
+            }
+            
+            listItemHtml = `
+                <li>
+                    <strong>${file.label}:</strong> 
+                    <a href="${finalUrl}" target="_blank" rel="noopener noreferrer" class="text-blue-500 hover:underline">Click Here</a>
+                </li>`;
+        } else {
+            listItemHtml = `
+                <li>
+                    <strong>${file.label}:</strong> 
+                    <span class="text-red-500">NONE</span>
+                </li>`;
+        }
+        fileListElement.innerHTML += listItemHtml;
+    });
+
+    // --- 3. Fungsi Modal (Tetap sama, tapi pastikan hanya digunakan untuk gambar) ---
     function openModal(event, element){
         event.preventDefault();
         let modal = document.getElementById('modal');
         let route = element.getAttribute('href');
-        modal.classList.remove("hidden")
-        setTimeout(()=>{
-            modal.classList.add("opacity-100")
-        },10)
-        $('#modalTitle').text('Detail File')
-        $('#modalBody').html(`
-            <img src="${route}" alt="Detail Foto" class="max-w-full h-auto">
-        `
-        )
-    }
-    //hide modal
-    function closeModal(){
-            let modal = document.getElementById('modal')
-            modal.classList.add("opacity-0")    
-            modal.classList.remove("opacity-100")
-            setTimeout(()=>{
-                modal.classList.add("hidden")
-            },250)
+        
+        // Cek ekstensi file (sederhana)
+        if (/\.(jpeg|jpg|gif|png)$/i.test(route)) {
+            document.getElementById('modalTitle').innerText = 'Detail File';
+            document.getElementById('modalBody').innerHTML = `<img src="${route}" alt="Detail Foto" class="max-w-full h-auto">`;
+
+            modal.classList.remove("hidden");
+            setTimeout(() => {
+                modal.classList.add("opacity-100");
+            }, 10);
+        } else {
+            // Jika bukan gambar, buka di tab baru (perilaku default link)
+            window.open(route, '_blank');
         }
+    }
+
+    function closeModal(){
+        let modal = document.getElementById('modal');
+        modal.classList.remove("opacity-100");
+        setTimeout(() => {
+            modal.classList.add("hidden");
+        }, 250);
+    }
 </script>
 @endSection
