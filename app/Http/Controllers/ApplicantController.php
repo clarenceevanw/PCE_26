@@ -589,7 +589,7 @@ class ApplicantController extends Controller
 
     public function login()
     {
-        if (session('nrp') && session('email')) {
+        if (session('nrp') && session('email') && session('angkatan')) {
             return redirect()->route('applicant.homepage');
         }
         return view('applicant.login');

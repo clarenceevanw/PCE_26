@@ -278,6 +278,9 @@ class AdminController extends Controller
 
     public function login()
     {
+        if (session('role') == 'admin') {
+            return redirect()->route('admin.home');
+        }
         return view('admin.login');
     }
 }
