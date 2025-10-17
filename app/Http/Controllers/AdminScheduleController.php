@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\AdminSchedule;
 use App\Models\Schedule;
 use App\Models\Admin;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -75,9 +76,22 @@ class AdminScheduleController extends Controller
                     }
                 }
             }
+            
+            //tanggal 22 Okt 2025
+            $limitDate = Carbon::create(2025, 10, 22, 23, 59, 0, "Asia/Jakarta");
+            $now = Carbon::now("Asia/Jakarta");
             //Untuk mengecek kalau ada jadwal lama yang nggak ada di input baru, berarti admin ingin menghapusnya.
             foreach ($existingSlotsLookup as $key => $scheduleToDelete) {
                 if (!isset($newSlotsLookup[$key])) {
+                    $tanggal = $scheduleToDelete->schedule->tanggal;
+                    //untuk mengatasi kondisi kalau jadwal dihapus setelah 23 Oktober 2025
+                    if ($now->isAfter($limitDate)) {
+                        DB::rollBack();
+                        return response()->json([
+                            'success' => false,
+                            'message' => "Jadwal pada tanggal $tanggal tidak dapat dihapus karena setelah 22 Oktober 2025."
+                        ], 409);
+                    }
                     //Cek kalau udah di booking, dirollback dan kirim error agar jadwal tidak dihapus sembarangan. (jaga - jaga kalau ada yg main mainin component di frontend)
                     if ($scheduleToDelete->applicant_id !== null) { 
                         DB::rollBack();

@@ -268,10 +268,15 @@
                     },
                     error: async function(xhr, textStatus, errorThrown) {
                         await Swal.close();
+                        let message = 'Something went wrong.';
+                        if (xhr.responseJSON && xhr.responseJSON.message) {
+                            message = xhr.responseJSON.message;
+                        } else if (xhr.responseText) {
+                            message = xhr.responseText;
+                        }
                         await Swal.fire({
                             title: 'Oops!',
-                            text: 'Something went wrong: ' + textStatus + '-' +
-                                errorThrown,
+                            text: message,
                             icon: 'error',
                             confirmButtonText: 'OK'
                         });
