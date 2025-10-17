@@ -214,32 +214,32 @@
             <div class="bg-purple-900/30 border-2 border-purple-500/50 rounded-2xl p-8 space-y-4">
                 <h3 class="font-organetto text-xl font-bold text-center text-white mb-6 uppercase tracking-wider">Detail Interview ${interviews.interview1.division}</h3>
                 <div class="space-y-4">
-                    <div class="flex flex-col sm:flex-row sm:items-center gap-2">
-                        <span class="font-organetto font-semibold text-purple-200 min-w-[140px]">Pewawancara:</span>
-                        <span class="font-organetto text-white">${interviews.interview1.adminName || "N/A"}</span>
+                    <div class="grid grid-cols-[40%_60%] gap-2">
+                        <span class="font-organetto font-semibold text-purple-200 min-w-[140px]">Pewawancara</span>
+                        <span class="font-organetto text-white">: ${interviews.interview1.adminName || "N/A"}</span>
                     </div>
-                    <div class="flex flex-col sm:flex-row sm:items-center gap-2">
-                        <span class="font-organetto font-semibold text-purple-200 min-w-[140px]">Mode:</span>
-                        <span class="font-organetto text-white">${interviews.interview1.mode ? 'Online (Google Meet)' : 'Offline'}</span>
+                    <div class="grid grid-cols-[40%_60%] gap-2">
+                        <span class="font-organetto font-semibold text-purple-200 min-w-[140px]">Mode</span>
+                        <span class="font-organetto text-white">: ${interviews.interview1.mode ? 'Online (Google Meet)' : 'Offline'}</span>
                     </div>
                     ${interviews.interview1.mode ? `
-                    <div class="flex flex-col sm:flex-row sm:items-center gap-2">
-                        <span class="font-organetto font-semibold text-purple-200 min-w-[140px]">Link GMeet:</span>
-                        <a href="${interviews.interview1.link_gmeet || '#'}" target="_blank" class="font-organetto text-purple-300 hover:text-purple-100 underline break-all">${interviews.interview1.link_gmeet || "N/A"}</a>
+                    <div class="grid grid-cols-[40%_60%] gap-2">
+                        <span class="font-organetto font-semibold text-purple-200 min-w-[140px]">Link GMeet</span>
+                        <span class="font-organetto text-purple-200">: <a href="${interviews.interview1.link_gmeet || '#'}" target="_blank" class="underline break-all text-purple-300 hover:text-purple-100">${interviews.interview1.link_gmeet || "N/A"}</a></span>
                     </div>
                     ` : `
-                    <div class="flex flex-col sm:flex-row sm:items-center gap-2">
-                        <span class="font-organetto font-semibold text-purple-200 min-w-[140px]">Lokasi:</span>
-                        <span class="font-organetto text-white">${interviews.interview1.location || "N/A"}</span>
+                    <div class="grid grid-cols-[40%_60%] gap-2">
+                        <span class="font-organetto font-semibold text-purple-200 min-w-[140px]">Lokasi</span>
+                        <span class="font-organetto text-white">: ${interviews.interview1.location || "N/A"}</span>
                     </div>
                     `}
-                    <div class="flex flex-col sm:flex-row sm:items-center gap-2">
-                        <span class="font-organetto font-semibold text-purple-200 min-w-[140px]">Hari, Tanggal:</span>
-                        <span class="font-organetto text-white">${formattedDate}</span>
+                    <div class="grid grid-cols-[40%_60%] gap-2">
+                        <span class="font-organetto font-semibold text-purple-200 min-w-[140px]">Hari, Tanggal</span>
+                        <span class="font-organetto text-white">: ${formattedDate}</span>
                     </div>
-                    <div class="flex flex-col sm:flex-row sm:items-center gap-2">
-                        <span class="font-organetto font-semibold text-purple-200 min-w-[140px]">Jam:</span>
-                        <span class="font-organetto text-white">${formattedTime}</span>
+                    <div class="grid grid-cols-[40%_60%] gap-2">
+                        <span class="font-organetto font-semibold text-purple-200 min-w-[140px]">Jam</span>
+                        <span class="font-organetto text-white">: ${formattedTime}</span>
                     </div>
                 </div>
                 <div class="mt-8 pt-6 border-t border-purple-500/30 flex flex-col sm:flex-row justify-center items-center gap-4">
