@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('nrp');
             $table->string('name');
             $table->string('anonymous_name');
-            $table->string('id_line');
+            $table->string('id_line')->nullable();
             $table->string('link_gmeet')->nullable();
             $table->string('location')->nullable();
             $table->foreign('division_id')->references('id')->on('divisions');

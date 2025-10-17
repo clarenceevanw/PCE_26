@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('admin_schedules', function (Blueprint $table) {
-            $table->id('id')->primary();
+            $table->uuid('id')->primary();
             $table->uuid('admin_id');
             $table->foreign('admin_id')->references('id')->on('admins')->onDelete('cascade');
             $table->uuid('schedule_id');
