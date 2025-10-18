@@ -5,6 +5,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AdminScheduleController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ApplicantController;
+use App\Http\Controllers\InterviewResultController;
 use App\Http\Middleware\AdminMiddleware;
 use App\Http\Middleware\ApplicantMiddleware;
 use App\Http\Middleware\RegistrationFormMiddleware;
@@ -29,7 +30,7 @@ Route::prefix('admin')->group(function () {
 
         //jadwal interview panitia
         Route::get('/myInterview', [AdminController::class, 'myInterviewIndex'])->name('admin.myInterview');
-        Route::post('/myInterview/store', [AdminController::class, 'storeHasil'])->name('admin.hasilInterview.store');
+        Route::post('/myInterview/store', [InterviewResultController::class, 'storeHasil'])->name('admin.hasilInterview.store');
 
         //jadwal keseluruhan
         Route::get('/allInterview', [AdminController::class, 'allInterviewIndex'])->name('admin.allInterview');
