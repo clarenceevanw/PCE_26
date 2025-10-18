@@ -75,6 +75,16 @@ class AuthController extends Controller
         }
     }
 
+    public function loginPaksaApplicant()
+    {
+        session()->put('email', "c14240155@john.petra.ac.id");
+        session()->put('nrp', 'c14240155');
+        session()->put('name', "DUMMY BOLO");
+        $angkatan = "20".substr('C14240155', 3, 2);
+        session()->put('angkatan', $angkatan);
+        return redirect()->route('applicant.biodata')->with('login', 'Login success!');
+    }
+
     public function loginPaksa()
     {
         session()->put('role', 'admin');
