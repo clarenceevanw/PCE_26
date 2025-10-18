@@ -8,13 +8,9 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class ApplicantDetailResource extends JsonResource
 {
-    /**
-     * Transform the resource into an array.
-     *
-     * @return array<string, mixed>
-     */
     public function toArray(Request $request): array
     {
+        $applicantFile = $this->applicantFile;
         return [
             'nama_lengkap' => $this->nama_lengkap,
             'nrp' => $this->nrp,
@@ -26,8 +22,8 @@ class ApplicantDetailResource extends JsonResource
             'jenis_kelamin' => $this->jenis_kelamin,
             'instagram' => $this->instagram,
 
-            'divisi1' => $this->division1->name,
-            'divisi2' => $this->division2->name ?? 'None',
+            'divisi1' => $this->division1?->name,
+            'divisi2' => $this->division2?->name ?? 'None',
             
             'motivasi' => $this->motivasi ?? 'None',
             'komitmen' => $this->komitmen ?? 'None',
@@ -35,11 +31,11 @@ class ApplicantDetailResource extends JsonResource
             'kekurangan' => $this->kekurangan ?? 'None',
             'pengalaman' => $this->pengalaman ?? 'None',
             
-            'ktm' => $this->whenNotNull($this->applicantFile->ktm, Storage::url($this->applicantFile->ktm)),
-            'transkrip' => $this->whenNotNull($this->applicantFile->transkrip, Storage::url($this->applicantFile->transkrip)),
-            'bukti_kecurangan' => $this->whenNotNull($this->applicantFile->bukti_kecurangan, Storage::url($this->applicantFile->bukti_kecurangan)),
-            'skkk' => $this->whenNotNull($this->applicantFile->skkk, Storage::url($this->applicantFile->skkk)),
-            'portofolio' => $this->applicantFile->portofolio ?? null,
+            'ktm'              => $applicantFile?->ktm ? asset(Storage::url($applicantFile->ktm)) : null,
+            'transkrip'        => $applicantFile?->transkrip ? asset(Storage::url($applicantFile->transkrip)) : null,
+            'bukti_kecurangan' => $applicantFile?->bukti_kecurangan ? asset(Storage::url($applicantFile->bukti_kecurangan)) : null,
+            'skkk'             => $applicantFile?->skkk ? asset(Storage::url($applicantFile->skkk)) : null,
+            'portofolio'       => $applicantFile?->portofolio,
         ];
     }
 }

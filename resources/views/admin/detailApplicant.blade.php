@@ -128,7 +128,7 @@
 
 @section('script')
 <script>
-    const data = JSON.parse(@json($data));
+    const data = @json($data);
 
     // --- 1. Mengisi Biodata & Motivasi dengan Loop ---
     const fieldsToDisplay = [
@@ -170,6 +170,8 @@
         { label: 'Portofolio',       key: 'portofolio', isLink: true }
     ];
 
+    let generatedHtml = ''; // Kumpulkan HTML dulu agar lebih efisien
+
     filesToDisplay.forEach(file => {
         const fileUrl = data[file.key];
         let listItemHtml = '';
@@ -183,17 +185,20 @@
             listItemHtml = `
                 <li>
                     <strong>${file.label}:</strong> 
-                    <a href="${finalUrl}" target="_blank" rel="noopener noreferrer" class="text-blue-500 hover:underline">Click Here</a>
+                    <a href="${finalUrl}" target="_blank" rel="noopener noreferrer" class="text-blue-500 hover:underline">Lihat Berkas</a>
                 </li>`;
         } else {
             listItemHtml = `
                 <li>
                     <strong>${file.label}:</strong> 
-                    <span class="text-red-500">NONE</span>
+                    <span class="text-red-500">Tidak ada</span>
                 </li>`;
         }
-        fileListElement.innerHTML += listItemHtml;
+        generatedHtml += listItemHtml;
     });
+
+    // Update DOM hanya sekali di akhir loop
+    fileListElement.innerHTML = generatedHtml;
 
     // --- 3. Fungsi Modal (Tetap sama, tapi pastikan hanya digunakan untuk gambar) ---
     function openModal(event, element){

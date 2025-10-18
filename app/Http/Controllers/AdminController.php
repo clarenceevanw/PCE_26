@@ -251,7 +251,7 @@ class AdminController extends Controller
 
         return view('admin.detailApplicant', [
             'title' => $title,
-            'data' => json_encode(new ApplicantDetailResource($applicant)) 
+            'data' => (new ApplicantDetailResource($applicant))->toArray(request()),
         ]);
     }
 
