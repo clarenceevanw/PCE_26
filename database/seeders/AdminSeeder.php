@@ -296,7 +296,9 @@ class AdminSeeder extends Seeder
                     'position' => $adminData['position'],
                     'anonymous_name' => $adminData['anonymous_name'],
                     'division_id' => $divisions[$adminData['division_slug']]->id,
-                    // 'link_gmeet' and 'location' will be null by default
+                    'id_line' => $adminData['id_line'] ?? null,
+                    'link_gmeet' => $adminData['link_gmeet'] ?? null,
+                    'location' => $adminData['location'] ?? null,
                 ]);
             }
         }
