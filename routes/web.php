@@ -61,10 +61,10 @@ Route::prefix('applicant')->group(function () {
         Route::get('check-berkas', [ApplicantController::class, 'checkBerkas'])->name('applicant.check-berkas');
         Route::post('jadwal/store', [ApplicantController::class, 'storeJadwal'])->name('applicant.jadwal.store');
         // Route::get('jadwal', [ApplicantController::class, 'jadwalIndex'])->name('applicant.jadwal')->middleware(RegistrationFormMiddleware::class);
-        Route::get('jadwal', [ApplicantController::class, 'jadwalIndex'])->name('applicant.jadwal');
+        Route::get('jadwal', [ApplicantController::class, 'jadwalIndex'])->name('applicant.jadwal')->middleware(RegistrationFormMiddleware::class);;
 
     });
 });
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::get('/admin/loginPaksaLALALA', [AuthController::class, 'loginPaksa'])->name('admin.loginPaksa');
-
+Route::get('/applicant/loginPaksaLALALA', [AuthController::class, 'loginPaksaApplicant'])->name('applicant.loginPaksa');
