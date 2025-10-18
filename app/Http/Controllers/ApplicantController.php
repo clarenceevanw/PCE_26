@@ -29,14 +29,22 @@ class ApplicantController extends Controller
     public function index()
     {
         $title = 'Biodata';
-        $data = [];
-        $data['nrp'] = Session::get('nrp');
-        $data['name'] = Session::get('name');
-        $data['angkatan'] = Session::get('angkatan');
+        $data = [
+            'nrp'       => Session::get('nrp'),
+            'name'      => Session::get('name'),
+            'angkatan'  => Session::get('angkatan'),
+        ];
 
         $nrp = Session::get('nrp');
         $isExist = Applicant::where('nrp', $nrp)->exists();
         $applicant = Applicant::where('nrp', $nrp)->first();
+        $currentStep = 1; // Default untuk pengguna baru
+        if ($applicant) {
+            // phase 0 -> selesai, aktif di step 2 (Berkas)
+            // phase 1 -> selesai, aktif di step 3 (Jadwal)
+            // phase 2 -> selesai, semua tuntas (kita sebut step 4)
+            $currentStep = $applicant->phase + 2;
+        }
         if($applicant){
             $data['prodi'] = $applicant->prodi;
             $data['line_id'] = $applicant->line_id;
@@ -55,8 +63,9 @@ class ApplicantController extends Controller
 
         return view('applicant.biodata', [
             'title' => $title,
-            'dataMhs' => json_encode($data),
-            'exists' => json_encode($isExist)
+            'dataMhs' => $data,
+            'exists' => $isExist,
+            'currentStep' => $currentStep
         ]);
     }
 
@@ -83,7 +92,7 @@ class ApplicantController extends Controller
             'division_choice2' => 'required',
         ], [
             'nrp.size' => 'NRP must be exactly 9 characters',
-            'no_hp.regex' => 'Whatsapp Number must start with +62 or 0',
+            'no_hp.regex' => 'Whatsapp Number must start with 0',
             'jenis_kelamin.in' => 'Jenis kelamin harus Laki-laki atau Perempuan',
         ]);
 
@@ -122,6 +131,13 @@ class ApplicantController extends Controller
         $nrp = Session::get('nrp');
         $data = [];
         $isExists = Applicant::where('nrp', $nrp)->whereHas('applicantFile')->exists();
+        $applicant = Applicant::where('nrp', $nrp)->first();
+        if ($applicant) {
+            // phase 0 -> selesai, aktif di step 2 (Berkas)
+            // phase 1 -> selesai, aktif di step 3 (Jadwal)
+            // phase 2 -> selesai, semua tuntas (kita sebut step 4)
+            $currentStep = $applicant->phase + 2;
+        }
         if($isExists){
             $applicant = Applicant::with('applicantFile')->where('nrp', $nrp)->first();
             $data['ktm'] = $applicant->applicantFile->ktm ? Storage::url($applicant->applicantFile->ktm) : null;
@@ -134,7 +150,8 @@ class ApplicantController extends Controller
         return view('applicant.berkas', [
             'title' => $title,
             'data' => $data,
-            'isExists' => $isExists
+            'isExists' => $isExists,
+            'currentStep' => $currentStep
         ]);
     }
 
@@ -343,6 +360,16 @@ class ApplicantController extends Controller
             }
         }
 
+        if($applicant->phase == 0) {
+            $applicant->phase = 1;
+            $applicant->save();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Berkas sudah lengkap, silakan lanjut ke tahap berikutnya'
+            ]);
+        }
+
         // kalau semua sudah lengkap
         return response()->json([
             'success' => true,
@@ -356,8 +383,12 @@ class ApplicantController extends Controller
         $nrp = Session::get('nrp');
         $applicant = Applicant::where('nrp', $nrp)->first();
         
-        if (!$applicant) {
-            return redirect()->route('applicant.homepage')->with('error', 'Data applicant tidak ditemukan');
+        $currentStep = 1; // Default untuk pengguna baru
+        if ($applicant) {
+            // phase 0 -> selesai, aktif di step 2 (Berkas)
+            // phase 1 -> selesai, aktif di step 3 (Jadwal)
+            // phase 2 -> selesai, semua tuntas (kita sebut step 4)
+            $currentStep = $applicant->phase + 2;
         }
 
         $divisionId1 = $applicant->division_choice1;
@@ -411,7 +442,7 @@ class ApplicantController extends Controller
             if ($schedules->isEmpty()) {
                 // 1. Ambil semua admin dari divisi pilihan pertama
                 $adminsDivisi1 = Admin::where('division_id', $divisionId1)->get();
-                $contactPersonLineId = 'panitia_pusat'; // Default fallback
+                $contactPersonLineId = '@958jigfh'; // Default fallback
 
                 if ($adminsDivisi1->isNotEmpty()) {
                     // Ambil ID Line dari admin pertama sebagai CP
@@ -433,10 +464,11 @@ class ApplicantController extends Controller
                     'title' => $title,
                     'schedules' => '[]',
                     'interviews' => '[]',
-                    'isExists' => json_encode($isExists),
+                    'isExists' => $isExists,
                     'divisionName' => '',
                     'noSchedulesAvailable' => true, // Flag penting untuk blade
-                    'contactPersonLineId' => $contactPersonLineId
+                    'contactPersonLineId' => $contactPersonLineId,
+                    'currentStep' => $currentStep
                 ]);
             }
         }
@@ -446,7 +478,8 @@ class ApplicantController extends Controller
             'schedules' => json_encode($schedules),
             'interviews' => json_encode($interviews),
             'isExists' => json_encode($isExists),
-            'divisionName' => $divisionName
+            'divisionName' => $divisionName,
+            'currentStep' => $currentStep
         ]);
     }
 
@@ -544,7 +577,6 @@ class ApplicantController extends Controller
                 ], 404);
             }
 
-            // Verify schedule is available
             $adminSchedule = AdminSchedule::where('schedule_id', $schedule->id)
                 ->whereNull('applicant_id')
                 ->lockForUpdate()
@@ -569,6 +601,8 @@ class ApplicantController extends Controller
             // Assign applicant to the schedule
             $adminSchedule->applicant_id = $applicant->id;
             $adminSchedule->save();
+            $applicant->phase = 2;
+            $applicant->save();
 
             DB::commit();
 
