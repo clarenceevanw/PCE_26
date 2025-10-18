@@ -3,7 +3,6 @@
 <div class="background min-h-screen flex flex-col items-center justify-center px-4 py-6 sm:px-5 lg:px-6">
   <div class="w-full max-w-4xl">
     <div class="mb-6 flex justify-between items-center">
-      {{-- CHANGED: Button styling --}}
       <a href="{{ route('applicant.berkas') }}">
         <button class="px-5 py-2 border-2 border-teal-400 text-white text-sm sm:text-base font-semibold uppercase rounded-full hover:bg-white hover:text-teal-500 transition-all duration-300">
           ← Back
@@ -16,18 +15,14 @@
       </a>
     </div>
 
-    {{-- CHANGED: Stepper state and styling --}}
     <x-progress-stepper :currentStep="$currentStep" />
 
-    {{-- CHANGED: Drop shadow color --}}
     <h1 class="font-return-grid text-white text-2xl sm:text-4xl text-center mb-8 tracking-widest drop-shadow-[0_0_25px_rgba(45,212,191,0.7)]">
       {{ Str::upper($title); }}
     </h1>
 
-    {{-- CHANGED: Main container styling --}}
     <div class="bg-cyan-950/30 backdrop-blur-sm rounded-2xl p-6 border border-teal-400/40">
       @if (isset($noSchedulesAvailable) && $noSchedulesAvailable)
-        {{-- CHANGED: "No schedules" message styling --}}
         <div class="text-center text-white py-8">
             <svg class="w-16 h-16 mx-auto text-yellow-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
             <h2 class="font-organetto text-2xl font-bold mb-2">Semua Jadwal Telah Terisi</h2>
@@ -49,7 +44,6 @@
         <div>
           <label class="font-organetto block text-white text-sm sm:text-base font-semibold uppercase mb-2">Mode Interview</label>
           <div class="grid grid-cols-2 gap-3">
-            {{-- CHANGED: Radio button styling --}}
             <label class="cursor-pointer">
               <input type="radio" name="interview_mode" value="1" class="peer sr-only" checked>
               <div class="flex items-center justify-center gap-2 px-4 py-2 border border-teal-400/50 rounded-full text-sm sm:text-base text-white peer-checked:bg-teal-500 peer-checked:shadow-[0_0_15px_rgba(45,212,191,0.5)] transition-all">
@@ -71,7 +65,6 @@
           </div>
         </div>
 
-        {{-- CHANGED: Division info box styling --}}
         <div class="bg-cyan-900/30 border border-teal-400/30 rounded-xl p-4 text-sm sm:text-base text-teal-200">
           <p><span class="font-semibold">Divisi Interview:</span> <span class="text-white">{{ $divisionName }}</span></p>
           <p class="text-teal-300/70 text-xs mt-1">Pilih jadwal sesuai ketersediaan Anda.</p>
@@ -81,7 +74,6 @@
           <div>
             <label for="{{ $id }}" class="block mb-2 text-sm text-teal-200 font-organetto">{{ $label }}</label>
             <div class="relative">
-              {{-- CHANGED: Select dropdown styling --}}
               <select id="{{ $id }}" name="{{ $id }}" class="w-full px-4 py-3 bg-transparent border border-teal-400/50 rounded-full text-sm sm:text-base text-white focus:outline-none focus:border-teal-300 focus:shadow-[0_0_12px_rgba(45,212,191,0.4)]">
                 <option class="bg-cyan-950" disabled selected hidden>Pilih {{ $label }}</option>
               </select>
@@ -89,7 +81,6 @@
           </div>
         @endforeach
 
-        {{-- CHANGED: Submit button styling --}}
         <button type="submit" id="submitJadwal" class="w-full py-3 border-2 border-teal-400 text-white font-semibold uppercase rounded-full hover:bg-white hover:text-teal-500 transition-all">
           Submit Jadwal
         </button>
@@ -117,7 +108,6 @@
     var tanggalSelect = document.getElementById('tanggal_choice');
     var jamSelect = document.getElementById('jam_choice');
 
-    // Listen to interview mode change
     document.querySelectorAll('input[name="interview_mode"]').forEach(radio => {
         radio.addEventListener('change', function() {
             interviewMode = this.value;
@@ -126,7 +116,6 @@
     });
 
     function loadSchedules() {
-        // CHANGED: Option background color
         tanggalSelect.innerHTML = '<option class="bg-cyan-950" selected disabled hidden value="">Pilih Tanggal</option>';
         jamSelect.innerHTML = '<option class="bg-cyan-950" selected disabled hidden value="">Pilih Jam</option>';
         jamSelect.disabled = true;
@@ -136,7 +125,6 @@
         var uniqueDates = new Set();
 
         if (filteredSchedules.length === 0) {
-            // CHANGED: Option background color
             tanggalSelect.innerHTML = '<option class="bg-cyan-950" selected disabled hidden value="">Tidak ada jadwal yang tersedia</option>';
             jamSelect.innerHTML = '<option class="bg-cyan-950" selected disabled hidden value="">Tidak ada jadwal yang tersedia</option>';
             jamSelect.disabled = true;
@@ -220,31 +208,31 @@
                 <h3 class="font-organetto text-xl font-bold text-center text-white mb-6 uppercase tracking-wider">Detail Interview ${interviews.interview1.division}</h3>
                 <div class="space-y-4">
                     <div class="grid grid-cols-[40%_60%] gap-2">
-                        <span class="font-organetto font-semibold text-teal-200 min-w-[140px]">Pewawancara</span>
-                        <span class="font-organetto text-white">: ${interviews.interview1.adminName || "N/A"}</span>
+                        <span class="font-organetto font-semibold text-teal-200 min-w-[140px] text-xs md:text-lg">Pewawancara</span>
+                        <span class="font-organetto text-white text-xs md:text-lg">: ${interviews.interview1.adminName || "N/A"}</span>
                     </div>
                     <div class="grid grid-cols-[40%_60%] gap-2">
-                        <span class="font-organetto font-semibold text-teal-200 min-w-[140px]">Mode</span>
-                        <span class="font-organetto text-white">: ${interviews.interview1.mode ? 'Online (Google Meet)' : 'Offline'}</span>
+                        <span class="font-organetto font-semibold text-teal-200 min-w-[140px] text-xs md:text-lg">Mode</span>
+                        <span class="font-organetto text-white text-xs md:text-lg">: ${interviews.interview1.mode ? 'Online (Google Meet)' : 'Offline'}</span>
                     </div>
                     ${interviews.interview1.mode ? `
                     <div class="grid grid-cols-[40%_60%] gap-2">
-                        <span class="font-organetto font-semibold text-teal-200 min-w-[140px]">Link GMeet</span>
-                        <span class="font-organetto text-teal-200">: <a href="${interviews.interview1.link_gmeet || '#'}" target="_blank" class="underline break-all text-teal-300 hover:text-teal-100">${interviews.interview1.link_gmeet || "N/A"}</a></span>
+                        <span class="font-organetto font-semibold text-teal-200 min-w-[140px] text-xs md:text-lg">Link GMeet</span>
+                        <span class="font-organetto text-teal-200 text-xs md:text-lg">: <a href="${interviews.interview1.link_gmeet || '#'}" target="_blank" class="underline break-all text-teal-300 hover:text-teal-100">${interviews.interview1.link_gmeet || "N/A"}</a></span>
                     </div>
                     ` : `
                     <div class="grid grid-cols-[40%_60%] gap-2">
-                        <span class="font-organetto font-semibold text-teal-200 min-w-[140px]">Lokasi</span>
-                        <span class="font-organetto text-white">: ${interviews.interview1.location || "N/A"}</span>
+                        <span class="font-organetto font-semibold text-teal-200 min-w-[140px] text-xs md:text-lg">Lokasi</span>
+                        <span class="font-organetto text-white text-xs md:text-lg">: ${interviews.interview1.location || "N/A"}</span>
                     </div>
                     `}
                     <div class="grid grid-cols-[40%_60%] gap-2">
-                        <span class="font-organetto font-semibold text-teal-200 min-w-[140px]">Hari, Tanggal</span>
-                        <span class="font-organetto text-white">: ${formattedDate}</span>
+                        <span class="font-organetto font-semibold text-teal-200 min-w-[140px] text-xs md:text-lg">Hari, Tanggal</span>
+                        <span class="font-organetto text-white text-xs md:text-lg">: ${formattedDate}</span>
                     </div>
                     <div class="grid grid-cols-[40%_60%] gap-2">
-                        <span class="font-organetto font-semibold text-teal-200 min-w-[140px]">Jam</span>
-                        <span class="font-organetto text-white">: ${formattedTime}</span>
+                        <span class="font-organetto font-semibold text-teal-200 min-w-[140px] text-xs md:text-lg">Jam</span>
+                        <span class="font-organetto text-white text-xs md:text-lg">: ${formattedTime}</span>
                     </div>
                 </div>
                 <div class="mt-8 pt-6 border-t border-teal-400/30 flex flex-col sm:flex-row justify-center items-center gap-4">
