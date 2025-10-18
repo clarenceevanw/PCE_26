@@ -44,93 +44,92 @@ class AdminController extends Controller
     {
         $nrp = Session::get('nrp');
         $admin = Admin::where('nrp', $nrp)->first();
-        $data = [];
-        $schedules = AdminSchedule::with('admin', 'schedule', 'applicant', 'interviewResult')
-            ->join('schedules', 'admin_schedules.schedule_id', '=', 'schedules.id')
-            ->where('admin_id', $admin->id)
-            ->whereNotNull('applicant_id')
-            ->orderBy('schedules.tanggal')
-            ->orderBy('schedules.jam_mulai')
-            ->select('admin_schedules.*', 'schedules.tanggal', 'schedules.jam_mulai')
-            ->get();
 
-        foreach ($schedules as $schedule) {
-            $try = [];
-            // ... (semua kode $try['applicant_id'], $try['date'], dll. tetap sama) ...
-            $try['applicant_id'] = $schedule->applicant_id;
+        $schedules = AdminSchedule::with([
+            'schedule', 
+            'applicant', 
+            'interviewResult'
+        ])
+        ->join('schedules', 'admin_schedules.schedule_id', '=', 'schedules.id')
+        ->where('admin_id', $admin->id)
+        ->whereNotNull('applicant_id')
+        ->orderBy('schedules.tanggal')
+        ->orderBy('schedules.jam_mulai')
+        ->select('admin_schedules.*', 'schedules.tanggal', 'schedules.jam_mulai')
+        ->get();
+
+        $data = $schedules->map(function ($schedule) {
             Carbon::setLocale('id');
-            $try['date'] = Carbon::parse($schedule->schedule->tanggal)->translatedFormat('l, d F Y');
-            $try['time'] = Carbon::parse($schedule->schedule->jam_mulai)->format('H:i');
-            $try['nrp'] = $schedule->applicant->nrp;
-            $try['isOnline'] = $schedule->isOnline;
-            $try['name'] = $schedule->applicant->nama_lengkap;
-            $try['id_line'] = $schedule->applicant->line_id;
-            $try['no_hp'] = $schedule->applicant->no_hp;
-            $try['status_interview'] = $schedule->statusInterview;
 
-            $try['link_hasil_result1'] = null;
-            $try['link_hasil_result2'] = null;
+            $result1 = $schedule->interviewResult->firstWhere('division_id', $schedule->applicant->division_choice1);
+            $result2 = $schedule->interviewResult->firstWhere('division_id', $schedule->applicant->division_choice2);
 
-            $choice1_id = $schedule->applicant->division_choice1;
-            $choice2_id = $schedule->applicant->division_choice2;
+            return [
+                'applicant_id'    => $schedule->applicant_id,
+                'date'            => Carbon::parse($schedule->schedule->tanggal)->translatedFormat('l, d F Y'),
+                'time'            => Carbon::parse($schedule->schedule->jam_mulai)->format('H:i'),
+                'nrp'             => $schedule->applicant->nrp,
+                'isOnline'        => $schedule->isOnline,
+                'name'            => $schedule->applicant->nama_lengkap,
+                'id_line'         => $schedule->applicant->line_id,
+                'no_hp'           => $schedule->applicant->no_hp,
+                'status_interview' => $schedule->statusInterview,
+                'link_hasil_result1' => $result1?->link_hasil,
+                'link_hasil_result2' => $result2?->link_hasil,
+            ];
+        });
 
-            foreach ($schedule->interviewResult as $result) {
-
-                if ($result->division_id == $choice1_id) {
-                    $try['link_hasil_result1'] = $result->link_hasil;
-                }
-
-                if ($choice2_id && $result->division_id == $choice2_id) {
-                    $try['link_hasil_result2'] = $result->link_hasil;
-                }
-            }
-            $data[] = $try;
-        }
-        
         $title = 'My Interview';
+
         return view('admin.myInterview', [
             'title' => $title,
-            'datas' => json_encode($data)
+            'datas' => $data->toJson()
         ]);
     }
 
     public function allInterviewIndex()
     {
-        $nrp = Session::get('nrp');
-        $admin = Admin::where('nrp', $nrp)->first();
-        $data = [];
-        $schedules = AdminSchedule::with('admin', 'schedule', 'applicant')
+        $schedules = AdminSchedule::with([
+            'admin.division',
+            'schedule',
+            'applicant.division1',
+            'applicant.division2',
+            'interviewResult'
+        ])
         ->join('schedules', 'admin_schedules.schedule_id', '=', 'schedules.id')
         ->whereNotNull('applicant_id')
-        ->orderBy('schedules.tanggal') // Order by tanggal from schedules table
-        ->orderBy('schedules.jam_mulai') // Then order by jam from schedules table
-        ->select('admin_schedules.*', 'schedules.tanggal', 'schedules.jam_mulai') // Select the necessary fields
+        ->orderBy('schedules.tanggal')
+        ->orderBy('schedules.jam_mulai')
+        ->select('admin_schedules.*', 'schedules.tanggal', 'schedules.jam_mulai')
         ->get();
 
-
-        foreach ($schedules as $schedule){
-            $try = [];
-            $try['applicant_id'] = $schedule->applicant_id;
+        $data = $schedules->map(function ($schedule) {
             Carbon::setLocale('id');
 
-            // Format the date to Indonesian
-            $try['date'] = Carbon::parse($schedule->schedule->tanggal)
-                ->translatedFormat('l, d F Y');
+            $result1 = $schedule->interviewResult->firstWhere('division_id', $schedule->applicant->division_choice1);
+            $result2 = $schedule->interviewResult->firstWhere('division_id', $schedule->applicant->division_choice2);
 
+            return [
+                'applicant_id'    => $schedule->applicant_id,
+                'date'            => Carbon::parse($schedule->schedule->tanggal)->translatedFormat('l, d F Y'),
+                'time'            => Carbon::parse($schedule->schedule->jam_mulai)->format('H:i'),
+                'name'            => $schedule->applicant->nama_lengkap,
+                'nrp'             => $schedule->applicant->nrp,
+                'adminName'       => $schedule->admin->name,
+                'divisi'          => $schedule->admin->division->name,
+                'statusInterview' => $schedule->statusInterview ? 'Selesai' : 'Pending',
+                'divisi1'         => $schedule->applicant->division1->name,
+                'divisi2'         => $schedule->applicant->division2?->name, // Nullsafe operator jika pilihan 2 tidak ada
+                'link_hasil_result1' => $result1?->link_hasil, // Nullsafe operator
+                'link_hasil_result2' => $result2?->link_hasil, // Nullsafe operator
+            ];
+        });
 
-            $try['time'] = Carbon::parse($schedule->schedule->jam_mulai)->format('H:i');
-            $try['name'] = $schedule->applicant->nama_lengkap;
-            $try['adminName'] = $schedule->admin->name;
-            $try['divisi'] = Division::where('id', $schedule->admin->division_id)->first()->name;
-            $try['statusInterview'] = $schedule->statusInterview ? 'Selesai' : 'Pending';
-            $try['link_hasil'] = $schedule->link_hasil ?? null;
-            $data[] = $try;
-        }
         $title = 'All Interview';
 
         return view('admin.allInterview', [
             'title' => $title,
-            'datas' => json_encode($data)
+            'datas' => $data->toJson() // Konversi koleksi ke JSON
         ]);
     }
 

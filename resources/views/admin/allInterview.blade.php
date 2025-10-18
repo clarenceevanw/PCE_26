@@ -38,6 +38,16 @@
     <div id="datatable" class="w-full px-5 py-5"></div>
     <div class="w-full px-8">
         <div class="flex justify-center">
+            <div class="flex items-center mx-auto mr-1 md:mr-0">
+                <button
+                type="button"
+                data-te-ripple-init
+                data-te-ripple-color="dark"
+                class="inline-block rounded-full border border-black p-1.5 mr-1 uppercase leading-normal shadow-[0_4px_9px_-4px_#000] transition duration-150 ease-in-out hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]">
+                        <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640"><!--!Font Awesome Free v7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M320 96C239.2 96 174.5 132.8 127.4 176.6C80.6 220.1 49.3 272 34.4 307.7C31.1 315.6 31.1 324.4 34.4 332.3C49.3 368 80.6 420 127.4 463.4C174.5 507.1 239.2 544 320 544C400.8 544 465.5 507.2 512.6 463.4C559.4 419.9 590.7 368 605.6 332.3C608.9 324.4 608.9 315.6 605.6 307.7C590.7 272 559.4 220 512.6 176.6C465.5 132.9 400.8 96 320 96zM176 320C176 240.5 240.5 176 320 176C399.5 176 464 240.5 464 320C464 399.5 399.5 464 320 464C240.5 464 176 399.5 176 320zM320 256C320 291.3 291.3 320 256 320C244.5 320 233.7 317 224.3 311.6C223.3 322.5 224.2 333.7 227.2 344.8C240.9 396 293.6 426.4 344.8 412.7C396 399 426.4 346.3 412.7 295.1C400.5 249.4 357.2 220.3 311.6 224.3C316.9 233.6 320 244.4 320 256z"/></svg>
+                </button>
+                <span class="text-sm italic p-1"> : View Interview Result</span>
+            </div>
             <div class="flex items-center mx-auto">
                 <button
                 type="button"
@@ -100,7 +110,10 @@
             { label: "Divisi", field: "divisi",  sort: false},
             { label: "Date", field: "date",  sort: true},
             { label: "Time", field: "time", sort: false },
+            { label: "NRP", field: "nrp", sort: true },
             { label: "Name", field: "name", sort: false },
+            { label: "Division 1", field: "divisi1", sort: false },
+            { label: "Division 2", field: "divisi2", sort: false },
             { label: "Status", field: "statusInterview", sort: false },
             { label: "Result", field: "result", sort: false },
             { label: "Action", field: "action"},
@@ -108,8 +121,15 @@
             rows: datas.map((item) => {
                 return {
                     ...item,
-                    result: item.link_hasil 
-                    ? `<a href="${item.link_hasil}" target="_blank" class="text-blue-500 hover:underline">View Result</a>` 
+                    result: item.link_hasil_result1 && item.link_hasil_result2
+                    ? `<button
+                        type="button"
+                        onclick='openModal("${item.nrp}")'
+                        data-te-ripple-init
+                        data-te-ripple-color="dark"
+                        class="inline-block rounded-full border border-black p-1.5 mr-1 uppercase leading-normal shadow-[0_4px_9px_-4px_#000] transition duration-150 ease-in-out hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]">
+                        <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640"><!--!Font Awesome Free v7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M320 96C239.2 96 174.5 132.8 127.4 176.6C80.6 220.1 49.3 272 34.4 307.7C31.1 315.6 31.1 324.4 34.4 332.3C49.3 368 80.6 420 127.4 463.4C174.5 507.1 239.2 544 320 544C400.8 544 465.5 507.2 512.6 463.4C559.4 419.9 590.7 368 605.6 332.3C608.9 324.4 608.9 315.6 605.6 307.7C590.7 272 559.4 220 512.6 176.6C465.5 132.9 400.8 96 320 96zM176 320C176 240.5 240.5 176 320 176C399.5 176 464 240.5 464 320C464 399.5 399.5 464 320 464C240.5 464 176 399.5 176 320zM320 256C320 291.3 291.3 320 256 320C244.5 320 233.7 317 224.3 311.6C223.3 322.5 224.2 333.7 227.2 344.8C240.9 396 293.6 426.4 344.8 412.7C396 399 426.4 346.3 412.7 295.1C400.5 249.4 357.2 220.3 311.6 224.3C316.9 233.6 320 244.4 320 256z"/></svg>
+                        </button>` 
                     : `<span class="text-red-500">No Result</span>`,
                     action : `
                         <button
@@ -161,23 +181,14 @@
             setTimeout(()=>{
                 modal.classList.add("opacity-100")
             },10)
-            $('#modalTitle').text('Submit Hasil Interview')
+            $('#modalTitle').text('Hasil Interview')
             $('#modalBody').html(`
-            <form id="form_hasil" class="w-full" method="post" action="{{ route('admin.hasilInterview.store') }}">
-                @csrf
                 <div class="grid md:grid-cols-1 gap-6 mb-10">
-                    <div class="flex flex-col w-full md:w-full">
-                        <label for="portofolio" class="block mb-2 text-sm font-medium text-gray-900">Link Google Docs</label>
-                        <input type="text" id="link_hasil" name="link_hasil"
-                            class="border border-gray-400 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                            placeholder="Link Google Docs..."/>
-                        <input type="text" id="nrp" value="${data.nrp}" name="nrp" hidden>
+                    <div class="flex flex-col justify-center items-center w-full md:w-full">
+                        <a href="${data.link_hasil_result1}" target="_blank" class="text-blue-500 hover:underline">Result Divisi 1</a>
+                        <a href="${data.link_hasil_result2}" target="_blank" class="text-blue-500 hover:underline">Result Divisi 2</a>
                     </div>
                 </div>
-
-                <button type="submit" id="submitHasil"
-                    class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
-            </form>
             `
             )
             $("#form_hasil").on('submit', function(e){
