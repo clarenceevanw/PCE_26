@@ -23,14 +23,14 @@ class RegistrationFormMiddleware
             if($this->biodataMiddleware($request)){
                 return $next($request);
             }else{
-                return redirect()->route('applicant.motivasi')->with('error', 'Kompetensi dan Komitmen Pribadi belum diisi/belum disubmit');
+                return redirect()->back()->with('error', 'Biodata belum diisi/belum disubmit');
             }
         }
         elseif($routeName === 'applicant.jadwal'){
-            if($this->berkasMiddleware($request)){
+            if($this->biodataMiddleware($request) && $this->berkasMiddleware($request)){
                 return $next($request);
             }else{
-                return redirect()->route('applicant.berkas')->with('error', 'Berkas belum diisi/belum disubmit');
+                return redirect()->back()->with('error', 'Berkas belum diisi/belum disubmit');
             }
         }
     }
