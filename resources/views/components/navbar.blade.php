@@ -24,9 +24,7 @@
             <div class="absolute left-4 flex flex-row">
                 <img src="{{ asset('assets/PCU-LOGO.png') }}" alt="pcu Logo"
                     class="hidden xl:block h-[15px] 2xl:h-[25px] mr-3">
-                <img src="{{ asset('assets/logo-ftsp-white.png') }}" alt="pcu Logo"
-                    class="hidden xl:block h-[15px] 2xl:h-[25px] mr-3">
-                <img src="{{ asset('assets/logo-fti-white.png') }}" alt="pcu Logo"
+                <img src="{{ asset('assets/logo-ftsp-white.png') }}" alt="ftsp Logo"
                     class="hidden xl:block h-[15px] 2xl:h-[25px] mr-3">
             </div>
             <!-- Hamburger button for mobile view -->
@@ -104,7 +102,7 @@
                     </li>
                 </ul>
                 <div class="absolute right-4 flex flex-row">
-                    <img src="{{ asset('assets/logo-bom-white.png') }}" alt="pcu Logo"
+                    <img src="{{ asset('assets/logo.png') }}" alt="pcu Logo"
                         class="hidden xl:block h-[40px] mr-3">
                 </div>
             </div>
