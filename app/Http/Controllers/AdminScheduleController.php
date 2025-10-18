@@ -39,6 +39,9 @@ class AdminScheduleController extends Controller
 
         try {
             $admin = Admin::where('nrp', Session::get('nrp'))->firstOrFail();
+            //tanggal 22 Okt 2025
+            $limitDate = Carbon::create(2025, 10, 21, 23, 59, 0, "Asia/Jakarta");
+            $now = Carbon::now("Asia/Jakarta");
             
             $newSlotsInput = json_decode($request->input('selectedSlots'), true) ?? [];
             $newSlotsLookup = [];
@@ -71,15 +74,21 @@ class AdminScheduleController extends Controller
                     //kalau udh ada jadwalnya, tapi ada perubahan isOnline kita update isOnlinenya
                     $existingAdminSchedule = $existingSlotsLookup[$key];
                     if ($existingAdminSchedule->isOnline != $newSlot['isOnline']) {
+                        //Jika udh di booking tidak bisa diubah lagi untuk perubahan online
+                        if (!is_null($existingAdminSchedule->applicant_id)) {
+                            DB::rollBack();
+                            $scheduleTime = $existingAdminSchedule->schedule->tanggal . ' jam ' . $existingAdminSchedule->schedule->jam_mulai;
+                            return response()->json([
+                                'success' => false,
+                                'message' => "Jadwal pada tanggal $scheduleTime yang sudah di booking tidak dapat diubah."
+                            ], 409);
+                        }
                         $existingAdminSchedule->isOnline = $newSlot['isOnline'];
                         $existingAdminSchedule->save();
                     }
                 }
             }
             
-            //tanggal 22 Okt 2025
-            $limitDate = Carbon::create(2025, 10, 22, 23, 59, 0, "Asia/Jakarta");
-            $now = Carbon::now("Asia/Jakarta");
             //Untuk mengecek kalau ada jadwal lama yang nggak ada di input baru, berarti admin ingin menghapusnya.
             foreach ($existingSlotsLookup as $key => $scheduleToDelete) {
                 if (!isset($newSlotsLookup[$key])) {
@@ -93,7 +102,7 @@ class AdminScheduleController extends Controller
                         ], 409);
                     }
                     //Cek kalau udah di booking, dirollback dan kirim error agar jadwal tidak dihapus sembarangan. (jaga - jaga kalau ada yg main mainin component di frontend)
-                    if ($scheduleToDelete->applicant_id !== null) { 
+                    if (!is_null($scheduleToDelete->applicant_id)) { 
                         DB::rollBack();
                         $scheduleTime = $scheduleToDelete->schedule->tanggal . ' jam ' . $scheduleToDelete->schedule->jam_mulai;
                         return response()->json([
