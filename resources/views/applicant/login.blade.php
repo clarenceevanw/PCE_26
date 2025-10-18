@@ -38,8 +38,10 @@
             padding: 0;
             min-height: 100vh;
             min-width: 100vw;
-            background-image: url("{{ asset('assets/lantaiNeon.PNG') }}");
-            background-size: 150% 150%; /* Make the background larger for smooth animation */
+            background: radial-gradient(circle at 30% 20%, #203a2b 0%, transparent 40%),
+            radial-gradient(circle at 80% 70%, #1b2d2a 0%, transparent 50%),
+            linear-gradient(135deg, #0c1c18 0%, #122622 100%);
+            background-size: 150% 150%; 
             position: relative;
             animation: gradient 15s ease infinite;
         }
@@ -186,7 +188,7 @@
     <section class="w-screen flex justify-center items-center h-screen absolute">
         <div class=" w-full h-[550px] max-sm:h-[320px] p-8 flex flex-col items-center justify-center">
 
-            <div class="bg-[#1c043d] border-2 border-purple-700 rounded-lg shadow-lg p-8 flex flex-col items-center justify-center">
+            <div class="bg-cyan-950/30 backdrop-blur-sm border-2 border-teal-400/40 rounded-lg shadow-lg p-8 flex flex-col items-center justify-center">
                 <div class="flex flex-col items-center justify-center w-full p-7 max-sm:p-4 mb-5">
                     <h1
                         class="font-return-grid mix-blend-lighten glowing title-text text-white drop-shadow-md font-bold text-5xl text-center max-sm:text-2xl uppercase max-sm:w-[300px]">
