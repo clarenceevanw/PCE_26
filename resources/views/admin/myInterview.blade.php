@@ -123,7 +123,7 @@
                 return {
                     ...item,
                     status: item.isOnline ? "Online" : "Offline",
-                    status_interview: item.status_interview ? "Finished":"Pending",
+                    status_interview: item.status_interview ? "Selesai":"Pending",
                     action : `
                         <button
                         type="button"
