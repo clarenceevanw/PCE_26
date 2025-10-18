@@ -116,12 +116,14 @@
             { label: "Name", field: "name", sort: false },
             { label: "ID Line", field: "id_line", sort: false},
             { label: "No WhatsApp", field: "no_hp", sort: false },
+            { label: "Status Interview", field: "status_interview", sort: true },
             { label: "Action", field: "action"},
             ],
             rows: datas.map((item) => {
                 return {
                     ...item,
                     status: item.isOnline ? "Online" : "Offline",
+                    status_interview: item.status_interview ? "Finished":"Pending",
                     action : `
                         <button
                         type="button"
@@ -153,7 +155,7 @@
                 }
             }),
         },
-        { hover: true, stripped : true }
+        { hover: true, stripped : true, scrollX: true }
         );
         const advancedSearchInput = document.getElementById('advanced-search-input');
 
@@ -191,16 +193,27 @@
                 @csrf
                 <div class="grid md:grid-cols-1 gap-6 mb-10">
                     <div class="flex flex-col w-full md:w-full">
-                        <label for="portofolio" class="block mb-2 text-sm font-medium text-gray-900">Link Google Docs</label>
-                        <input type="text" id="link_hasil" name="link_hasil"
-                            class="border border-gray-400 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                            placeholder="Link Google Docs..."/>
-                        <input type="text" id="nrp" value="${data.nrp}" name="nrp" hidden>
+                        <label for="link_hasil_result1" class="block mb-2 text-sm font-medium text-gray-900">Link Google Docs Divisi Pertama</label>
+                        <input type="text" id="link_hasil_result1" name="link_hasil_result1"
+                            class="border border-gray-400 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 disabled:bg-gray-200 disabled:hover:bg-gray-200 disabled:opacity-40"
+                            placeholder="Link Google Docs..." ${data.link_hasil_result1 ? `value="${data.link_hasil_result1}" disabled` : ''} />
                     </div>
+                    <div class="flex flex-col w-full md:w-full">
+                        <label for="link_hasil_result2" class="block mb-2 text-sm font-medium text-gray-900">Link Google Docs Divisi Kedua</label>
+                        <input type="text" id="link_hasil_result2" name="link_hasil_result2"
+                            class="border border-gray-400 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 disabled:bg-gray-200 disabled:hover:bg-gray-200 disabled:opacity-40"
+                            placeholder="Link Google Docs..." ${data.link_hasil_result2 ? `value="${data.link_hasil_result2}" disabled` : ''}/>
+                    </div>
+                    <input type="text" id="nrp" value="${data.nrp}" name="nrp" hidden>
                 </div>
 
                 <button type="submit" id="submitHasil"
-                    class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
+                    class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 
+                        font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center
+                        transition duration-150 ease-in-out
+                        disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-gray-400 disabled:hover:bg-gray-400
+                        dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                    ${data.link_hasil_result1 && data.link_hasil_result2 ? 'disabled' : ''}>Submit</button>
             </form>
             `
             )
@@ -226,11 +239,16 @@
                         var formData = new FormData(form);
                         var method = $(this).attr('method');
                         var url = $(this).attr('action');
-
-
-                        // var loader = document.querySelector(".data-loader");
-                        // loader.classList.remove("hidden");
-                        // loader.classList.add("flex");
+                        Swal.fire({
+                            title: "Please wait...",
+                            showConfirmButton: false,
+                            didOpen: () => {
+                                // Set custom z-index for the Swal container and backdrop
+                                document.querySelector('.swal2-container').style.zIndex = '2002'; // Adjust z-index as needed
+                                document.querySelector('.swal2-backdrop-show').style.zIndex = '2001'; // Adjust backdrop z-index if needed
+                                Swal.showLoading();
+                            }
+                        });
                         $.ajax({
                             type: method,
                             url: url,
@@ -239,8 +257,7 @@
                             contentType: false,
                             cache: false,
                             success: async function(response) {
-                                // loader.classList.add("hidden");
-                                // loader.classList.remove("flex");
+                                await Swal.close();
                                 if (response.success) {
                                     await Swal.fire({
                                         title: "Success!",
@@ -266,7 +283,7 @@
                                     await Swal.fire({
                                         icon: "error",
                                         title: "Oops...",
-                                        text: response.message,
+                                        html: response.message,
                                         confirmButtonColor: "#3085d6",
                                         didOpen: () => {
                                             // Set custom z-index for the Swal container and backdrop
@@ -277,8 +294,7 @@
                                 }
                             },
                             error: async function(xhr, textStatus, errorThrown) {
-                                // loader.classList.add("hidden");
-                                // loader.classList.remove("flex");
+                                await Swal.close();
                                 await Swal.fire({
                                     title: 'Oops!',
                                     text: 'Something went wrong: ' + textStatus + '-' +
