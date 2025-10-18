@@ -135,63 +135,68 @@ class AdminController extends Controller
 
     public function accApplicantIndex()
     {
-        $applicants = Applicant::whereHas('admin_schedule', function ($query) {
-            $query->where('statusInterview', 1);
-        })
-        ->orderBy('nama_lengkap', 'asc')
-        ->get();
-        $data = [];
-        foreach ($applicants as $applicant){
-            $try= [];
-            $try['id'] = $applicant->id;
-            $try['nrp'] = $applicant->nrp;
-            $try['name'] = $applicant->nama_lengkap;
-            $try['divisi1'] = Division::where('id', $applicant->division_choice1)->first()->name;
-            $try['divisi2'] = Division::where('id', $applicant->division_choice2)->first()->name ?? null;
-
-            $divisionId = $applicant->division_choice1;
-            $schedule = AdminSchedule::with('admin', 'applicant')->where('applicant_id', $applicant->id)
-            ->whereHas('admin', function ($query) use ($divisionId) {
-                $query->where('division_id', $divisionId);
-            })
-            ->first();
-            $try['result1'] = $schedule->link_hasil ?? null;
-            $try['status1'] = $schedule->statusTerima ?? null;
-
-            $divisionId = $applicant->division_choice2;
-            $schedule = AdminSchedule::with('admin', 'applicant')->where('applicant_id', $applicant->id)
-            ->whereHas('admin', function ($query) use ($divisionId) {
-                $query->where('division_id', $divisionId);
-            })
-            ->first() ?? null;
-            $try['result2'] = $schedule->link_hasil ?? null;
-            $try['status2'] = $schedule->statusTerima ?? null;
-            $data[] = $try;
-        }
+        $schedules = AdminSchedule::with(['applicant.division1', 'applicant.division2', 'interviewResult'])
+                    ->where('statusInterview', 1)
+                    ->get();
+        
+        $data = $schedules->map(function ($schedule) {
+            if (!$schedule->applicant) {
+                return null;
+            }
+            $result1 = $schedule->interviewResult->firstWhere('division_id', $schedule->applicant->division_choice1);
+            $result2 = $schedule->interviewResult->firstWhere('division_id', $schedule->applicant->division_choice2);
+            
+            return [
+                'id'              => $schedule->applicant->id,
+                'nrp'             => $schedule->applicant->nrp,
+                'name'            => $schedule->applicant->nama_lengkap,
+                'divisi1'         => $schedule->applicant->division1->name,
+                'divisi2'         => $schedule->applicant->division2->name,
+                'result1'         => $result1?->link_hasil, // Nullsafe operator
+                'result2'         => $result2?->link_hasil, // Nullsafe operator
+                'status1'         => $result1?->statusTerima,
+                'status2'         => $result2?->statusTerima,
+            ];
+        })->filter();
         
         $title = 'Accept or Reject Applicant';
-
         return view('admin.tolakTerima', [
             'title' => $title,
-            'datas' => json_encode($data)
+            'datas' => $data
         ]);
     }
 
     public function accApplicantAction(Request $request)
     {
-        $divisionId = Division::where('name', $request->division_name)->first()->id;
-        if($divisionId != Session::get('division_id') && Session::get('division_slug')!='bph'){
-            return response()->json(['success' => false, 'message' => 'Anda tidak memiliki hak'], 201);
-        }
-        AdminSchedule::with('admin')
-        ->where('applicant_id', $request->applicant_id)
-        ->whereHas('admin', function($query) use ($divisionId) {
-            $query->where('division_id', $divisionId);
-        })
-        ->update([
-            'statusTerima' => $request->isAccepted,
+        $validated = $request->validate([
+            'applicant_id'  => 'required|exists:applicants,id',
+            'division_name' => 'required|string|exists:divisions,name',
+            'isAccepted'        => 'required|integer|in:0,1',
         ]);
-        return response()->json(['success' => true, 'message' => 'Data berhasil diubah'], 201);
+
+        $division = Division::where('name', $validated['division_name'])->first();
+
+        if ($division->id != Session::get('division_id') && Session::get('division_slug') != 'bph') {
+            return response()->json(['success' => false, 'message' => 'Anda tidak memiliki hak akses untuk divisi ini.']); // 403 Forbidden
+        }
+
+        $result = InterviewResult::where('division_id', $division->id)
+            ->whereHas('adminSchedule', function ($query) use ($validated) {
+                $query->where('applicant_id', $validated['applicant_id'])
+                    ->where('statusInterview', 1);
+            })
+            ->first();
+
+        if (!$result) {
+            return response()->json(['success' => false, 'message' => 'Hasil interview untuk pelamar ini tidak ditemukan atau interview belum selesai.'], 404); // 404 Not Found
+        }
+
+        $result->update([
+            'statusTerima' => $validated['isAccepted']
+        ]);
+
+        $message = $validated['isAccepted'] ? 'Pelamar berhasil diterima.' : 'Pelamar berhasil ditolak.';
+        return response()->json(['success' => true, 'message' => $message], 200);
     }
 
     public function allApplicantIndex()
