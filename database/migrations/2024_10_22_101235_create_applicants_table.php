@@ -31,6 +31,7 @@ return new class extends Migration
             $table->longText('kelebihan');
             $table->longText('kekurangan');
             $table->longText('pengalaman');
+            $table->integer('phase')->default(0)->comment('0 = Biodata, 1 = Berkas, 2 = Jadwal, 3 = Final');
             $table->timestamps();
         });
     }
