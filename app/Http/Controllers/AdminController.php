@@ -13,6 +13,7 @@ use App\Models\ApplicantFile;
 use App\Models\InterviewResult;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
@@ -44,52 +45,49 @@ class AdminController extends Controller
         $nrp = Session::get('nrp');
         $admin = Admin::where('nrp', $nrp)->first();
         $data = [];
-        $schedules = AdminSchedule::with('admin', 'schedule', 'applicant')
-        ->join('schedules', 'admin_schedules.schedule_id', '=', 'schedules.id') // Join with schedules table
-        ->where('admin_id', $admin->id)
-        ->where('statusInterview', false)
-        ->whereNotNull('applicant_id')
-        ->orderBy('schedules.tanggal') // Order by tanggal from schedules table
-        ->orderBy('schedules.jam_mulai') // Then order by jam from schedules table
-        ->select('admin_schedules.*', 'schedules.tanggal', 'schedules.jam_mulai') // Select the necessary fields
-        ->get();
+        $schedules = AdminSchedule::with('admin', 'schedule', 'applicant', 'interviewResult')
+            ->join('schedules', 'admin_schedules.schedule_id', '=', 'schedules.id')
+            ->where('admin_id', $admin->id)
+            ->whereNotNull('applicant_id')
+            ->orderBy('schedules.tanggal')
+            ->orderBy('schedules.jam_mulai')
+            ->select('admin_schedules.*', 'schedules.tanggal', 'schedules.jam_mulai')
+            ->get();
 
-        foreach ($schedules as $schedule){
+        foreach ($schedules as $schedule) {
             $try = [];
+            // ... (semua kode $try['applicant_id'], $try['date'], dll. tetap sama) ...
             $try['applicant_id'] = $schedule->applicant_id;
             Carbon::setLocale('id');
-
-            // Format the date to Indonesian
-            $try['date'] = Carbon::parse($schedule->schedule->tanggal)
-                ->translatedFormat('l, d F Y');
-
-
+            $try['date'] = Carbon::parse($schedule->schedule->tanggal)->translatedFormat('l, d F Y');
             $try['time'] = Carbon::parse($schedule->schedule->jam_mulai)->format('H:i');
             $try['nrp'] = $schedule->applicant->nrp;
             $try['isOnline'] = $schedule->isOnline;
             $try['name'] = $schedule->applicant->nama_lengkap;
             $try['id_line'] = $schedule->applicant->line_id;
             $try['no_hp'] = $schedule->applicant->no_hp;
+            $try['status_interview'] = $schedule->statusInterview;
 
-            // $applicantFile = ApplicantFile::where('applicant_id', $schedule->applicant->id)->first();
-            // $try['foto_diri'] = Storage::url($applicantFile->foto_diri);
-            // $try['ktm'] = Storage::url($applicantFile->ktm);
-            // $try['cv'] = Storage::url($applicantFile->cv);
-            // $try['transkrip'] = Storage::url($applicantFile->transkrip);
-            // $try['skkk'] = Storage::url($applicantFile->skkk);
-            // $try['bukti_kecurangan'] = Storage::url($applicantFile->bukti_kecurangan);
-            // $try['jadwal'] = Storage::url($applicantFile->jadwal);
-            // if($applicantFile->portofolio){
-            //     $try['portofolio'] = Storage::url($applicantFile->portofolio);
-            // }else{
-            //     $try['portofolio'] = null;
-            // }
-            
+            $try['link_hasil_result1'] = null;
+            $try['link_hasil_result2'] = null;
+
+            $choice1_id = $schedule->applicant->division_choice1;
+            $choice2_id = $schedule->applicant->division_choice2;
+
+            foreach ($schedule->interviewResult as $result) {
+
+                if ($result->division_id == $choice1_id) {
+                    $try['link_hasil_result1'] = $result->link_hasil;
+                }
+
+                if ($choice2_id && $result->division_id == $choice2_id) {
+                    $try['link_hasil_result2'] = $result->link_hasil;
+                }
+            }
             $data[] = $try;
         }
+        
         $title = 'My Interview';
-        // dd($data);
-
         return view('admin.myInterview', [
             'title' => $title,
             'datas' => json_encode($data)
@@ -134,37 +132,6 @@ class AdminController extends Controller
             'title' => $title,
             'datas' => json_encode($data)
         ]);
-    }
-
-    public function storeHasil(Request $request)
-    {
-        $valid = Validator::make($request->all(), [
-            'link_hasil' => 'required|url',
-        ], [
-            'link_hasil.required' => 'Link hasil is required',
-            'link_hasil.url' => 'Link must be a valid url',
-        ]);
-        if ($valid->fails()) {
-            $errors = $valid->errors()->toArray();
-    
-            // Flatten the error messages into a single string
-            $errorMessages = [];
-            foreach ($errors as $messages) {
-                $errorMessages = array_merge($errorMessages, $messages);
-            }
-            $errorString = implode('\n', $errorMessages); // Join messages with line breaks
-
-            return response()->json(['success' => false, 'message' => $errorString]);
-        }
-        $nrp = Session::get('nrp');
-        $nrpApplicant = $request->nrp;
-        $admin = Admin::where('nrp', $nrp)->first();
-        $applicant = Applicant::where('nrp', $nrpApplicant)->first();
-        AdminSchedule::where('admin_id', $admin->id)->where('applicant_id', $applicant->id)->update([
-            'link_hasil' => $request->link_hasil,
-            'statusInterview' => true
-        ]);
-        return response()->json(['success' => true, 'message' => 'Link berhasil di submit'], 201);
     }
 
     public function accApplicantIndex()
