@@ -75,6 +75,9 @@ class AdminSeeder extends Seeder
                 'division_slug' => 'acara',
                 'position' => 'Koordinator Divisi Acara',
                 'anonymous_name' => 'Spica',
+                'id_line' => 'fe20lia',
+                'link_gmeet' => 'https://meet.google.com/jmz-wvgu-sjt',
+                'location' => 'Selasar Gedung B'
             ],
             [
                 'name' => 'Ryu Alexander',
@@ -82,6 +85,9 @@ class AdminSeeder extends Seeder
                 'division_slug' => 'acara',
                 'position' => 'Sub-Koordinator Divisi Acara',
                 'anonymous_name' => 'Deneb',
+                'id_line' => '',
+                'link_gmeet' => 'https://meet.google.com/nzm-shnu-jbr',
+                'location' => '',
             ],
             [
                 'name' => 'Jessica Shine Utomo',
@@ -89,6 +95,9 @@ class AdminSeeder extends Seeder
                 'division_slug' => 'acara',
                 'position' => 'Sub-Koordinator Divisi Acara',
                 'anonymous_name' => 'Altair',
+                'id_line' => '',
+                'link_gmeet' => 'https://meet.google.com/xye-ghvw-mtx',
+                'location' => '',
             ],
             [
                 'name' => 'Ruth Eliza',
@@ -96,6 +105,9 @@ class AdminSeeder extends Seeder
                 'division_slug' => 'acara',
                 'position' => 'Sub-Koordinator Divisi Acara',
                 'anonymous_name' => 'Mizar',
+                'id_line' => '',
+                'link_gmeet' => 'https://meet.google.com/dgn-kozn-hua',
+                'location' => '',
             ],
             // Creative
             [
@@ -104,6 +116,9 @@ class AdminSeeder extends Seeder
                 'division_slug' => 'creative',
                 'position' => 'Koordinator Divisi Creative',
                 'anonymous_name' => 'Procyon',
+                'id_line' => 'ferdinandkarlim17',
+                'link_gmeet' => 'https://meet.google.com/jqd-jjaz-hoy',
+                'location' => 'Selasar P4',
             ],
             [
                 'name' => 'Olivia Kristy Esterina',
@@ -111,6 +126,9 @@ class AdminSeeder extends Seeder
                 'division_slug' => 'creative',
                 'position' => 'Sub-Koordinator Divisi Creative',
                 'anonymous_name' => 'Bellatrix',
+                'id_line' => '',
+                'link_gmeet' => 'https://meet.google.com/xom-nhup-mxb',
+                'location' => '',
             ],
             [
                 'name' => 'Aurell Nathania Limetta',
@@ -118,6 +136,9 @@ class AdminSeeder extends Seeder
                 'division_slug' => 'creative',
                 'position' => 'Sub-Koordinator Divisi Creative',
                 'anonymous_name' => 'Saiph',
+                'id_line' => '',
+                'link_gmeet' => 'https://meet.google.com/hoi-eezo-xqe',
+                'location' => '',
             ],
             // Transkapman
             [
@@ -126,6 +147,9 @@ class AdminSeeder extends Seeder
                 'division_slug' => 'transkapman',
                 'position' => 'Koordinator Divisi Transkapman',
                 'anonymous_name' => 'Castor',
+                'id_line' => 'darianjoseph19',
+                'link_gmeet' => 'https://meet.google.com/oyp-ueri-qqn',
+                'location' => 'Selasar P.7',
             ],
             [
                 'name' => 'Lincoln Julius Hartanto',
@@ -133,6 +157,9 @@ class AdminSeeder extends Seeder
                 'division_slug' => 'transkapman',
                 'position' => 'Sub-Koordinator Venue',
                 'anonymous_name' => 'Pollux',
+                'id_line' => '',
+                'link_gmeet' => 'https://meet.google.com/xqd-bmgw-egf',
+                'location' => '',
             ],
             [
                 'name' => 'Sean Vandana Sanjaya',
@@ -140,6 +167,9 @@ class AdminSeeder extends Seeder
                 'division_slug' => 'transkapman',
                 'position' => 'Sub-Koordinator Operator',
                 'anonymous_name' => 'Fomalhaut',
+                'id_line' => '',
+                'link_gmeet' => 'https://meet.google.com/sdi-azmn-icb',
+                'location' => '',
             ],
             [
                 'name' => 'Aaron Juan',
@@ -147,6 +177,9 @@ class AdminSeeder extends Seeder
                 'division_slug' => 'transkapman',
                 'position' => 'Sub-Koordinator Data barang',
                 'anonymous_name' => 'Adhara',
+                'id_line' => '',
+                'link_gmeet' => 'https://meet.google.com/fks-yzso-hfj',
+                'location' => '',
             ],
             // Sekkonkes
             [
@@ -155,6 +188,9 @@ class AdminSeeder extends Seeder
                 'division_slug' => 'sekkonkes',
                 'position' => 'Koordinator Divisi Sekkonkes',
                 'anonymous_name' => 'Naos',
+                'id_line' => 'aileenflorenciaa',
+                'link_gmeet' => 'https://meet.google.com/yzk-esfr-xzt',
+                'location' => 'Selasar T2',
             ],
             [
                 'name' => 'Stevie Justian Yap',
@@ -162,6 +198,9 @@ class AdminSeeder extends Seeder
                 'division_slug' => 'sekkonkes',
                 'position' => 'Sub Koordinator Kesehatan',
                 'anonymous_name' => 'Schedar',
+                'id_line' => 'stepipunya',
+                'link_gmeet' => 'https://meet.google.com/mht-utxt-xdo',
+                'location' => 'Ruang Sidang P.402',
             ],
             [
                 'name' => 'Celine Noviena Aditanzil Sugianto',
@@ -169,6 +208,9 @@ class AdminSeeder extends Seeder
                 'division_slug' => 'sekkonkes',
                 'position' => 'Sub Koordinator Konsumsi',
                 'anonymous_name' => 'Alnath',
+                'id_line' => '',
+                'link_gmeet' => 'https://meet.google.com/ssq-gzjv-dsf',
+                'location' => '',
             ],
             // Public Relation
             [
@@ -177,6 +219,9 @@ class AdminSeeder extends Seeder
                 'division_slug' => 'pr',
                 'position' => 'Koordinator Divisi Public Relations',
                 'anonymous_name' => 'Antares',
+                'id_line' => '',
+                'link_gmeet' => 'https://meet.google.com/fhg-swuw-fpw',
+                'location' => '',
             ],
             [
                 'name' => 'Luna Olivia Keniko',
@@ -184,6 +229,9 @@ class AdminSeeder extends Seeder
                 'division_slug' => 'pr',
                 'position' => 'Wakil Koordinator Divisi Public Relations',
                 'anonymous_name' => 'Polaris',
+                'id_line' => '',
+                'link_gmeet' => 'https://meet.google.com/pyh-gyud-bnt',
+                'location' => '',
             ],
             // Sponsor
             [
@@ -192,6 +240,9 @@ class AdminSeeder extends Seeder
                 'division_slug' => 'sponsor',
                 'position' => 'Koordinator Divisi Sponsorship',
                 'anonymous_name' => 'Canopus',
+                'id_line' => 'agnes132',
+                'link_gmeet' => 'https://meet.google.com/pvd-bqqd-vrx',
+                'location' => 'Selasar T2',
             ],
             [
                 'name' => 'Jennifer Grace Kristanto',
@@ -199,6 +250,9 @@ class AdminSeeder extends Seeder
                 'division_slug' => 'sponsor',
                 'position' => 'Wakil Koordinator Divisi Sponsorship',
                 'anonymous_name' => 'Mirfak',
+                'id_line' => '',
+                'link_gmeet' => 'https://meet.google.com/uoz-nzmg-vdi',
+                'location' => '',
             ],
             // IT
             [
@@ -207,6 +261,9 @@ class AdminSeeder extends Seeder
                 'division_slug' => 'it',
                 'position' => 'Koordinator Divisi IT',
                 'anonymous_name' => 'Atria',
+                'id_line' => 'clarence_evan',
+                'link_gmeet' => 'https://meet.google.com/oth-temm-oam',
+                'location' => 'Selasar P2',
             ],
             [
                 'name' => 'Nataniel Joshe',
@@ -214,6 +271,9 @@ class AdminSeeder extends Seeder
                 'division_slug' => 'it',
                 'position' => 'Wakil Koordinator Divisi IT',
                 'anonymous_name' => 'Avior',
+                'id_line' => '',
+                'link_gmeet' => 'https://meet.google.com/bwv-npuv-rkt',
+                'location' => '',
             ],
             [
                 'name' => 'DUMMY BOLO',
@@ -221,6 +281,9 @@ class AdminSeeder extends Seeder
                 'division_slug' => 'sekkonkes',
                 'position' => 'Dummy Sekkonkes',
                 'anonymous_name' => 'Rigel',
+                'id_line' => '',
+                'link_gmeet' => 'https://meet.google.com/xye-ghvw-mtx',
+                'location' => '',
             ]
         ];
 
