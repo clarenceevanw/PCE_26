@@ -97,7 +97,7 @@
             background: radial-gradient(circle at 30% 20%, #203a2b 0%, transparent 40%),
             radial-gradient(circle at 80% 70%, #1b2d2a 0%, transparent 50%),
             linear-gradient(135deg, #0c1c18 0%, #122622 100%);
-            background-size: 150% 150%;
+            background-size: 300% 300%;
 
             /* background-size: cover; */
             background-attachment: fixed;
@@ -105,7 +105,25 @@
             background-repeat: no-repeat;
             background-position: center top;
             /* Membuat background di tengah atas */
-            animation: gradient 15s ease-in-out infinite;
+            animation: gradient-flow 25s ease-in-out infinite alternate;
+        }
+
+        @keyframes gradient-flow {
+            0% {
+                background-position: 0% 50%;
+            }
+            25% {
+                background-position: 50% 0%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            75% {
+                background-position: 50% 100%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
         }
 
         @keyframes gradient {
