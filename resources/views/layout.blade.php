@@ -54,7 +54,7 @@
             font-style: normal;
         }
 
-        @font-face{
+        @font-face {
             font-family: 'ReturnoftheGrid';
             src: url('{{ asset('fonts/return-of-the-grid.otf') }}') format('truetype');
             font-weight: normal;
@@ -87,84 +87,76 @@
             box-shadow: none;
         }
 
-        body, html {
+        body,
+        html {
             overflow-x: hidden !important;
         }
 
+
         body {
-            /* background-image:
-                url('{{ asset('assets/polos.PNG') }}'); */
-            background: radial-gradient(circle at 30% 20%, #203a2b 0%, transparent 40%),
-            radial-gradient(circle at 80% 70%, #1b2d2a 0%, transparent 50%),
-            linear-gradient(135deg, #0c1c18 0%, #122622 100%);
-            background-size: 300% 300%;
+            background-image: url("{{ asset('assets/welcome-awan.png') }}"), linear-gradient(180deg, rgba(198, 234, 255, 1) 0%, rgba(56, 182, 255, 1) 14%);
+            background-color: #C6EAFF;
 
-            /* background-size: cover; */
-            background-attachment: fixed;
-            /* Membuat background tetap saat scroll */
-            background-repeat: no-repeat;
-            background-position: center top;
-            /* Membuat background di tengah atas */
-            animation: gradient-flow 25s ease-in-out infinite alternate;
+            /* Make the image cover the container (scales and is cropped instead of stretched) */
+            background-size: cover, cover;
+
+            /* allow separate settings per layer */
+            background-attachment: fixed, fixed;
+            background-repeat: no-repeat, no-repeat;
+
+            /* start image at left; keep gradient fixed */
+            background-position: 0% 10%, center top;
+
+            /* slide the first (image) layer right then back left */
+            animation: bg-slide 30s ease-in-out infinite;
         }
 
-        @keyframes gradient-flow {
+        @keyframes bg-slide {
             0% {
-                background-position: 0% 50%;
+                background-position: 0% 10%, center top;
             }
-            25% {
-                background-position: 50% 0%;
-            }
+
             50% {
-                background-position: 100% 50%;
+                background-position: 100% 10%, center top;
             }
-            75% {
-                background-position: 50% 100%;
-            }
+
             100% {
-                background-position: 0% 50%;
+                background-position: 0% 10%, center top;
             }
         }
 
-        @keyframes gradient {
-            0% {
-                background-position: 0% 50%;
-            }
-            50% {
-                background-position: 100% 50%;
-            }
-            100% {
-                background-position: 0% 50%;
-            }
-        }
-        /* @media screen and (max-width: 800px) {
+        @media (min-width: 1024px) {
             body {
-                background-image:
-                    url('{{ asset('assets/Background WEB OpenRec BOM 25 mobile.png') }}') !important;
+                background-size: 110% auto, cover;
             }
-        } */
+        }
+
+        @media (min-width: 1920px) {
+            body {
+                background-size: 200% auto, cover;
+            }
+        }
     </style>
     <style>
+        .swal2-confirm {
+            background-color: rgba(45, 72, 56, 1) !important;
+            color: white !important;
+        }
 
-    .swal2-confirm {
-        background-color: rgba(45, 72, 56, 1) !important;
-        color: white !important;
-    }
+        .swal2-confirm:hover {
+            background-color: rgb(39, 62, 49) !important;
+        }
 
-    .swal2-confirm:hover {
-        background-color: rgb(39, 62, 49) !important;
-    }
-
-    .swal2-cancel {
-        background-color: #e11d48 !important;
-        color: white !important;
-    }
-</style>
+        .swal2-cancel {
+            background-color: #e11d48 !important;
+            color: white !important;
+        }
+    </style>
 
 </head>
 
 <body>
-    @if(session('login'))
+    @if (session('login'))
         <script>
             Swal.fire({
                 title: "Success",
@@ -173,7 +165,7 @@
             });
         </script>
     @endif
-    @if(session('logout'))
+    @if (session('logout'))
         <script>
             Swal.fire({
                 title: "Success",

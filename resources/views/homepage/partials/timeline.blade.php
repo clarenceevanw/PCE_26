@@ -1,30 +1,265 @@
-<section id="timeline" class="flex w-screen h-screen">
-    <div class="flex flex-col w-full justify-center items-center">
-        <h1 class="font-squids text-shadow text-center text-white text-4xl sm:text-6xl font-bold my-16" data-aos="fade-down" data-aos-easing="linear" data-aos-duration="1000"
-        >Timeline</h1>
-        <div data-aos="fade-right" data-aos-easing="linear" data-aos-duration="1000">
-            <p class="font-organetto text-center text-yellow-400 text-sm lg:text-lg">Interview</p>
-            <p class="font-organetto text-center text-yellow-400 text-sm lg:text-lg">5 - 19 November 2024</p>
-        </div>
+<style>
+    /* Animated background particles */
+    .particle {
+        position: absolute;
+        width: 300px;
+        height: 300px;
+        border-radius: 50%;
+        filter: blur(80px);
+        opacity: 0.15;
+        animation: float 20s infinite ease-in-out;
+    }
 
-        <div class="grid grid-cols-2 w-9/12" data-aos="fade-left" data-aos-easing="linear" data-aos-duration="1000">
-            <div class="h-[50px] border-r-4 border-white"></div>
-        </div>
-        <div class="w-1/2 border-t-4 border-white" data-aos="fade-down" data-aos-easing="linear" data-aos-duration="1000">
-        </div>
-        <div class="w-1/2 h-[50px] border-l-4 border-r-4 border-white" data-aos="fade-up" data-aos-easing="linear" data-aos-duration="1000">
-        </div>
-        <div class="flex w-full justify-between">
-            <div class="w-1/2">
-                <div class="justify-start" data-aos="fade-up-right" data-aos-easing="linear" data-aos-duration="1000">
-                    <p class="font-organetto text-center text-yellow-400 text-sm lg:text-lg">Open Recruitment</p>
-                    <p class="font-organetto text-center text-yellow-400 text-sm lg:text-lg">4 - 18 November 2024</p>
-                </div>
+    .particle-1 {
+        background: linear-gradient(135deg, #fbbf24, #f59e0b);
+        top: 20%;
+        left: 10%;
+        animation-delay: 0s;
+    }
+
+    .particle-2 {
+        background: linear-gradient(135deg, #60a5fa, #3b82f6);
+        top: 50%;
+        right: 10%;
+        animation-delay: 7s;
+    }
+
+    @keyframes float {
+
+        0%,
+        100% {
+            transform: translate(0, 0) scale(1);
+        }
+
+        33% {
+            transform: translate(30px, -30px) scale(1.1);
+        }
+
+        66% {
+            transform: translate(-20px, 20px) scale(0.9);
+        }
+    }
+
+    /* Timeline line animation */
+    .timeline-line {
+        animation: lineGrow 1.5s ease-out forwards;
+    }
+
+    @keyframes lineGrow {
+        from {
+            transform: translateX(-50%) scaleY(0);
+            transform-origin: top;
+        }
+
+        to {
+            transform: translateX(-50%) scaleY(1);
+            transform-origin: top;
+        }
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .particle {
+            width: 200px;
+            height: 200px;
+            filter: blur(60px);
+        }
+
+        #timeline .space-y-16 {
+            gap: 2rem;
+        }
+
+        #timeline .relative.grid {
+            grid-template-columns: auto 1fr !important;
+            gap: 1rem;
+            padding-left: 1rem;
+        }
+
+        #timeline .relative.grid>div:first-child,
+        #timeline .relative.grid>div:last-child {
+            display: none !important;
+        }
+
+        #timeline .relative.grid::before {
+            content: '';
+            position: absolute;
+            left: 1.5rem;
+            top: 0;
+            bottom: 0;
+            width: 1px;
+            background: linear-gradient(to bottom, #4ade80, #16a34a);
+        }
+
+        .timeline-line {
+            display: none;
+        }
+
+        #timeline .relative.grid .bg-white\/90 {
+            margin-left: 2.5rem;
+        }
+
+        #timeline .bg-white\/90 {
+            max-width: 100% !important;
+            padding: 1.25rem;
+        }
+
+        #timeline h3 {
+            font-size: 1.125rem;
+        }
+
+        #timeline .w-12.h-12 {
+            width: 2.5rem;
+            height: 2.5rem;
+        }
+
+        #timeline .w-12.h-12 svg {
+            width: 1.25rem;
+            height: 1.25rem;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .timeline-line {
+            left: 1.5rem !important;
+        }
+
+        .max-w-sm {
+            margin-left: 2.5rem !important;
+            padding: 1rem !important;
+        }
+
+        h3 {
+            font-size: 1rem !important;
+        }
+
+        .text-sm {
+            font-size: 0.75rem !important;
+        }
+
+        .text-base {
+            font-size: 0.875rem !important;
+        }
+
+        .w-12 {
+            width: 2.5rem !important;
+            height: 2.5rem !important;
+        }
+
+        .w-6 {
+            width: 1.25rem !important;
+            height: 1.25rem !important;
+        }
+    }
+
+    @media (max-width: 480px) {
+        #timeline {
+            padding-top: 3rem;
+            padding-bottom: 3rem;
+        }
+
+        #timeline .bg-white\/90 {
+            padding: 1rem;
+        }
+
+        #timeline h3 {
+            font-size: 1rem;
+        }
+
+        #timeline .text-sm {
+            font-size: 0.75rem;
+        }
+
+        #timeline .text-base {
+            font-size: 0.875rem;
+        }
+    }
+</style>
+<section id="timeline" class="relative flex w-screen min-h-screen py-20 overflow-hidden">
+    <!-- Animated background particles -->
+    <div class="absolute inset-0 overflow-hidden pointer-events-none">
+        <div class="particle particle-1"></div>
+        <div class="particle particle-2"></div>
+    </div>
+
+    <div class="relative z-10 flex flex-col w-full justify-center items-center px-4">
+
+        <!-- Timeline Container -->
+        <div class="relative w-full max-w-4xl">
+            <!-- Central Line -->
+            <div
+                class="absolute left-1/2 top-0 bottom-0 w-1 bg-gradient-to-b from-green-400 via-green-400 to-green-600 transform -translate-x-1/2 timeline-line">
             </div>
-            <div class="w-1/2">
-                <div class="justify-end" data-aos="fade-up-left" data-aos-easing="linear" data-aos-duration="1000">
-                    <p class="font-organetto text-center text-yellow-400 text-sm lg:text-lg">Announcement</p>
-                    <p class="font-organetto text-center text-yellow-400 text-sm lg:text-lg">22 November 2024</p>
+
+            <!-- Timeline Items -->
+            <div class="space-y-16">
+                <!-- Item 1 - Open Recruitment (Left) -->
+                <div class="relative grid grid-cols-2 gap-4 items-center" data-aos="fade-right" data-aos-duration="800"
+                    data-aos-delay="200">
+                    <div class="flex justify-end">
+                        <div
+                            class="bg-white/90 backdrop-blur-md border-2 border-green-400/70 rounded-2xl p-6 shadow-2xl hover:shadow-[0_0_40px_rgba(251,191,36,0.5)] transition-all duration-500 hover:scale-105 w-full max-w-sm">
+                            <div class="flex items-center gap-3 mb-3">
+                                <div
+                                    class="w-12 h-12 bg-gradient-to-br from-green-400 to-green-500 rounded-full flex items-center justify-center shadow-lg flex-shrink-0">
+                                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9">
+                                        </path>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h3 class="font-organetto font-bold text-xl text-gray-800">Open Recruitment</h3>
+                                    <p class="font-organetto text-sm text-gray-600">Registration Phase</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-2 text-green-600 font-organetto font-semibold">
+                                <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z">
+                                    </path>
+                                </svg>
+                                <span class="text-base">4 - 18 November 2024</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div></div>
+                </div>
+
+                <!-- Item 2 - Interview (Right) -->
+                <div class="relative grid grid-cols-2 gap-4 items-center" data-aos="fade-left" data-aos-duration="800"
+                    data-aos-delay="400">
+                    <div></div>
+                    <div class="flex justify-start">
+                        <div
+                            class="bg-white/90 backdrop-blur-md border-2 border-green-700/70 rounded-2xl p-6 shadow-2xl hover:shadow-[0_0_40px_rgba(96,165,250,0.5)] transition-all duration-500 hover:scale-105 w-full max-w-sm">
+                            <div class="flex items-center gap-3 mb-3">
+                                <div
+                                    class="w-12 h-12 bg-gradient-to-br from-green-400 to-green-500 rounded-full flex items-center justify-center shadow-lg flex-shrink-0">
+                                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z">
+                                        </path>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h3 class="font-organetto font-bold text-xl text-gray-800">Interview</h3>
+                                    <p class="font-organetto text-sm text-gray-600">Selection Process</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-2 text-green-600 font-organetto font-semibold">
+                                <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z">
+                                    </path>
+                                </svg>
+                                <span class="text-base">5 - 19 November 2024</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
