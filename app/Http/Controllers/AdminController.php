@@ -106,8 +106,8 @@ class AdminController extends Controller
         $data = $schedules->map(function ($schedule) {
             Carbon::setLocale('id');
 
-            $result1 = $schedule->interviewResult->firstWhere('division_id', $schedule->applicant->division_choice1);
-            $result2 = $schedule->interviewResult->firstWhere('division_id', $schedule->applicant->division_choice2);
+            $result1 = $schedule->interviewResult?->firstWhere('division_id', $schedule->applicant->division_choice1);
+            $result2 = $schedule->interviewResult?->firstWhere('division_id', $schedule->applicant->division_choice2);
 
             return [
                 'applicant_id'    => $schedule->applicant_id,
@@ -129,7 +129,8 @@ class AdminController extends Controller
 
         return view('admin.allInterview', [
             'title' => $title,
-            'datas' => $data->toJson() // Konversi koleksi ke JSON
+            'divisions' => Division::whereNotIn('slug', ['bph', 'sc', 'bphk', 'dosen'])->get(),
+            'datas' => $data->toJson(),
         ]);
     }
 
@@ -162,6 +163,7 @@ class AdminController extends Controller
         $title = 'Accept or Reject Applicant';
         return view('admin.tolakTerima', [
             'title' => $title,
+            'divisions' => Division::whereNotIn('slug', ['bph', 'sc', 'bphk', 'dosen'])->get(),
             'datas' => $data
         ]);
     }
