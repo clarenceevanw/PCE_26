@@ -1,111 +1,216 @@
 <style>
-    .nav-unblur {
-        backdrop-filter: blur(30px) brightness(0.85);
-        -webkit-backdrop-filter: blur(30px) brightness(0.85);
-        box-shadow: none;
-        border-bottom: none;
+    /* --- BASE STYLES --- */
+    .nav-transparent {
+        background: transparent;
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+        transition: all 0.4s ease;
     }
 
-    @media screen and (max-width:1419px) {
-        .nav-unblur {
-            backdrop-filter: blur(13px) brightness(0.85);
-            -webkit-backdrop-filter: blur(13px) brightness(0.85);
-            box-shadow: none;
-            border-bottom: none;
+    .nav-glass {
+        background: rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(15px) saturate(150%);
+        -webkit-backdrop-filter: blur(15px) saturate(150%);
+        transition: all 0.4s ease;
+    }
+
+    .nav-hidden {
+        transform: translateY(-100%);
+        transition: transform 0.4s ease;
+    }
+
+    /* --- DESKTOP --- */
+    .nav-desktop-item a {
+        position: relative;
+        font-weight: 600;
+        color: #000;
+        transition: color 0.3s ease;
+    }
+
+    .nav-desktop-item a::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        bottom: -3px;
+        width: 0%;
+        height: 2px;
+        background: #000;
+        transition: width 0.3s ease;
+    }
+
+    .nav-desktop-item a:hover::after {
+        width: 100%;
+    }
+
+    /* --- MOBILE --- */
+    .nav-mobile-menu {
+        position: fixed;
+        top: 0;
+        right: 0;
+        width: 100%;
+        height: 100vh;
+        background: rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(18px) saturate(180%);
+        -webkit-backdrop-filter: blur(18px) saturate(180%);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 2rem;
+        transform: translateY(-100%);
+        opacity: 0;
+        transition: all 0.4s ease;
+        z-index: 40;
+    }
+
+    .nav-mobile-menu.show {
+        transform: translateY(0);
+        opacity: 1;
+    }
+
+    .nav-mobile-btn {
+        z-index: 50;
+        transition: transform 0.4s ease;
+    }
+
+    .nav-mobile-btn.active span:nth-child(1) {
+        transform: rotate(45deg) translateY(8px);
+    }
+
+    .nav-mobile-btn.active span:nth-child(2) {
+        opacity: 0;
+    }
+
+    .nav-mobile-btn.active span:nth-child(3) {
+        transform: rotate(-45deg) translateY(-8px);
+    }
+
+    .nav-mobile-btn span {
+        display: block;
+        width: 25px;
+        height: 2px;
+        background: #000;
+        margin: 2px 0;
+        transition: all 0.4s ease;
+    }
+
+    @media screen and (orientation: portrait) {
+        .nav-desktop {
+            display: none;
+        }
+
+        .nav-mobile {
+            display: flex;
+        }
+
+        .logo-desktop {
+            display: none;
+        }
+    }
+
+    @media screen and (orientation: landscape) {
+        .nav-desktop {
+            display: flex;
+        }
+
+        .nav-mobile {
+            display: none;
+        }
+
+        .logo-desktop {
+            display: flex;
         }
     }
 </style>
-<!-- Main navigation container -->
-<div class="relative z-50">
-    <nav class="nav-unblur fixed top-0 left-0 right-0 flex w-full flex-nowrap items-center justify-between bg-transparent py-2 shadow-dark-mild xl:flex-wrap xl:justify-start xl:py-4"
-        data-twe-navbar-ref>
-        <div class="relative flex w-full flex-wrap items-center justify-between px-3">
-            {{-- left logos --}}
-            <div class="absolute left-4 flex flex-row">
-                <img src="{{ asset('assets/PCU-LOGO.png') }}" alt="pcu Logo"
-                    class="hidden xl:block h-[15px] 2xl:h-[25px] mr-3">
-                <img src="{{ asset('assets/logo-ftsp-white.png') }}" alt="ftsp Logo"
-                    class="hidden xl:block h-[15px] 2xl:h-[25px] mr-3">
-            </div>
-            <!-- Hamburger button for mobile view -->
-            <button
-                class="block border-0 bg-transparent px-2 text-yellow-400/50 hover:no-underline hover:shadow-none focus:no-underline focus:shadow-none focus:outline-none focus:ring-0 dark:text-neutral-200 xl:hidden"
-                type="button" data-twe-collapse-init data-twe-target="#navbarSupportedContent8"
-                aria-controls="navbarSupportedContent8" aria-expanded="false" aria-label="Toggle navigation">
-                <!-- Hamburger icon -->
-                <span class="[&>svg]:w-7 [&>svg]:stroke-black/50 dark:[&>svg]:stroke-white">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                        <path fill-rule="evenodd"
-                            d="M3 6.75A.75.75 0 013.75 6h16.5a.75.75 0 010 1.5H3.75A.75.75 0 013 6.75zM3 12a.75.75 0 01.75-.75h16.5a.75.75 0 010 1.5H3.75A.75.75 0 013 12zm0 5.25a.75.75 0 01.75-.75h16.5a.75.75 0 010 1.5H3.75a.75.75 0 01-.75-.75z"
-                            clip-rule="evenodd" />
-                    </svg>
-                </span>
-            </button>
 
-            <!-- Collapsible navbar container -->
-            <div class="!visible mt-2 hidden flex-grow basis-[100%] items-center justify-center xl:mt-0 xl:!flex xl:basis-auto"
-                id="navbarSupportedContent8" data-twe-collapse-item>
-                <!-- Left links -->
-                <ul class="list-style-none flex flex-col ps-0 xl:mt-1 xl:flex-row gap-x-3" data-twe-navbar-nav-ref>
-                    <!-- Home link -->
-                    <li class="my-4 ps-2 xl:my-0 xl:pe-1 xl:ps-2 xl:hover:scale-110 transition duration-100 hover:ease-in-out"
-                        data-twe-nav-item-ref>
-                        <a class="font-squids p-0 text-sm text-yellow-400 transition font-extrabold duration-200 hover:text-pink-600 hover:ease-in-out focus:text-yellow-400/80 active:text-yellow-400/80 xl:px-2"
-                            href="#bombi" data-twe-nav-link-ref>HOME</a>
-                    </li>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const navbar = document.getElementById("navbar");
+        const mobileMenu = document.getElementById("mobileMenu");
+        const menuBtn = document.getElementById("menuBtn");
+        let lastScrollTop = 0;
 
-                    <li class="mb-4 ps-2 xl:mb-0 xl:pe-1 xl:ps-0 xl:hover:scale-110 transition duration-100 hover:ease-in-out"
-                        data-twe-nav-item-ref>
-                        <a class="font-squids p-0 text-sm text-yellow-400 transition font-extrabold duration-200 hover:text-pink-600 hover:ease-in-out focus:text-yellow-400/80 active:text-yellow-400/80 xl:px-2"
-                            href="#penjelasan" data-twe-nav-link-ref>ABOUT</a>
-                    </li>
+        // Scroll effect
+        window.addEventListener("scroll", function () {
+            const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
 
-                    <li class="mb-4 ps-2 xl:mb-0 xl:pe-1 xl:ps-0 xl:hover:scale-110 transition duration-100 hover:ease-in-out"
-                        data-twe-nav-item-ref>
-                        <a class="font-squids p-0 text-sm text-yellow-400 transition font-extrabold duration-200 hover:text-pink-600 hover:ease-in-out focus:text-yellow-400/80 active:text-yellow-400/80 xl:px-2"
-                            href="#divisi" data-twe-nav-link-ref>DIVISIONS</a>
-                    </li>
+            if (currentScroll > 50) {
+                navbar.classList.remove("nav-transparent");
+                navbar.classList.add("nav-glass");
+            } else {
+                navbar.classList.remove("nav-glass");
+                navbar.classList.add("nav-transparent");
+            }
 
-                    <li class="mb-4 ps-2 xl:mb-0 xl:pe-1 xl:ps-0 xl:hover:scale-110 transition duration-100 hover:ease-in-out"
-                        data-twe-nav-item-ref>
-                        <a class="font-squids p-0 text-sm text-yellow-400 transition font-extrabold duration-200 hover:text-pink-600 hover:ease-in-out focus:text-yellow-400/80 active:text-yellow-400/80 xl:px-2"
-                            href="#requirement" data-twe-nav-link-ref>REQUIREMENTS</a>
-                    </li>
+            if (currentScroll > lastScrollTop && currentScroll > 100) {
+                navbar.classList.add("nav-hidden");
+            } else {
+                navbar.classList.remove("nav-hidden");
+            }
 
+            lastScrollTop = currentScroll <= 0 ? 0 : currentScroll;
+        });
 
-                    <li class="mb-4 ps-2 xl:mb-0 xl:pe-1 xl:ps-0 xl:hover:scale-110 transition duration-100 hover:ease-in-out"
-                        data-twe-nav-item-ref>
-                        <a class="font-squids p-0 text-sm text-yellow-400 transition font-extrabold duration-200 hover:text-pink-600 hover:ease-in-out focus:text-yellow-400/80 active:text-yellow-400/80 xl:px-2"
-                            href="#timeline" data-twe-nav-link-ref>TIMELINE</a>
-                    </li>
-                    <li class="mb-4 ps-2 xl:mb-0 xl:pe-1 xl:ps-0 xl:hover:scale-110 transition duration-100 hover:ease-in-out"
-                        data-twe-nav-item-ref>
-                        <a class="font-squids p-0 text-sm text-yellow-400 transition font-extrabold duration-200 hover:text-pink-600 hover:ease-in-out focus:text-yellow-400/80 active:text-yellow-400/80 xl:px-2"
-                            href="#faq" data-twe-nav-link-ref>FAQ<span class="font-squids text-2xs">s</span></a>
-                    </li>
-                    <li class="mb-4 ps-2 xl:mb-0 xl:pe-1 xl:ps-0 xl:hover:scale-110 transition duration-100 hover:ease-in-out"
-                        data-twe-nav-item-ref>
-                        <a class="font-squids p-0 text-sm text-yellow-400 transition font-extrabold duration-200 hover:text-pink-600 hover:ease-in-out focus:text-yellow-400/80 active:text-yellow-400/80 xl:px-2"
-                            href="#contact" data-twe-nav-link-ref>CONTACT US</a>
-                    </li>
-                    <li class="mb-4 ps-2 xl:mb-0 xl:pe-1 xl:ps-0 xl:hover:scale-110 transition duration-100 hover:ease-in-out"
-                        data-twe-nav-item-ref>
-                        @if (session('nrp'))
-                            <a id="logout"
-                                class="font-squids p-0 text-sm text-yellow-400 transition font-extrabold duration-200 hover:text-pink-600 hover:ease-in-out focus:text-yellow-400/80 active:text-yellow-400/80 xl:px-2"
-                                href="{{ route('logout') }}" data-twe-nav-link-ref>LOG OUT</a>
-                        @else
-                            <a id="login"
-                                class="font-squids p-0 text-sm text-yellow-400 transition font-extrabold duration-200 hover:text-pink-600 hover:ease-in-out focus:text-yellow-400/80 active:text-yellow-400/80 xl:px-2"
-                                href="{{ route('applicant.login') }}" data-twe-nav-link-ref>LOG IN</a>
-                        @endif
-                    </li>
-                </ul>
-                <div class="absolute right-4 flex flex-row">
-                    <img src="{{ asset('assets/logo.png') }}" alt="pcu Logo"
-                        class="hidden xl:block h-[40px] mr-3">
-                </div>
-            </div>
-        </div>
-    </nav>
+        // Mobile menu toggle
+        menuBtn.addEventListener("click", () => {
+            menuBtn.classList.toggle("active");
+            mobileMenu.classList.toggle("show");
+        });
+
+        // Tutup menu saat klik link
+        document.querySelectorAll("#mobileMenu a").forEach(link => {
+            link.addEventListener("click", () => {
+                mobileMenu.classList.remove("show");
+                menuBtn.classList.remove("active");
+            });
+        });
+    });
+</script>
+
+<!-- 🌐 Navbar -->
+<div id="navbar"
+    class="nav-transparent fixed top-0 left-0 right-0 z-50 flex w-full items-center justify-between py-4 px-4 transition duration-500">
+
+    <!-- Logo (Desktop Only) -->
+    <div class="logo-desktop items-center space-x-3 hidden">
+        <img src="{{ asset('assets/logo.png') }}" alt="Logo PCE" class="h-[32px] w-auto object-contain">
+    </div>
+
+    <!-- Desktop Navbar -->
+    <div class="nav-desktop hidden">
+        <ul class="flex flex-row gap-x-8 items-center">
+            @php
+                $navItems = [
+                    ['text' => 'About Us', 'href' => '#about'],
+                    ['text' => 'Divisions', 'href' => '#divisions'],
+                    ['text' => 'Announcement', 'href' => '#announcement'],
+                    ['text' => 'FAQ', 'href' => '#faq'],
+                    ['text' => 'Contact', 'href' => '#contact'],
+                ];
+            @endphp
+
+            @foreach ($navItems as $item)
+                <li class="nav-desktop-item">
+                    <a href="{{ $item['href'] }}" class="text-base">{{ $item['text'] }}</a>
+                </li>
+            @endforeach
+        </ul>
+    </div>
+
+    <!-- Mobile Navbar -->
+    <div class="nav-mobile hidden items-center">
+        <button id="menuBtn" class="nav-mobile-btn flex flex-col justify-center items-center border-0 bg-transparent p-2">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </div>
+
+    <!-- Mobile Fullscreen Menu -->
+    <div id="mobileMenu" class="nav-mobile-menu">
+        <img src="{{ asset('assets/logo.png') }}" alt="Logo PCE" class="h-[2.5rem] mb-4">
+        @foreach ($navItems as $item)
+            <a href="{{ $item['href'] }}" class="text-black font-semibold text-lg">{{ $item['text'] }}</a>
+        @endforeach
+    </div>
 </div>

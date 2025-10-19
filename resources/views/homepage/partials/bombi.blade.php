@@ -1,12 +1,23 @@
-<section id="bombi" class="flex w-screen h-screen">
-    <div class="flex flex-col w-full h-full justify-center items-center">
-        <div class="flex flex-col w-9/12 justify-center items-center text-6xl lg:text-7xl font-semibold mt-10 lg:mt-20 mb-5">
-            <h1 class="font-squids text-shadow text-center text-white" data-aos="fade-right" data-aos-easing="linear"
-                data-aos-duration="1000">Battle of Minds</h1>
-            <h1 class="font-squids text-shadow text-center text-white" data-aos="fade-left" data-aos-easing="linear"
-                data-aos-duration="1000">2025</h1>
-        </div>
-        <img src="{{ asset('assets/bomby gerak 2 compressed.gif') }}" alt="" class="w-[350px] bg-transparent" data-aos="fade-up" data-aos-easing="linear" data-aos-duration="1000"
-        >
-    </div>
+<section id="hero"
+    class="relative w-screen h-screen flex flex-col justify-center items-center text-center text-black px-4">
+    <img class="absolute w-screen h-screen object-cover z-[-1]"
+        src="https://i.pinimg.com/736x/98/68/d3/9868d3a239ebd8c37f78432f9d1199ff.jpg" alt="">
+    <h2 class="font-organetto text-2xl md:text-3xl font-bold">OPEN RECRUITMENT</h2>
+    <h1 class="font-return-grid text-4xl md:text-6xl font-extrabold mt-2">
+        PETRA CIVIL EXPO
+    </h1>
+    <h2 class="font-return-grid text-3xl md:text-5xl font-extrabold mt-1">2026</h2>
+    <p class="font-organetto mt-4 text-lg md:text-xl font-medium">
+        Sustaining Growth, Building Futures
+    </p>
+
+    <a href="{{ route('applicant.biodata') }}" class="font-organetto mt-10 text-lg md:text-xl relative inline-block px-6 py-2 font-semibold text-black border-2 border-[#7EC8D6] rounded-full 
+         bg-[#7EC8D6] transition-all duration-300 
+         hover:bg-transparent hover:text-[#7EC8D6]
+         before:content-[''] before:absolute before:inset-[-8px] before:rounded-full before:border-2 before:border-[#7EC8D6] 
+         before:opacity-70 before:transition-all before:duration-300 before:scale-100 
+         hover:before:opacity-100 hover:before:scale-110">
+        Register Here
+    </a>
+
 </section>
