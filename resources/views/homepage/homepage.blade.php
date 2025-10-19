@@ -126,7 +126,7 @@
 @section('content')
     @include('components.navbar')
     <div class="background flex flex-col overflow-x-hidden">
-        @include('homepage.partials.bombi')
+        @include('homepage.partials.welcome')
         @include('homepage.partials.penjelasan')
         @include('homepage.partials.divisi')
         @include('homepage.partials.requirement')
