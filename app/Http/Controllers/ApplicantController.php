@@ -441,22 +441,22 @@ class ApplicantController extends Controller
 
             //Jika semua jadwal habis
             if ($schedules->isEmpty()) {
-                // 1. Ambil semua admin dari divisi pilihan pertama
-                $adminsDivisi1 = Admin::where('division_id', $divisionId1)->get();
-                $contactPersonLineId = '@958jigfh'; // Default fallback
+                //Ambil koor divisi 1
+                $adminsDivisi1 = Admin::where('division_id', $divisionId1)
+                                        ->where('position', 'koordinator')
+                                        ->first();
+                Log::info("Admins Divisi 1: " . json_encode($adminsDivisi1));
+                $contactPersonLineId = '@958jigfh';
 
-                if ($adminsDivisi1->isNotEmpty()) {
-                    // Ambil ID Line dari admin pertama sebagai CP
-                    $contactPersonLineId = $adminsDivisi1->first()->id_line ?? $contactPersonLineId;
-                    $admin = $adminsDivisi1->first();
-                    $email = $admin->nrp . '@john.petra.ac.id';
+                if ($adminsDivisi1) {
+                    $contactPersonLineId = $adminsDivisi1->id_line ?? $contactPersonLineId;
+                    $email = $adminsDivisi1->nrp . '@john.petra.ac.id';
                     try{
                         Log::info("Sending email to: " . $email);
                         Mail::to($email)->queue(new NoScheduleAvailable($applicant));
                     } catch (\Exception $e) {
                         Log::error('Error sending email: ' . $e->getMessage());
                     }
-                    
                 }
                 
                 return view('applicant.jadwal', [

@@ -79,7 +79,7 @@
                     <tr>
                         <th class="border px-4 py-2">Jam/Hari</th>
                         <!-- Looping untuk menampilkan tanggal (misal dari 4-18 Oktober) -->
-                        @for ($i = 22; $i <= 31; $i++)
+                        @for ($i = 23; $i <= 31; $i++)
                             <th class="border px-4 py-2">{{ $i }} Oktober</th>
                         @endfor
                         @for ($i = 1; $i <= 3; $i++)
@@ -92,7 +92,7 @@
                     @for ($hour = 7; $hour <= 20; $hour++)
                     <tr>
                         <td class="border px-4 py-2">{{ $hour }}:30</td>
-                        @for ($i = 22; $i <= 31; $i++)
+                        @for ($i = 23; $i <= 31; $i++)
                         <td 
                             class="slot border" 
                             data-date="{{ '2025-10-' . str_pad($i, 2, '0', STR_PAD_LEFT) }}" 
