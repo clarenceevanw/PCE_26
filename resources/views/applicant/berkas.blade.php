@@ -1,4 +1,4 @@
-@extends('layout')
+@extends('applicant.layout')
 @section('head')
 @endsection
 @section('content')

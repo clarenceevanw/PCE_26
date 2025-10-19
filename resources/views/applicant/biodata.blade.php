@@ -1,4 +1,4 @@
-@extends('layout')
+@extends('applicant.layout')
 @section('head')
     <style>
         /* CSS ini tidak perlu diubah karena tidak berhubungan dengan warna */
