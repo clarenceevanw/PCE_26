@@ -300,6 +300,16 @@
                 var formData = new FormData(form);
                 var method = $(this).attr('method');
                 var url = $(this).attr('action');
+                Swal.fire({
+                    title: "Please wait...",
+                    showConfirmButton: false,
+                    didOpen: () => {
+                        // Set custom z-index for the Swal container and backdrop
+                        document.querySelector('.swal2-container').style.zIndex = '2002'; // Adjust z-index as needed
+                        document.querySelector('.swal2-backdrop-show').style.zIndex = '2001'; // Adjust backdrop z-index if needed
+                        Swal.showLoading();
+                    }
+                })
                 $.ajax({
                     type: method,
                     url: url,
@@ -308,6 +318,7 @@
                     contentType: false,
                     cache: false,
                     success: async function(response) {
+                        await Swal.close();
                         if (response.success) {
                             await Swal.fire({
                                 title: "Berhasil!",
@@ -334,6 +345,7 @@
                         }
                     },
                     error: async function(xhr, textStatus, errorThrown) {
+                        await Swal.close();
                         document.getElementById('submitJadwal').disabled = false;
                         await Swal.fire({
                             title: 'Oops!',
