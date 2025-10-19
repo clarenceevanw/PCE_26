@@ -38,12 +38,23 @@
             padding: 0;
             min-height: 100vh;
             min-width: 100vw;
-            background: radial-gradient(circle at 30% 20%, #203a2b 0%, transparent 40%),
+            /* background: radial-gradient(circle at 30% 20%, #203a2b 0%, transparent 40%),
             radial-gradient(circle at 80% 70%, #1b2d2a 0%, transparent 50%),
-            linear-gradient(135deg, #0c1c18 0%, #122622 100%);
-            background-size: 300% 300%; 
+            linear-gradient(135deg, #0c1c18 0%, #122622 100%); */
+            background-image: url('{{ asset('assets/1. LANGIT.png') }}');
+            /* background: radial-gradient(circle at 30% 20%, #203a2b 0%, transparent 40%),
+            radial-gradient(circle at 80% 70%, #1b2d2a 0%, transparent 50%),
+            linear-gradient(135deg, #0c1c18 0%, #122622 100%); */
+            background-size: 150% 150%;
             position: relative;
-            animation: gradient-flow 25s ease-in-out infinite alternate;
+
+            /* background-size: cover; */
+            background-attachment: fixed;
+            /* Membuat background tetap saat scroll */
+            background-repeat: no-repeat;
+            background-position: center top;
+            /* Membuat background di tengah atas */
+            animation: gradient 25s ease-in-out infinite alternate;
         }
 
         @keyframes gradient-flow {
@@ -171,6 +182,45 @@
                 text-shadow: 0 0 5px rgba(255, 255, 255, 0.8);
             }
         }
+
+        .card-glowing-border {
+            position: relative;
+            background-color: rgba(6, 40, 61, 0.5); /* Warna background card, sesuaikan jika perlu */
+            backdrop-filter: blur(10px); /* Efek blur */
+            border: 2px solid transparent; /* Border awal transparan */
+            border-radius: 0.5rem; /* rounded-lg */
+            overflow: hidden; /* Penting untuk animasi pseudo-element */
+        }
+
+        .card-glowing-border::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, 
+                        rgba(0, 255, 255, 0.5), /* Cyan */
+                        rgba(0, 200, 255, 0.5), /* Light Blue */
+                        rgba(0, 255, 255, 0.5)); /* Cyan kembali */
+            background-size: 400% 400%;
+            z-index: -1;
+            animation: gradientBorder 10s ease infinite alternate; /* Animasi berkedip */
+            border-radius: 0.5rem; /* Sama dengan border-radius card */
+        }
+
+        /* [NEW] Keyframes untuk animasi glowing border */
+        @keyframes gradientBorder {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @media screen and (max-width: 1000px) {
+            body {
+                background-size: cover;
+            }
+        }
     </style>
 
 </head>
@@ -203,22 +253,25 @@
             });
         </script>
     @endif
-    <section class="w-screen flex justify-center items-center h-screen absolute">
-        <div class=" w-full h-[550px] max-sm:h-[320px] p-8 flex flex-col items-center justify-center">
+    <section class="min-h-screen w-full flex justify-center items-center p-4">
 
-            <div class="bg-cyan-950/30 backdrop-blur-sm border-2 border-teal-400/40 rounded-lg shadow-lg p-8 flex flex-col items-center justify-center">
-                <div class="flex flex-col items-center justify-center w-full p-7 max-sm:p-4 mb-5">
-                    <h1
-                        class="font-return-grid mix-blend-lighten glowing title-text text-white drop-shadow-md font-bold text-5xl text-center max-sm:text-2xl uppercase max-sm:w-[300px]">
-                        Open Recruitment</h1>
-                    <h1
-                        class="font-return-grid mix-blend-lighten glowing title-text text-white drop-shadow-md font-bold text-5xl text-center max-sm:text-2xl max-sm:w-[300px]">
-                        Petra Civil Expo 2026</h1>
-                </div>
-                <a href="{{ route('applicant.auth') }}"
-                    class="font-organetto text-[#fff] button-interact border-2 border-[#C67097] active:scale-[0.97] font-semibold drop-shadow-2xl text-2xl max-sm:text-base w-[400px] max-sm:w-[230px] rounded-3xl h-[53px] max-sm:h-[42px] flex justify-center items-center">
-                    Sign In with PCU Email</a>
-            </div>
+        {{-- [UPDATE] Ganti class di sini untuk glowing border --}}
+        <div class="w-11/12 max-w-[45rem] card-glowing-border 
+                    rounded-lg shadow-2xl p-6 md:p-8 flex flex-col items-center space-y-8">
+            
+            <h1 class="font-return-grid mix-blend-lighten glowing text-white drop-shadow-md font-bold 
+                       text-xl md:text-5xl text-center uppercase">
+                Open Recruitment
+                <br>
+                Petra Civil Expo 2026
+            </h1>
+
+            <a href="{{ route('applicant.auth') }}"
+                class="w-full font-organetto text-white button-interact 
+                       border-2 border-cyan-400 active:scale-[0.97] font-semibold drop-shadow-2xl 
+                       text-lg md:text-3xl rounded-full py-1 md:py-3 text-center">
+                Sign In with PCU Email
+            </a>
         </div>
     </section>
 </body>

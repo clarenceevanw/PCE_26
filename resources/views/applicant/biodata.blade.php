@@ -48,7 +48,7 @@
             <div class="mb-6 sm:mb-8 text-left">
                 <a href="{{ route('applicant.homepage') }}">
                     <button
-                        class="px-6 py-2 border-2 border-teal-400 text-white font-bold uppercase tracking-widest rounded-full text-sm sm:text-base transition-all duration-300 hover:bg-white hover:text-teal-500 hover:shadow-lg hover:shadow-teal-400/40">
+                        class="px-6 py-2 border-2 border-teal-400 text-white font-bold card-glowing-border uppercase tracking-widest rounded-full text-sm sm:text-base transition-all duration-300 hover:bg-white hover:text-teal-600 hover:shadow-lg hover:shadow-teal-400/40">
                         ← Back
                     </button>
                 </a>
@@ -61,7 +61,7 @@
             </h1>
 
             <div
-                class="bg-cyan-950/30 backdrop-blur-sm rounded-2xl p-5 sm:p-8 border border-teal-400/40 transition-all duration-500">
+                class="card-glowing-border rounded-2xl p-5 sm:p-8 border border-teal-400/40 transition-all duration-500">
                 <form id="form_biodata" method="post" action="{{ route('applicant.biodata.store') }}" class="space-y-6">
                     @csrf
                     <div>

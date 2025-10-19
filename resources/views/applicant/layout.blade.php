@@ -92,12 +92,11 @@
         }
 
         body {
-            /* background-image:
-                url('{{ asset('assets/polos.PNG') }}'); */
-            background: radial-gradient(circle at 30% 20%, #203a2b 0%, transparent 40%),
+            background-image: url('{{ asset('assets/1. LANGIT.png') }}');
+            /* background: radial-gradient(circle at 30% 20%, #203a2b 0%, transparent 40%),
             radial-gradient(circle at 80% 70%, #1b2d2a 0%, transparent 50%),
-            linear-gradient(135deg, #0c1c18 0%, #122622 100%);
-            background-size: 300% 300%;
+            linear-gradient(135deg, #0c1c18 0%, #122622 100%); */
+            background-size: 150% 150%;
 
             /* background-size: cover; */
             background-attachment: fixed;
@@ -105,7 +104,7 @@
             background-repeat: no-repeat;
             background-position: center top;
             /* Membuat background di tengah atas */
-            animation: gradient-flow 25s ease-in-out infinite alternate;
+            animation: gradient 25s ease-in-out infinite alternate;
         }
 
         @keyframes gradient-flow {
@@ -137,12 +136,47 @@
                 background-position: 0% 50%;
             }
         }
-        /* @media screen and (max-width: 800px) {
+
+        
+        .card-glowing-border {
+            position: relative;
+            /* [UPDATE] Opacity dinaikkan agar lebih gelap dan pekat */
+            background-color: rgba(6, 40, 61, 1); /* Dari 0.5 menjadi 0.75 */
+            /* [UPDATE] Blur sedikit ditingkatkan untuk menyamarkan background */
+            backdrop-filter: blur(20px); /* Dari 10px menjadi 12px */
+            border: 2px solid transparent;
+            border-radius: 0.5rem;
+            overflow: hidden;
+        }
+
+        .card-glowing-border::before {
+            content: '';
+            position: absolute;
+            top: -2px; left: -2px; right: -2px; bottom: -2px;
+            /* [UPDATE] Opacity border sedikit diturunkan agar lebih kalem */
+            background: linear-gradient(45deg,
+                rgba(0, 255, 255, 0.4), /* Cyan dari 0.5 -> 0.4 */
+                rgba(0, 200, 255, 0.4), /* Light Blue dari 0.5 -> 0.4 */
+                rgba(0, 255, 255, 0.4)  /* Cyan kembali */
+            );
+            background-size: 400% 400%;
+            z-index: -1;
+            animation: gradientBorder 10s ease infinite alternate;
+            border-radius: 0.5rem;
+        }
+
+        /* Keyframes tidak perlu diubah */
+        @keyframes gradientBorder {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @media screen and (max-width: 1000px) {
             body {
-                background-image:
-                    url('{{ asset('assets/Background WEB OpenRec BOM 25 mobile.png') }}') !important;
+                background-size: cover;
             }
-        } */
+        }
     </style>
     <style>
 
