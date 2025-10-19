@@ -13,12 +13,12 @@
 
         <a href="{{ route('applicant.biodata') }}" @class([
             'relative flex flex-col items-center transition-transform duration-200 hover:scale-105',
-            'text-teal-400' => $currentStep >= $biodataStep,
+            'text-teal-600' => $currentStep >= $biodataStep,
             'text-gray-400' => $currentStep < $biodataStep,
         ])>
             <div @class([
                 'rounded-full h-10 w-10 flex items-center justify-center text-white font-bold text-lg',
-                'bg-teal-400', // Lingkaran Biodata selalu teal
+                'bg-teal-600', // Lingkaran Biodata selalu teal
                 'ring-4 ring-teal-400/30' => $currentStep == $biodataStep, // Beri efek glow jika aktif
             ])>
                 @if ($currentStep > $biodataStep) ✓ @else {{ $biodataStep }} @endif
@@ -28,7 +28,7 @@
 
         <div @class([
             'flex-auto border-t-2 transition-colors duration-500',
-            'border-teal-400' => $currentStep > $biodataStep,
+            'border-teal-600' => $currentStep > $biodataStep,
             'border-gray-600' => $currentStep <= $biodataStep,
         ])></div>
 
@@ -36,12 +36,12 @@
             'relative flex flex-col items-center transition-transform duration-200',
             'hover:scale-105' => $currentStep > $biodataStep,
             'cursor-default' => $currentStep <= $biodataStep,
-            'text-teal-400' => $currentStep >= $berkasStep,
+            'text-teal-600' => $currentStep >= $berkasStep,
             'text-gray-400' => $currentStep < $berkasStep,
         ])>
             <div @class([
                 'rounded-full h-10 w-10 flex items-center justify-center text-white font-bold text-lg',
-                'bg-teal-400' => $currentStep >= $berkasStep,
+                'bg-teal-600' => $currentStep >= $berkasStep,
                 'bg-gray-700' => $currentStep < $berkasStep,
                 'ring-4 ring-teal-400/30' => $currentStep == $berkasStep,
             ])>
@@ -52,7 +52,7 @@
 
         <div @class([
             'flex-auto border-t-2 transition-colors duration-500',
-            'border-teal-400' => $currentStep > $berkasStep,
+            'border-teal-600' => $currentStep > $berkasStep,
             'border-gray-600' => $currentStep <= $berkasStep,
         ])></div>
 
@@ -60,12 +60,12 @@
             'relative flex flex-col items-center transition-transform duration-200',
             'hover:scale-105' => $currentStep > $berkasStep,
             'cursor-default' => $currentStep <= $berkasStep,
-            'text-teal-400' => $currentStep >= $jadwalStep,
+            'text-teal-600' => $currentStep >= $jadwalStep,
             'text-gray-400' => $currentStep < $jadwalStep,
         ])>
             <div @class([
                 'rounded-full h-10 w-10 flex items-center justify-center text-white font-bold text-lg',
-                'bg-teal-400' => $currentStep >= $jadwalStep,
+                'bg-teal-600' => $currentStep >= $jadwalStep,
                 'bg-gray-700' => $currentStep < $jadwalStep,
                 'ring-4 ring-teal-400/30' => $currentStep == $jadwalStep,
             ])>

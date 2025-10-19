@@ -8,7 +8,7 @@
             <div class="mb-6 sm:mb-8">
                 <a href="{{ route('applicant.biodata') }}">
                     <button
-                        class="px-6 py-2 border-2 border-teal-400 text-white text-sm sm:text-base font-bold uppercase tracking-widest rounded-full transition-all duration-300 hover:bg-white hover:text-teal-500 hover:shadow-lg hover:shadow-teal-400/50 hover:scale-105 active:scale-95">
+                        class="px-6 py-2 border-2 border-teal-400 text-white font-bold card-glowing-border uppercase tracking-widest rounded-full text-sm sm:text-base transition-all duration-300 hover:bg-white hover:text-teal-600 hover:shadow-lg hover:shadow-teal-400/40">
                         ← Back
                     </button>
                 </a>
@@ -22,7 +22,7 @@
                 {{ Str::upper($title) }}
             </h1>
 
-            <div class="bg-cyan-950/30 backdrop-blur-sm rounded-2xl p-6 sm:p-8 border-2 border-teal-400/40 space-y-10">
+            <div class="card-glowing-border rounded-2xl p-6 sm:p-8 border-2 border-teal-400/40 space-y-10">
                 @php
                     $inputs = [
                         ['id' => 'ktm', 'label' => 'KTM', 'type' => 'file', 'route' => route('applicant.berkas.ktm.store')],
@@ -60,7 +60,7 @@
                                         </a>
                                     @else
                                         <input type="text" value="{{ $existingData }}" disabled
-                                            class="w-full pl-4 pr-4 py-3 bg-cyan-950/40 border-2 border-green-500/50 rounded-full text-green-200 font-organetto-light text-sm sm:text-base cursor-not-allowed" />
+                                            class="w-full pl-4 pr-4 py-3 bg-cyan-950/40 border-2 border-green-500/50 rounded-full text-green-200 font-organetto text-sm sm:text-base cursor-not-allowed" />
                                     @endif
 
                                     <button type="button" disabled
@@ -68,7 +68,7 @@
                                         Submitted
                                     </button>
                                 </div>
-                                <p class="text-green-400/60 text-[11px] sm:text-xs mt-1 font-organetto-light">
+                                <p class="text-green-400/60 text-[11px] sm:text-xs mt-1 font-organetto">
                                     Data telah berhasil disubmit.
                                 </p>
                             @else
@@ -91,14 +91,15 @@
                                             Upload
                                         </button>
                                     </div>
-                                    <p class="text-teal-300/60 text-[11px] sm:text-xs mt-1 font-organetto-light">
+                                    <p class="text-teal-300/60 text-[11px] sm:text-xs mt-1 font-organetto">
                                         Format: PDF | Max: 10MB
                                     </p>
                                 @else
+                                    <p class="text-teal-300 text-[11px] sm:text-xs mt-1 font-organetto mb-3">Notes: Untuk divisi selain Creative, bisa langsung next page</p>
                                     <div class="w-full flex gap-4">
                                         <input type="text" id="{{ $input['id'] }}" name="{{ $input['id'] }}"
                                             placeholder="https://drive.google.com/..."
-                                            class="w-full pl-4 pr-4 py-3 bg-transparent border-2 border-teal-400/50 rounded-full text-white font-organetto-light text-sm sm:text-base placeholder-teal-300/50 transition-all duration-300 focus:outline-none focus:border-teal-300 focus:shadow-[0_0_12px_rgba(45,212,191,0.4)] hover:border-teal-300/70" />
+                                            class="w-full pl-4 pr-4 py-3 bg-transparent border-2 border-teal-400/50 rounded-full text-white font-organetto text-sm sm:text-base placeholder-teal-300/50 transition-all duration-300 focus:outline-none focus:border-teal-300 focus:shadow-[0_0_12px_rgba(45,212,191,0.4)] hover:border-teal-300/70" />
                                         <button type="submit"
                                             class="px-5 py-2.5 bg-transparent border-2 border-teal-400 text-white font-bold rounded-full transition-all duration-300 hover:bg-white hover:text-teal-500 hover:shadow-[0_0_25px_rgba(45,212,191,0.6)] active:scale-[0.97]">
                                             Submit

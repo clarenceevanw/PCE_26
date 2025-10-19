@@ -140,10 +140,8 @@
         
         .card-glowing-border {
             position: relative;
-            /* [UPDATE] Opacity dinaikkan agar lebih gelap dan pekat */
-            background-color: rgba(6, 40, 61, 1); /* Dari 0.5 menjadi 0.75 */
-            /* [UPDATE] Blur sedikit ditingkatkan untuk menyamarkan background */
-            backdrop-filter: blur(20px); /* Dari 10px menjadi 12px */
+            background-color: rgba(6, 40, 61, 1);
+            backdrop-filter: blur(20px);
             border: 2px solid transparent;
             border-radius: 0.5rem;
             overflow: hidden;
@@ -153,11 +151,10 @@
             content: '';
             position: absolute;
             top: -2px; left: -2px; right: -2px; bottom: -2px;
-            /* [UPDATE] Opacity border sedikit diturunkan agar lebih kalem */
             background: linear-gradient(45deg,
-                rgba(0, 255, 255, 0.4), /* Cyan dari 0.5 -> 0.4 */
-                rgba(0, 200, 255, 0.4), /* Light Blue dari 0.5 -> 0.4 */
-                rgba(0, 255, 255, 0.4)  /* Cyan kembali */
+                rgba(0, 255, 255, 0.3),
+                rgba(0, 200, 255, 0.3),
+                rgba(0, 255, 255, 0.3)
             );
             background-size: 400% 400%;
             z-index: -1;

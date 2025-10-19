@@ -4,12 +4,12 @@
   <div class="w-full max-w-4xl">
     <div class="mb-6 flex justify-between items-center">
       <a href="{{ route('applicant.berkas') }}">
-        <button class="px-5 py-2 border-2 border-teal-400 text-white text-sm sm:text-base font-semibold uppercase rounded-full hover:bg-white hover:text-teal-500 transition-all duration-300">
+        <button class="px-6 py-2 border-2 border-teal-400 text-white font-bold card-glowing-border uppercase tracking-widest rounded-full text-sm sm:text-base transition-all duration-300 hover:bg-white hover:text-teal-600 hover:shadow-lg hover:shadow-teal-400/40">
           ← Back
         </button>
       </a>
       <a href="{{ route('applicant.homepage') }}" id="backToHomepage" class="hidden">
-        <button class="px-5 py-2 border-2 border-teal-400 text-white text-sm sm:text-base font-semibold uppercase rounded-full hover:bg-white hover:text-teal-500 transition-all duration-300">
+        <button class="px-6 py-2 border-2 border-teal-400 text-white font-bold card-glowing-border uppercase tracking-widest rounded-full text-sm sm:text-base transition-all duration-300 hover:bg-white hover:text-teal-600 hover:shadow-lg hover:shadow-teal-400/40">
           Back to Homepage
         </button>
       </a>
@@ -21,7 +21,7 @@
       {{ Str::upper($title); }}
     </h1>
 
-    <div class="bg-cyan-950/30 backdrop-blur-sm rounded-2xl p-6 border border-teal-400/40">
+    <div class="card-glowing-border rounded-2xl p-6 border border-teal-400/40">
       @if (isset($noSchedulesAvailable) && $noSchedulesAvailable)
         <div class="text-center text-white py-8">
             <svg class="w-16 h-16 mx-auto text-yellow-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>

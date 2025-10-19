@@ -129,14 +129,14 @@
                         <div>
                             <label for="no_hp"
                                 class="font-organetto block mb-2 text-sm sm:text-base font-semibold text-white uppercase tracking-wider">Whatsapp Number</label>
-                            <input type="number" id="no_hp" name="no_hp" placeholder="Co: +6281234567890 / 081234567890"
+                            <input type="number" id="no_hp" name="no_hp" placeholder="Co: 081234567890"
                                 class="w-full px-4 py-2.5 bg-transparent border border-teal-400/50 rounded-full text-white text-sm sm:text-base placeholder-teal-300/50 transition-all duration-300 focus:outline-none focus:border-teal-300 focus:shadow-[0_0_12px_rgba(45,212,191,0.4)]"
                                 required />
                         </div>
                         <div>
                             <label for="instagram"
                                 class="font-organetto block mb-2 text-sm sm:text-base font-semibold text-white uppercase tracking-wider">Instagram</label>
-                            <input type="text" id="instagram" name="instagram" placeholder="Instagram"
+                            <input type="text" id="instagram" name="instagram" placeholder="Username (tanpa @)"
                                 class="w-full px-4 py-2.5 bg-transparent border border-teal-400/50 rounded-full text-white text-sm sm:text-base placeholder-teal-300/50 transition-all duration-300 focus:outline-none focus:border-teal-300 focus:shadow-[0_0_12px_rgba(45,212,191,0.4)]"
                                 required />
                         </div>
