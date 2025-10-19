@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\ScheduleNotif;
 use App\Jobs\SendMail;
+use App\Mail\NoScheduleAvailable;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
@@ -447,26 +448,24 @@ class ApplicantController extends Controller
                 if ($adminsDivisi1->isNotEmpty()) {
                     // Ambil ID Line dari admin pertama sebagai CP
                     $contactPersonLineId = $adminsDivisi1->first()->id_line ?? $contactPersonLineId;
-
-                    // 2. Kirim email notifikasi ke setiap admin di divisi 1
-                    foreach ($adminsDivisi1 as $admin) {
-                        if ($admin->nrp) {
-                            $email = $admin->nrp . '@john.petra.ac.id';
-                            // Anda bisa menggunakan Mailable yang sudah dibuat sebelumnya
-                            // Mail::to($email)->send(new NoScheduleAvailable($applicant));
-                            // Untuk sekarang, kita lewati pengiriman email agar tidak error jika belum setup
-                        }
+                    $admin = $adminsDivisi1->first();
+                    $email = $admin->nrp . '@john.petra.ac.id';
+                    try{
+                        Log::info("Sending email to: " . $email);
+                        Mail::to($email)->queue(new NoScheduleAvailable($applicant));
+                    } catch (\Exception $e) {
+                        Log::error('Error sending email: ' . $e->getMessage());
                     }
+                    
                 }
                 
-                // 3. Set variabel untuk dikirim ke view
                 return view('applicant.jadwal', [
                     'title' => $title,
                     'schedules' => '[]',
                     'interviews' => '[]',
                     'isExists' => $isExists,
                     'divisionName' => '',
-                    'noSchedulesAvailable' => true, // Flag penting untuk blade
+                    'noSchedulesAvailable' => true,
                     'contactPersonLineId' => $contactPersonLineId,
                     'currentStep' => $currentStep
                 ]);
@@ -485,7 +484,7 @@ class ApplicantController extends Controller
 
     private function getAvailableSchedules($divisionId)
     {
-        // [FIX] Pilih 'admin_schedules.id' dan beri alias, ini ID yang akan dipakai untuk booking.
+        $tomorrow = now()->addDay()->toDateString();
         return AdminSchedule::select(
                 'admin_schedules.id as admin_schedule_id', 
                 'schedules.tanggal', 
@@ -497,7 +496,7 @@ class ApplicantController extends Controller
             ->join('admins', 'admin_schedules.admin_id', '=', 'admins.id')
             ->where('admins.division_id', $divisionId)
             ->whereNull('admin_schedules.applicant_id')
-            ->where('schedules.tanggal', '>=', now()->toDateString())
+            ->where('schedules.tanggal', '>=', $tomorrow)
             ->orderBy('schedules.tanggal', 'asc')
             ->orderBy('schedules.jam_mulai', 'asc')
             ->get();
@@ -505,7 +504,7 @@ class ApplicantController extends Controller
 
     private function getAllAvailableSchedules()
     {
-        // [FIX] Lakukan hal yang sama untuk fungsi ini.
+        $tomorrow = now()->addDay()->toDateString();
         return AdminSchedule::select(
                 'admin_schedules.id as admin_schedule_id', 
                 'schedules.tanggal', 
@@ -516,7 +515,7 @@ class ApplicantController extends Controller
             ->join('schedules', 'admin_schedules.schedule_id', '=', 'schedules.id')
             ->join('admins', 'admin_schedules.admin_id', '=', 'admins.id')
             ->whereNull('admin_schedules.applicant_id')
-            ->where('schedules.tanggal', '>=', now()->toDateString())
+            ->where('schedules.tanggal', '>=', $tomorrow)
             ->orderBy('schedules.tanggal', 'asc')
             ->orderBy('schedules.jam_mulai', 'asc')
             ->get();
@@ -564,7 +563,6 @@ class ApplicantController extends Controller
         try {
             DB::beginTransaction();
             
-            // Get schedule details
             $schedule = Schedule::where('tanggal', $request->tanggal_choice)
                 ->where('jam_mulai', $request->jam_choice)
                 ->first();
@@ -589,7 +587,7 @@ class ApplicantController extends Controller
                     'message' => 'Jadwal yang dipilih sudah penuh. Silakan pilih jadwal lain.'
                 ], 400);
             }
-            // Verify mode matches
+
             if ($adminSchedule->isOnline !== (int) $request->interview_mode) {
                 DB::rollBack();
                 return response()->json([
@@ -598,13 +596,31 @@ class ApplicantController extends Controller
                 ], 400);
             }
 
-            // Assign applicant to the schedule
             $adminSchedule->applicant_id = $applicant->id;
             $adminSchedule->save();
             $applicant->phase = 2;
             $applicant->save();
 
             DB::commit();
+
+            try {
+                $admin = $adminSchedule->admin;
+                $email = $admin->nrp . '@john.petra.ac.id';
+
+                $data = [
+                    'name' => $admin->name,
+                    'hari' => \Carbon\Carbon::parse($schedule->tanggal)->translatedFormat('l'),
+                    'tanggal' => \Carbon\Carbon::parse($schedule->tanggal)->format('d F Y'),
+                    'jam' => $schedule->jam_mulai,
+                    'isOnline' => $adminSchedule->isOnline,
+                    'lokasi' => $admin->location ?? null,
+                    'link_gmeet' => $admin->link_gmeet ?? null,
+                ];
+                Log::info('Kirim email ke admin (' . $email . '): ' . json_encode($data));
+                Mail::to($email)->queue(new ScheduleNotif($data));
+            } catch (\Exception $e) {
+                Log::error('Gagal kirim email ke admin: ' . $e->getMessage());
+            }
 
             return response()->json([
                 'success' => true,
