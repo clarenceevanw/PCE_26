@@ -270,11 +270,12 @@
         </div>
     </nav>
 
-    <div class="xl:w-10/12 w-full md:ms-60 flex justify-center md:block lg:ms-60 xl:ms-60">
-        <div class="flex flex-col justify-center mx-auto md:rounded-b-full rounded-3xl shadow-2xl px-12">
-            <h1
-                class="typewriter lg:text-5xl md:text-4xl text-lg py-5 font-bold bg-black bg-clip-text text-transparent text-center">
-                {{ $title }}</h1>
+    <div class="w-full xl:w-10/12 md:ms-60 flex justify-center md:block">
+        <div class="flex flex-col justify-center mx-auto md:rounded-b-full rounded-3xl shadow-2xl 
+            px-6 md:px-12"> <h1 class="typewriter lg:text-5xl md:text-4xl text-2xl py-5 font-bold 
+                    bg-black bg-clip-text text-transparent text-center">
+                {{ $title }}
+            </h1>
         </div>
     </div>
 

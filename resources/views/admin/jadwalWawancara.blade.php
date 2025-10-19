@@ -44,8 +44,8 @@
             <h2 class="text-xl mb-4">Jadwal</h2>
             <h1 class="font-organetto block mb-2 text-md font-medium text-gray-800 mt-4">Notes: Jadwal hanya bisa diubah ketika tidak ada interview</h1>
         </div>
-        <div class="flex gap-4 mt-4">
-            <div class="flex gap-2 items-center justify-center">
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mt-4">
+            <div class="flex gap-2">
                 <div class="w-10 h-6 opacity-[0.6]" 
                 style="background-image: repeating-linear-gradient(
                 45deg,
@@ -57,15 +57,15 @@
             ></div>
                 <span>Interview</span>
             </div>
-            <div class="flex gap-2 items-center justify-center">
+            <div class="flex gap-2">
                 <div class="w-10 h-6 bg-red-500"></div>
                 <span>Tidak bisa</span>
             </div>
-            <div class="flex gap-2 items-center justify-center">
+            <div class="flex gap-2">
                 <div class="w-10 h-6 bg-[#fada5a]"></div>
                 <span>Online</span>
             </div>
-            <div class="flex gap-2 items-center justify-center">
+            <div class="flex gap-2">
                 <div class="w-10 h-6 bg-green-500"></div>
                 <span>Offline</span>
             </div>
