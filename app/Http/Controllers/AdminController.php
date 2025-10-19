@@ -241,7 +241,8 @@ class AdminController extends Controller
         $title = 'All Applicant';
         return view('admin.allApplicant', [
             'title' => $title,
-            'datas' => json_encode($data)
+            'datas' => json_encode($data),
+            'divisions' => Division::whereNotIn('slug', ['bph', 'sc', 'bphk', 'dosen'])->get()
         ]);
     }
 
