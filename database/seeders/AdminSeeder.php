@@ -105,9 +105,9 @@ class AdminSeeder extends Seeder
                 'division_slug' => 'acara',
                 'position' => 'Sub-Koordinator Divisi Acara',
                 'anonymous_name' => 'Mizar',
-                'id_line' => '',
+                'id_line' => 'rutheliza2503',
                 'link_gmeet' => 'https://meet.google.com/dgn-kozn-hua',
-                'location' => '',
+                'location' => 'Selasar Gedung C',
             ],
             // Creative
             [
@@ -126,9 +126,9 @@ class AdminSeeder extends Seeder
                 'division_slug' => 'creative',
                 'position' => 'Sub-Koordinator Divisi Creative',
                 'anonymous_name' => 'Bellatrix',
-                'id_line' => '',
+                'id_line' => 'olivia22_8_2006',
                 'link_gmeet' => 'https://meet.google.com/xom-nhup-mxb',
-                'location' => '',
+                'location' => 'Selasar Q3',
             ],
             [
                 'name' => 'Aurell Nathania Limetta',
@@ -136,9 +136,9 @@ class AdminSeeder extends Seeder
                 'division_slug' => 'creative',
                 'position' => 'Sub-Koordinator Divisi Creative',
                 'anonymous_name' => 'Saiph',
-                'id_line' => '',
+                'id_line' => 'anl_3206',
                 'link_gmeet' => 'https://meet.google.com/hoi-eezo-xqe',
-                'location' => '',
+                'location' => 'Selasar T5',
             ],
             // Transkapman
             [
