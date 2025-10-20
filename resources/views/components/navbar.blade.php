@@ -182,9 +182,9 @@
             @php
                 $navItems = [
                     ['text' => 'About Us', 'href' => '#about'],
-                    ['text' => 'Divisions', 'href' => '#divisions'],
-                    ['text' => 'Announcement', 'href' => '#announcement'],
-                    ['text' => 'FAQ', 'href' => '#faq'],
+                    ['text' => 'Divisions', 'href' => '#divisi'],
+                    ['text' => 'Requirements', 'href' => '#requirement'],
+                    ['text' => 'Timeline', 'href' => '#timeline'],
                     ['text' => 'Contact', 'href' => '#contact'],
                 ];
             @endphp
