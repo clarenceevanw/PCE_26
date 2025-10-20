@@ -105,10 +105,23 @@ class AuthController extends Controller
     public function loginPaksa()
     {
         session()->put('role', 'admin');
-        session()->put('email', 'C14240155@gmail.com');
-        session()->put('nrp', 'C14240155');
+        session()->put('email', 'C14240500@gmail.com');
+        session()->put('nrp', 'C14240500');
         session()->put('name', "DUMMY BOLO");
         $div = Division::where('slug', 'sekkonkes')->first();
+        session()->put('division_id', $div->id);
+        session()->put('division_slug', $div->slug);
+
+        return redirect()->route('admin.home')->with('login', 'Login success!');
+    }
+
+    public function loginPaksaBPHAHAHA()
+    {
+        session()->put('role', 'admin');
+        session()->put('email', 'C14240580@gmail.com');
+        session()->put('nrp', 'C14240580');
+        session()->put('name', "DUMMY BOLO");
+        $div = Division::where('slug', 'bph')->first();
         session()->put('division_id', $div->id);
         session()->put('division_slug', $div->slug);
 
