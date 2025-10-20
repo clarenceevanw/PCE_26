@@ -125,7 +125,7 @@
         </script>
     @endif
     <section class="w-screen flex justify-center items-center h-screen absolute">
-        <div class=" w-full h-[550px] max-sm:h-[320px] p-8 flex flex-col items-center justify-center border border-[#000000]">
+        <div class=" w-full h-[550px] max-sm:h-[320px] p-8 flex flex-col items-center justify-center border border-t-[#000000] border-b-[#000000]">
             <div class="flex flex-col items-center justify-center w-full p-7 max-sm:p-4">
                 <h1
                     class="title-text text-black font-bold text-5xl w-[500px] text-center max-sm:text-2xl uppercase max-sm:w-[300px]">

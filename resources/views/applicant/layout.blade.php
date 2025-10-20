@@ -162,6 +162,16 @@
             border-radius: 0.5rem;
         }
 
+        .card-glass {
+            
+            background: rgba(17, 87, 82, 0.65);
+            border-radius: 18px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(12.4px);
+            -webkit-backdrop-filter: blur(12.4px);
+            border: 1px solid rgba(17, 94, 89, 0.32);
+        }
+
         /* Keyframes tidak perlu diubah */
         @keyframes gradientBorder {
             0% { background-position: 0% 50%; }
