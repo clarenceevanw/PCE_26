@@ -59,6 +59,102 @@
         padding-bottom: 10rem;
     }
 
+    .gradient-button {
+        position: relative;
+        display: inline-block;
+        padding: 1rem 2.5rem;
+        font-size: 1.125rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        background: linear-gradient(135deg, #10b981 0%, #34d399 50%, #6ee7b7 100%);
+        border: none;
+        border-radius: 9999px;
+        color: white;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4),
+            0 0 0 0 rgba(16, 185, 129, 0.5);
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        overflow: hidden;
+        cursor: pointer;
+    }
+
+    .gradient-button::before {
+        content: '';
+        position: absolute;
+        inset: -3px;
+        border-radius: 9999px;
+        padding: 3px;
+        background: linear-gradient(135deg, #34d399, #6ee7b7, #10b981);
+        -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+        -webkit-mask-composite: xor;
+        mask-composite: exclude;
+        opacity: 0;
+        transition: opacity 0.4s ease;
+    }
+
+    .gradient-button::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 0;
+        height: 0;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.3);
+        transform: translate(-50%, -50%);
+        transition: width 0.6s ease, height 0.6s ease;
+    }
+
+    .gradient-button:hover {
+        transform: translateY(-2px) scale(1.02);
+        box-shadow: 0 8px 25px rgba(16, 185, 129, 0.8),
+            0 0 0 8px rgba(16, 185, 129, 0.4);
+        background: linear-gradient(135deg, #059669 0%, #10b981 50%, #34d399 100%);
+    }
+
+    .gradient-button:hover::before {
+        opacity: 1;
+    }
+
+    .gradient-button:hover::after {
+        width: 300px;
+        height: 300px;
+    }
+
+    .gradient-button:active {
+        transform: translateY(0) scale(0.98);
+    }
+
+    .gradient-button span {
+        position: relative;
+        z-index: 1;
+    }
+
+    /* Shimmer effect */
+    .gradient-button-shimmer {
+        position: relative;
+        overflow: hidden;
+    }
+
+    .gradient-button-shimmer::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg,
+                transparent,
+                rgba(255, 255, 255, 0.3),
+                transparent);
+        transition: left 0.5s ease;
+    }
+
+    .gradient-button-shimmer:hover::before {
+        left: 100%;
+    }
+
     /* Responsive adjustments */
     @media (max-width: 1200px) {
         .the-left-of-right-building {
@@ -154,21 +250,22 @@
 
     <!-- Hero Content -->
     <div class="hero-content">
-        <h2 class="font-organetto text-2xl md:text-3xl font-bold">OPEN RECRUITMENT</h2>
-        <h1 class="font-return-grid text-4xl md:text-6xl font-extrabold mt-2">
+        <h2 class="font-organetto text-2xl md:text-3xl font-bold text-green-600"
+            style="text-shadow: 0 0 15px rgba(255,255,255,0.8);">
+            OPEN RECRUITMENT
+        </h2>
+        <h1
+            class="font-return-grid text-6xl md:text-7xl font-extrabol mt-1 md:mt-6 text-white drop-shadow-[0_0_15px_rgba(0,0,0,0.9)]">
             PETRA CIVIL EXPO
         </h1>
-        <h2 class="font-return-grid text-3xl md:text-5xl font-extrabold mt-1">2026</h2>
-        <p class="font-organetto mt-4 text-lg md:text-xl font-medium">
+        <h2 class="font-return-grid text-3xl md:text-5xl font-extrabold -mt-5 md:-mt-10 text-green-600"
+            style="text-shadow: 0 0 15px rgba(255,255,255,0.8);">2026</h2>
+        <p class="font-organetto mt-4 text-lg
+            md:text-xl font-medium text-green-600"
+            style="text-shadow: 0 0 15px rgba(255,255,255,0.8);">
             Sustaining Growth, Building Futures
         </p>
-        <a href="{{ route('applicant.biodata') }}"
-            class="font-organetto mt-10 text-lg md:text-xl relative inline-block px-6 py-2 font-semibold text-black border-2 border-[#7EC8D6] rounded-full 
-             bg-[#7EC8D6] transition-all duration-300 
-             hover:bg-transparent hover:text-[#7EC8D6]
-             before:content-[''] before:absolute before:inset-[-8px] before:rounded-full before:border-2 before:border-[#7EC8D6] 
-             before:opacity-70 before:transition-all before:duration-300 before:scale-100 
-             hover:before:opacity-100 hover:before:scale-110">
+        <a href="{{ route('applicant.biodata') }}" class="gradient-button gradient-button-shimmer mt-2">
             Register Here
         </a>
     </div>

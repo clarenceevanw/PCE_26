@@ -69,37 +69,34 @@
             gap: 2rem;
         }
 
-        #timeline .relative.grid {
-            grid-template-columns: auto 1fr !important;
-            gap: 1rem;
-            padding-left: 1rem;
-        }
-
-        #timeline .relative.grid>div:first-child,
-        #timeline .relative.grid>div:last-child {
+        /* Hide the central timeline line on mobile */
+        .timeline-line {
             display: none !important;
         }
 
-        #timeline .relative.grid::before {
-            content: '';
-            position: absolute;
-            left: 1.5rem;
-            top: 0;
-            bottom: 0;
-            width: 1px;
-            background: linear-gradient(to bottom, #4ade80, #16a34a);
+        /* Change grid to single column centered layout */
+        #timeline .relative.grid {
+            grid-template-columns: 1fr !important;
+            gap: 0 !important;
+            display: flex !important;
+            justify-content: center !important;
         }
 
-        .timeline-line {
-            display: none;
+        /* Hide empty spacer divs */
+        #timeline .relative.grid>div:empty {
+            display: none !important;
         }
 
-        #timeline .relative.grid .bg-white\/90 {
-            margin-left: 2.5rem;
+        /* Center the content boxes */
+        #timeline .relative.grid>div {
+            width: 100% !important;
+            display: flex !important;
+            justify-content: center !important;
         }
 
         #timeline .bg-white\/90 {
             max-width: 100% !important;
+            width: 100% !important;
             padding: 1.25rem;
         }
 
@@ -182,7 +179,10 @@
     </div>
 
     <div class="relative z-10 flex flex-col w-full justify-center items-center px-4">
-
+        <h1 class="font-return-grid text-4xl sm:text-5xl lg:text-6xl font-bold bg-gradient-to-r from-green-600 via-green-500 to-green-500 bg-clip-text text-transparent mb-12 leading-tight"
+            data-aos="fade-down" data-aos-duration="800" data-aos-easing="ease-out-cubic">
+            TIMELINE
+        </h1>
         <!-- Timeline Container -->
         <div class="relative w-full max-w-4xl">
             <!-- Central Line -->
@@ -220,7 +220,7 @@
                                         d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z">
                                     </path>
                                 </svg>
-                                <span class="text-base">4 - 18 November 2024</span>
+                                <span class="text-base">22 Oktober - 3 November 2025</span>
                             </div>
                         </div>
                     </div>
@@ -256,7 +256,7 @@
                                         d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z">
                                     </path>
                                 </svg>
-                                <span class="text-base">5 - 19 November 2024</span>
+                                <span class="text-base"> 23 Oktober - 4 November 2025</span>
                             </div>
                         </div>
                     </div>
