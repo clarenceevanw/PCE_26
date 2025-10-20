@@ -119,10 +119,10 @@
         font-weight: 700;
         text-transform: uppercase;
         letter-spacing: 0.05em;
-        background: linear-gradient(135deg, #10b981 0%, #34d399 50%, #6ee7b7 100%);
+        background: #fff;
         border: none;
         border-radius: 9999px;
-        color: white;
+        color: #10b981;
         text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4),
             0 0 0 0 rgba(16, 185, 129, 0.5);
@@ -160,9 +160,10 @@
 
     .gradient-button:hover {
         transform: translateY(-2px) scale(1.02);
-        box-shadow: 0 8px 25px rgba(16, 185, 129, 0.8),
-            0 0 0 8px rgba(16, 185, 129, 0.4);
-        background: linear-gradient(135deg, #059669 0%, #10b981 50%, #34d399 100%);
+        box-shadow: 0 8px 25px rgba(255, 255, 255, 0.6),
+            0 0 0 8px rgba(255, 255, 255, 0.3);
+        background: #fff;
+        color: #059669;
     }
 
     .gradient-button:hover::before {
@@ -276,6 +277,13 @@
         }
     }
 
+    @media (max-width: 1024px) {
+        .cloud-bottom {
+            bottom: -75vh;
+            height: 150vh;
+        }
+    }
+    
     @media (max-width: 768px) {
 
         .building-left,
@@ -435,15 +443,15 @@
 
     <!-- Hero Content -->
     <div class="hero-content">
-        <h2 class="font-organetto text-2xl md:text-3xl font-bold text-green-600"
+        <h2 class="font-organetto text-2xl md:text-3xl font-bold text-white"
             style="text-shadow: 0 0 15px rgba(255,255,255,0.8);">
             OPEN RECRUITMENT
         </h2>
         <h1
-            class="font-return-grid text-6xl md:text-7xl font-extrabol mt-1 sm:mt-3 md:mt-3 lg:mt-6 text-white drop-shadow-[0_0_15px_rgba(0,0,0,0.9)] tracking-wider">
+            class="font-return-grid text-6xl md:text-7xl font-extrabol mt-1 sm:mt-3 md:mt-3 lg:mt-6 text-white drop-shadow-[0_0_15px_rgba(22,163,74,0.9)] tracking-wider">
             PETRA CIVIL EXPO
         </h1>
-        <h2 class="font-return-grid text-3xl md:text-5xl font-extrabold -mt-5 md:-mt-10 text-green-600"
+        <h2 class="font-return-grid text-3xl md:text-5xl font-extrabold -mt-5 md:-mt-10 text-white"
             style="text-shadow: 0 0 15px rgba(255,255,255,0.8);">2026</h2>
         {{-- <p class="font-organetto mt-4 text-lg
             md:text-xl font-medium text-green-600"

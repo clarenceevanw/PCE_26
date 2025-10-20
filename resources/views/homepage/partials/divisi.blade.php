@@ -247,10 +247,16 @@
 </style>
 
 <section id="divisi">
-    <h1 class="font-return-grid text-4xl sm:text-5xl lg:text-6xl font-bold bg-gradient-to-r from-green-600 via-green-500 to-green-500 bg-clip-text text-transparent mb-12 leading-tight"
+    {{-- <h1 class="font-return-grid text-4xl sm:text-5xl lg:text-6xl font-bold bg-gradient-to-r from-green-600 via-green-500 to-green-500 bg-clip-text text-transparent mb-12 leading-tight"
         data-aos="fade-down" data-aos-duration="800" data-aos-easing="ease-out-cubic">
         Divisi
+    </h1> --}}
+
+    <h1 class="font-return-grid text-4xl sm:text-5xl lg:text-6xl font-bold bg-gradient-to-r text-white drop-shadow-[0_0_15px_rgba(22,163,74,0.9)] tracking-wider bg-clip-text  mb-12 leading-tight"
+        data-aos="fade-down" data-aos-duration="800" data-aos-easing="ease-out-cubic">
+        DIVISI
     </h1>
+
     <div class="swiper">
         <div class="swiper-wrapper">
             <!-- Sponsor -->
