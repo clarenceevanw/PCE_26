@@ -5,7 +5,7 @@
 
     #hero {
         position: relative;
-        overflow: hidden;
+        overflow: visible;
     }
 
     .building-left {
@@ -27,7 +27,7 @@
         width: auto;
         object-fit: contain;
         object-position: bottom right;
-        z-index: 3;
+        z-index: 2;
     }
 
     .the-left-of-right-building {
@@ -53,10 +53,62 @@
         z-index: 1;
     }
 
+    .cloud-bottom {
+        position: absolute;
+        bottom: -20vh;
+        width: auto;
+        height: 150vh;
+        object-fit: contain;
+        z-index: 5;
+        opacity: 0.95;
+    }
+
+    @keyframes floatCloud1 {
+
+        0%,
+        100% {
+            transform: translateY(0);
+        }
+
+        50% {
+            transform: translateY(-10px);
+        }
+    }
+
+    @keyframes floatCloud2 {
+
+        0%,
+        100% {
+            transform: translateX(-50%) translateY(0);
+        }
+
+        50% {
+            transform: translateX(-50%) translateY(-15px);
+        }
+    }
+
+    @keyframes floatCloud3 {
+
+        0%,
+        100% {
+            transform: translateY(0);
+        }
+
+        50% {
+            transform: translateY(-12px);
+        }
+    }
+
+    #left-right-tree {
+        z-index: 3;
+
+    }
+
     .hero-content {
         position: relative;
         z-index: 10;
-        padding-bottom: 10rem;
+        /* padding-bottom: 10rem; */
+        padding-bottom: 8rem;
     }
 
     .gradient-button {
@@ -155,6 +207,34 @@
         left: 100%;
     }
 
+    .plane {
+        position: absolute;
+        top: 80%;
+        left: -10%;
+        width: 150px;
+        height: auto;
+        z-index: 0;
+        animation: flyPlane 8s linear infinite;
+    }
+
+    @keyframes flyPlane {
+        0% {
+            left: -10%;
+            top: 70%;
+            transform: translate(0, -60px);
+        }
+
+        50% {
+            transform: translate(20px, -20px);
+        }
+
+        100% {
+            left: 110%;
+            top: 30%;
+            transform: translate(0, 0);
+        }
+    }
+
     /* Responsive adjustments */
     @media (max-width: 1200px) {
         .the-left-of-right-building {
@@ -163,6 +243,36 @@
 
         .building-right {
             bottom: -0.5rem;
+        }
+
+        .plane {
+            width: 80px;
+            height: auto;
+            top: 80%;
+            left: -20%;
+        }
+
+        @keyframes flyPlane {
+            0% {
+                left: -30%;
+                top: 90%;
+                transform: translate(0, -60px);
+            }
+
+            50% {
+                transform: translate(20px, -20px);
+            }
+
+            100% {
+                left: 110%;
+                top: 70%;
+                transform: translate(0, 0);
+            }
+        }
+
+        .cloud-bottom {
+            bottom: -70vh;
+            height: 150vh;
         }
     }
 
@@ -187,8 +297,41 @@
         }
 
         .hero-content {
-            padding-bottom: 8rem;
+            position: relative;
+            z-index: 10;
+            padding-bottom: 10rem;
         }
+
+        .plane {
+            width: 80px;
+            height: auto;
+            top: 80%;
+            left: -20%;
+        }
+
+        @keyframes flyPlane {
+            0% {
+                left: -30%;
+                top: 90%;
+                transform: translate(0, -60px);
+            }
+
+            50% {
+                transform: translate(20px, -20px);
+            }
+
+            100% {
+                left: 110%;
+                top: 70%;
+                transform: translate(0, 0);
+            }
+        }
+
+        .cloud-bottom {
+            bottom: -75vh;
+            height: 150vh;
+        }
+
     }
 
     @media (max-width: 480px) {
@@ -210,6 +353,37 @@
         .hero-content {
             padding-bottom: 6rem;
         }
+
+        .plane {
+            width: 80px;
+            height: auto;
+            top: 80%;
+            left: -20%;
+        }
+
+        @keyframes flyPlane {
+            0% {
+                left: -30%;
+                top: 100%;
+                transform: translate(0, -60px);
+            }
+
+            50% {
+                transform: translate(20px, -20px);
+            }
+
+            100% {
+                left: 110%;
+                top: 80%;
+                transform: translate(0, 0);
+            }
+        }
+
+        .cloud-bottom {
+            bottom: -75vh;
+            height: 150vh;
+        }
+
     }
 
     @media (min-width: 1200px) {
@@ -235,6 +409,12 @@
         .hero-content {
             padding-bottom: 8rem;
         }
+
+        .cloud-bottom {
+            bottom: -70vh;
+            height: 150vh;
+        }
+
     }
 </style>
 
@@ -243,10 +423,15 @@
 
     <!-- Background Buildings & Land -->
     <img src="{{ asset('assets/welcome-left-building.png') }}" alt="Left Building" class="building-left">
+    <img src="{{ asset('assets/welcome-full-Kincir.gif') }}" alt="Left Building" class="building-left">
     <img src="{{ asset('assets/welcome-land.png') }}" alt="Land" class="land-center">
+    <img src="{{ asset('assets/CLOUD-SEGARIS-02.png') }}" alt="Cloud" class="cloud-bottom cloud-bottom-1">
+    <img src="{{ asset('assets/welcome-pohon-pinggirnya.png') }}" alt="Land" class="land-center"
+        id="left-right-tree">
     <img src="{{ asset('assets/welcome-the-left-of-right-building.png') }}" alt="Middle Right Building"
         class="the-left-of-right-building">
     <img src="{{ asset('assets/welcome-right-building.png') }}" alt="Right Building" class="building-right">
+    <img src="{{ asset('assets/PLANE-CUT.png') }}" alt="Plane" class="plane">
 
     <!-- Hero Content -->
     <div class="hero-content">
@@ -255,17 +440,17 @@
             OPEN RECRUITMENT
         </h2>
         <h1
-            class="font-return-grid text-6xl md:text-7xl font-extrabol mt-1 md:mt-6 text-white drop-shadow-[0_0_15px_rgba(0,0,0,0.9)]">
+            class="font-return-grid text-6xl md:text-7xl font-extrabol mt-1 sm:mt-3 md:mt-3 lg:mt-6 text-white drop-shadow-[0_0_15px_rgba(0,0,0,0.9)] tracking-wider">
             PETRA CIVIL EXPO
         </h1>
         <h2 class="font-return-grid text-3xl md:text-5xl font-extrabold -mt-5 md:-mt-10 text-green-600"
             style="text-shadow: 0 0 15px rgba(255,255,255,0.8);">2026</h2>
-        <p class="font-organetto mt-4 text-lg
+        {{-- <p class="font-organetto mt-4 text-lg
             md:text-xl font-medium text-green-600"
             style="text-shadow: 0 0 15px rgba(255,255,255,0.8);">
             Sustaining Growth, Building Futures
-        </p>
-        <a href="{{ route('applicant.biodata') }}" class="gradient-button gradient-button-shimmer mt-2">
+        </p> --}}
+        <a href="{{ route('applicant.login') }}" class="gradient-button gradient-button-shimmer mt-2">
             Register Here
         </a>
     </div>

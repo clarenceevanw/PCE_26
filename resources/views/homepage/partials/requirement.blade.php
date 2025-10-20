@@ -36,8 +36,7 @@
                 <li class="flex items-start gap-3 p-3 rounded-lg hover:bg-blue-50/50 transition-colors duration-300"
                     data-aos="fade-up" data-aos-duration="600" data-aos-delay="500">
                     <span class="text-greeb-600 font-bold flex-shrink-0">•</span>
-                    <span>PCU Students Batch '23 and '24 <span class="text-green-600 font-semibold">(FTI & FTSP
-                            prioritized)</span></span>
+                    <span>PCU Students Batch '23, '24 and '25 </span>
                 </li>
                 <li class="flex items-start gap-3 p-3 rounded-lg hover:bg-blue-50/50 transition-colors duration-300"
                     data-aos="fade-up" data-aos-duration="600" data-aos-delay="600">
@@ -53,11 +52,6 @@
                     data-aos="fade-up" data-aos-duration="600" data-aos-delay="800">
                     <span class="text-blue-600 font-bold flex-shrink-0">•</span>
                     <span>Student ID Card (KTM)</span>
-                </li>
-                <li class="flex items-start gap-3 p-3 rounded-lg hover:bg-blue-50/50 transition-colors duration-300"
-                    data-aos="fade-up" data-aos-duration="600" data-aos-delay="900">
-                    <span class="text-blue-600 font-bold flex-shrink-0">•</span>
-                    <span>Course Schedule</span>
                 </li>
                 <li class="flex items-start gap-3 p-3 rounded-lg hover:bg-blue-50/50 transition-colors duration-300"
                     data-aos="fade-up" data-aos-duration="600" data-aos-delay="1000">
