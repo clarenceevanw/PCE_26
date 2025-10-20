@@ -29,7 +29,7 @@ class AuthController extends Controller
             if (strpos($email, '@john.petra.ac.id') === false) {
                 return redirect()->route('admin.login')->with('invalidLogin', 'Mohon gunakan email Petra dengan @john.petra.ac.id');
             }
-            
+
             $nrp = strtolower(explode('@', $email)[0]);
             $name = $user->getName();
 
@@ -56,7 +56,7 @@ class AuthController extends Controller
         if ($user) {
             $email = strtolower($user->getEmail());
             if (strpos($email, '@john.petra.ac.id') === false) {
-                return redirect()->route('admin.login')->with('invalidLogin', 'Mohon gunakan email Petra dengan @john.petra.ac.id');
+                return redirect()->route('applicant.login')->with('invalidLogin', 'Mohon gunakan email Petra dengan @john.petra.ac.id');
             }
             $nrp = strtolower(explode('@', $email)[0]);
             $name = $user->getName();
