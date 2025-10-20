@@ -82,7 +82,7 @@
                         @for ($i = 23; $i <= 31; $i++)
                             <th class="border px-4 py-2">{{ $i }} Oktober</th>
                         @endfor
-                        @for ($i = 1; $i <= 3; $i++)
+                        @for ($i = 1; $i <= 4; $i++)
                             <th class="border px-4 py-2">{{ $i }} November</th>
                         @endfor
                     </tr>
@@ -101,7 +101,7 @@
                             onclick="toggleSlot(this)">
                         </td>
                         @endfor
-                         @for ($i = 1; $i <= 3; $i++)
+                         @for ($i = 1; $i <= 4; $i++)
                         <td 
                             class="slot border" 
                             data-date="{{ '2025-11-' . str_pad($i, 2, '0', STR_PAD_LEFT) }}" 
