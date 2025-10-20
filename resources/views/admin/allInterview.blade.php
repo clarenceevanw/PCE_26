@@ -68,57 +68,7 @@
             </div>
         </div>
     </div>
-    <div id="modalFilter" class="h-screen overflow-y-auto overflow-x-hidden fixed top-0 left-0 z-[3000] justify-center items-center w-screen hscreen md:inset-0 bg-black bg-opacity-50 opacity-0 hidden transition-opacity duration-500">
-            <div class="relative p-4 w-full max-w-md md:max-w-3xl max-h-full">
-                <!-- Modal content -->
-                <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
-                    <!-- Modal header -->
-                    <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
-                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
-                            Custom Filter
-                        </h3>
-                        <button onclick="closeFilter()" type="button" class="end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white">
-                            <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
-                            </svg>
-                            <span class="sr-only">Close modal</span>
-                        </button>
-                    </div>
-                    <!-- Modal body -->
-                    <div class="p-4 md:p-5">
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-
-                            <div class="mb-4">
-                                <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Divisi Pertama</label>
-                                <select style="width:100%" id="filterDivisi1" name="filterDivisi1">
-                                    <option>ALL</option>
-                                    @foreach($divisions as $div)
-                                        <option value="{{ $div->name }}">{{ $div->name }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-
-                            <div class="mb-4">
-                                <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Divisi Kedua</label>
-                                <select style="width:100%" id="filterDivisi2" name="filterDivisi2">
-                                    <option>ALL</option>
-                                    @foreach($divisions as $div)
-                                        <option value="{{ $div->name }}">{{ $div->name }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-                        <div class="w-full flex-row flex justify-center items-center">
-                            <button id="buttonReset" class="m-3 w-32 text-white bg-[#cc0000] hover:bg-[#b30000] focus:ring-4 focus:outline-none focus:ring-[#990000] font-medium rounded-lg text-sm px-5 py-2.5 text-center">Reset</button>
-                            <button id="buttonFilter" class="m-3 w-32 text-white bg-[#0bd865] hover:bg-[#09c25b] focus:ring-4 focus:outline-none focus:ring-[#038b02] font-medium rounded-lg text-sm px-5 py-2.5 text-center">Apply</button>
-                        </div>
-                </div>
-            </div>
-    </div>
-
-
-
-    <div id="modal" class="z-[2000] h-full overflow-y-auto overflow-x-hidden fixed top-0 left-0 z-50 flex justify-center items-center w-screen hscreen md:inset-0 h-[calc(100%-1rem)] bg-black bg-opacity-50 opacity-0 hidden transition-opacity duration-500">
+    <div id="modal" class="z-[4000] h-full overflow-y-auto overflow-x-hidden fixed top-0 left-0 justify-center items-center w-screen hscreen md:inset-0 bg-black bg-opacity-50 opacity-0 hidden transition-opacity duration-500">
         <!-- Modal goes here -->
         <div class="relative p-4 w-full max-w-2xl max-h-full">
             <!-- Modal content -->
@@ -139,6 +89,53 @@
                 <div id="modalBody" class="p-4 md:p-5 max-h-[400px] overflow-auto">
                     
                 </div>
+            </div>
+        </div>
+    </div>
+    <div id="modalFilter" class="h-screen overflow-y-auto overflow-x-hidden fixed top-0 left-0 z-[3000] justify-center items-center w-screen hscreen md:inset-0 bg-black bg-opacity-50 opacity-0 hidden transition-opacity duration-500">
+        <div class="relative p-4 w-full max-w-md md:max-w-3xl max-h-full">
+            <!-- Modal content -->
+            <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                <!-- Modal header -->
+                <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+                        Custom Filter
+                    </h3>
+                    <button onclick="closeFilter()" type="button" class="end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white">
+                        <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                        </svg>
+                        <span class="sr-only">Close modal</span>
+                    </button>
+                </div>
+                <!-- Modal body -->
+                <div class="p-4 md:p-5">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+                        <div class="mb-4">
+                            <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Divisi Pertama</label>
+                            <select style="width:100%" id="filterDivisi1" name="filterDivisi1">
+                                <option>ALL</option>
+                                @foreach($divisions as $div)
+                                    <option value="{{ $div->name }}">{{ $div->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Divisi Kedua</label>
+                            <select style="width:100%" id="filterDivisi2" name="filterDivisi2">
+                                <option>ALL</option>
+                                @foreach($divisions as $div)
+                                    <option value="{{ $div->name }}">{{ $div->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="w-full flex-row flex justify-center items-center">
+                        <button id="buttonReset" class="m-3 w-32 text-white bg-[#cc0000] hover:bg-[#b30000] focus:ring-4 focus:outline-none focus:ring-[#990000] font-medium rounded-lg text-sm px-5 py-2.5 text-center">Reset</button>
+                        <button id="buttonFilter" class="m-3 w-32 text-white bg-[#0bd865] hover:bg-[#09c25b] focus:ring-4 focus:outline-none focus:ring-[#038b02] font-medium rounded-lg text-sm px-5 py-2.5 text-center">Apply</button>
+                    </div>
             </div>
         </div>
     </div>
@@ -176,7 +173,7 @@
                         result: item.link_hasil_result1 && item.link_hasil_result2
                         ? `<button
                             type="button"
-                            onclick='openModal("${item.nrp}")'
+                            onClick="openModalResult('${item.nrp}')"
                             data-te-ripple-init
                             data-te-ripple-color="dark"
                             class="inline-block rounded-full border border-black p-1.5 mr-1 uppercase leading-normal shadow-[0_4px_9px_-4px_#000] transition duration-150 ease-in-out hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]">
@@ -231,7 +228,7 @@
         const filterModal = document.getElementById('modalFilter');
         const filterDivisi1 = document.getElementById('filterDivisi1');
         const filterDivisi2 = document.getElementById('filterDivisi2');
-        window.showFilter = function() {
+        function showFilter() {
             filterModal.classList.remove("hidden");
             filterModal.classList.add("flex");
             setTimeout(() => {
@@ -239,7 +236,7 @@
             }, 10);
         }
 
-        window.closeFilter = function() {
+        function closeFilter() {
             filterModal.classList.remove("opacity-100");
             setTimeout(() => {
                 filterModal.classList.add("hidden");
@@ -285,145 +282,52 @@
         });
     </script>
     <script>
-        function openModal(nrp){
-            let data = searchDataByNrp(nrp);
-            let modal = document.getElementById('modal');
-            modal.classList.remove("hidden")
-            setTimeout(()=>{
-                modal.classList.add("opacity-100")
-            },10)
-            $('#modalTitle').text('Hasil Interview')
-            $('#modalBody').html(`
-                <div class="grid md:grid-cols-1 gap-6 mb-10">
-                    <div class="flex flex-col justify-center items-center w-full md:w-full">
-                        <a href="${data.link_hasil_result1}" target="_blank" class="text-blue-500 hover:underline">Result Divisi 1</a>
-                        <a href="${data.link_hasil_result2}" target="_blank" class="text-blue-500 hover:underline">Result Divisi 2</a>
-                    </div>
+    // PINDAHIN KE SINI - PALING BAWAH!
+    window.openModalResult = function(nrp){
+        console.log('Button clicked! NRP:', nrp);
+        let data = searchDataByNrp(nrp);
+        console.log('Data found:', data);
+        
+        if (!data) {
+            console.error('Data not found for NRP:', nrp);
+            return;
+        }
+        
+        let modal = document.getElementById('modal');
+        let modalTitle = document.getElementById('modalTitle');
+        let modalBody = document.getElementById('modalBody');
+        
+        // **This is the corrected opening logic**
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+        setTimeout(() => {
+            modal.classList.add("opacity-100");
+        }, 10); // A small delay allows the browser to apply the transition
+        
+        modalTitle.textContent = 'Hasil Interview';
+        modalBody.innerHTML = `
+            <div class="grid md:grid-cols-1 gap-6 mb-10">
+                <div class="flex flex-col justify-center items-center w-full md:w-full">
+                    <a href="${data.link_hasil_result1 || '#'}" target="_blank" class="text-blue-500 hover:underline mb-2">Result Divisi 1</a>
+                    <a href="${data.link_hasil_result2 || '#'}" target="_blank" class="text-blue-500 hover:underline">Result Divisi 2</a>
                 </div>
-            `
-            )
-            $("#form_hasil").on('submit', function(e){
-                e.preventDefault();
+            </div>
+        `;
+    }
 
-                Swal.fire({
-                    title: "Are you sure want to submit?",
-                    text: "Make sure the link is correct. Once you submit, the link cannot be changed!",
-                    icon: "warning",
-                    showCancelButton: true,
-                    confirmButtonColor: "#3085d6",
-                    cancelButtonColor: "#d33",
-                    confirmButtonText: "Yes, submit it!",
-                    didOpen: () => {
-                        // Set custom z-index for the Swal container and backdrop
-                        document.querySelector('.swal2-container').style.zIndex = '2002'; // Adjust z-index as needed
-                        document.querySelector('.swal2-backdrop-show').style.zIndex = '2001'; // Adjust backdrop z-index if needed
-                    }
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        var form = $(this)[0];
-                        var formData = new FormData(form);
-                        var method = $(this).attr('method');
-                        var url = $(this).attr('action');
+    function searchDataByNrp(nrp){
+        return datas.find(item => item.nrp === nrp);
+    }
 
-
-                        // var loader = document.querySelector(".data-loader");
-                        // loader.classList.remove("hidden");
-                        // loader.classList.add("flex");
-                        $.ajax({
-                            type: method,
-                            url: url,
-                            data: formData,
-                            processData: false, //to prevent jQuery from automatically transforming the data into a query string
-                            contentType: false,
-                            cache: false,
-                            success: async function(response) {
-                                // loader.classList.add("hidden");
-                                // loader.classList.remove("flex");
-                                if (response.success) {
-                                    await Swal.fire({
-                                        title: "Success!",
-                                        text: response.message,
-                                        icon: "success",
-                                        confirmButtonColor: "#3085d6",
-                                        confirmButtonText: "OK",
-                                        didOpen: () => {
-                                            // Set custom z-index for the Swal container and backdrop
-                                            document.querySelector('.swal2-container').style.zIndex = '2002'; // Adjust z-index as needed
-                                            document.querySelector('.swal2-backdrop-show').style.zIndex = '2001'; // Adjust backdrop z-index if needed
-                                        }
-                                    }).then((result) => {
-                                        if (result.isConfirmed) {
-                                            window.location.reload();
-                                        }
-                                        setTimeout(() => {
-                                            window.location.reload();
-                                        }, 1500);
-
-                                    });
-                                } else {
-                                    await Swal.fire({
-                                        icon: "error",
-                                        title: "Oops...",
-                                        text: response.message,
-                                        confirmButtonColor: "#3085d6",
-                                        didOpen: () => {
-                                            // Set custom z-index for the Swal container and backdrop
-                                            document.querySelector('.swal2-container').style.zIndex = '2002'; // Adjust z-index as needed
-                                            document.querySelector('.swal2-backdrop-show').style.zIndex = '2001'; // Adjust backdrop z-index if needed
-                                        }
-                                    });
-                                }
-                            },
-                            error: async function(xhr, textStatus, errorThrown) {
-                                // loader.classList.add("hidden");
-                                // loader.classList.remove("flex");
-                                await Swal.fire({
-                                    title: 'Oops!',
-                                    text: 'Something went wrong: ' + textStatus + '-' +
-                                        errorThrown,
-                                    icon: 'error',
-                                    confirmButtonColor: "#3085d6",
-                                    confirmButtonText: 'OK',
-                                    didOpen: () => {
-                                        // Set custom z-index for the Swal container and backdrop
-                                        document.querySelector('.swal2-container').style.zIndex = '2002'; // Adjust z-index as needed
-                                        document.querySelector('.swal2-backdrop-show').style.zIndex = '2001'; // Adjust backdrop z-index if needed
-                                    }
-                                });
-                            }
-                        })
-                    } else {
-                        // User canceled the submission
-                        Swal.fire({
-                            title: "Cancelled!",
-                            text: "Your link was not submitted.",
-                            icon: "info",
-                            confirmButtonColor: "#3085d6",
-                            confirmButtonText: "OK",
-                            didOpen: () => {
-                                // Set custom z-index for the Swal container and backdrop
-                                document.querySelector('.swal2-container').style.zIndex = '2002'; // Adjust z-index as needed
-                                document.querySelector('.swal2-backdrop-show').style.zIndex = '2001'; // Adjust backdrop z-index if needed
-                            }
-                        });
-                    }
-                });
-            })
-
-        }
-
-        function searchDataByNrp(nrp){
-            return datas.find(item => item.nrp === nrp);
-        }
-
-        //hide modal
-        function closeModal(){
-            let modal = document.getElementById('modal')
-            modal.classList.add("opacity-0")    
-            modal.classList.remove("opacity-100")
-            setTimeout(()=>{
-                modal.classList.add("hidden")
-            },250)
-        }
-    </script>
+    window.closeModal = function(){
+        let modal = document.getElementById('modal');
+        
+        // **This is the corrected closing logic**
+        modal.classList.remove("opacity-100");
+        setTimeout(() => {
+            modal.classList.add("hidden");
+            modal.classList.remove('flex');
+        }, 500); // Match this duration to your CSS transition (duration-500)
+    }
+</script>
 @endSection
