@@ -591,7 +591,7 @@ class ApplicantController extends Controller
         $tomorrowDateString = now()->addDay()->toDateString();
         $chosenDate = $request->tanggal_choice;
 
-        if ($now->hour >= 15 && $chosenDate === $tomorrowDateString) {
+        if ($now->hour >= 21 && $chosenDate === $tomorrowDateString) {
             return response()->json([
                 'success' => false,
                 'message' => 'Pemesanan jadwal untuk besok ditutup setelah jam 21:00. Silakan pilih tanggal lain atau coba lagi besok.'
