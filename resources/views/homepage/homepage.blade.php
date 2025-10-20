@@ -4,6 +4,7 @@
         html {
             scroll-behavior: smooth !important;
         }
+
         *,
         *::before,
         *::after {
@@ -13,152 +14,127 @@
             /* font-family: 'Courier New', Courier, monospace */
         }
 
-        #divisi {
-            display: flex;
-            /* justify-content: center;
-                            align-items: center; */
-            min-height: 100vh;
-            color: #333;
-        }
-
-        .swiper {
-            width: 75%;
-            padding: 50px 0;
-
-        }
-
-        .swiper-slide {
-            position: relative;
-            aspect-ratio: 3/4;
-            border-radius: 14px;
-            border: 1px solid #ddd;
-            background: rgb(192, 148, 37);
-        }
-
-        .swiper-slide img {
-            display: block;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            border-radius: inherit;
-            user-select: none;
-        }
-
-        .title {
-            position: absolute;
-            bottom: 5px;
-            left: 50%;
-            transform: translate(-50%, 20%);
-            -ms-transform: translate(-50%, 20%);
-            width: max-content;
-            text-align: center;
-            padding: 10px 10px;
-            background: #333;
-            border-radius: 8px;
-            border: 2px solid #333;
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-            backdrop-filter: blur(10px);
-            transition: all 0.5s linear;
-        }
-
-        .title span {
-            color: #ffd620;
-            font-size: 1.2rem;
-            font-weight: 600;
-        }
-
-        .swiper-slide-active .title {
-            bottom: -10px;
-            box-shadow: 0 20px 30px 2px rgba(0, 0, 0, 0.1);
-        }
-
-        .button-blur {
-            backdrop-filter: blur(13px) brightness(0.85);
-            -webkit-backdrop-filter: blur(13px) brightness(0.85);
-            box-shadow: none;
-        }
-        .bg-blur {
-            backdrop-filter: blur(13px) brightness(0.85);
-            -webkit-backdrop-filter: blur(13px) brightness(0.85);
-            box-shadow: none;
-        }
-
-
-
-        @media (max-width: 1100px) {
-            .swiper-slide {
-                width: 300px;
-            }
-        }
-
-        @media (max-width: 900px) {
-            .swiper-slide {
-                width: 250px;
-            }
-        }
-
-        @media (max-width: 700px) {
-            .swiper-slide {
-                width: 238px;
-            }
-        }
-
-        @media (max-width: 610px) {
-            .swiper-slide {
-                width: 150px;
-            }
-        }
-
-        .rotate1 {
-            transform: rotate(-30deg);
-        }
-
-        .rotate2 {
-            transform: rotate(30deg);
-        }
-
         .text-shadow {
             text-shadow: 6px 4px 15px #ffffff;
         }
-        
+
+        body {
+            background-image: url("{{ asset('assets/welcome-awan.png') }}"), linear-gradient(180deg, rgba(198, 234, 255, 1) 0%, rgba(56, 182, 255, 1) 14%);
+            background-color: #C6EAFF;
+
+            /* Make the image cover the container (scales and is cropped instead of stretched) */
+            background-size: cover, cover;
+
+            /* allow separate settings per layer */
+            background-attachment: fixed, fixed;
+            background-repeat: no-repeat, no-repeat;
+
+            /* start image at left; keep gradient fixed */
+            background-position: 0% 10%, center top;
+
+            /* slide the first (image) layer right then back left */
+            animation: bg-slide 30s ease-in-out infinite;
+        }
+
+        @keyframes bg-slide {
+            0% {
+                background-position: 0% 10%, center top;
+            }
+
+            50% {
+                background-position: 100% 10%, center top;
+            }
+
+            100% {
+                background-position: 0% 10%, center top;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            body {
+                background-size: 110% auto, cover;
+            }
+        }
+
+        @media (min-width: 1920px) {
+            body {
+                background-size: 200% auto, cover;
+            }
+        }
     </style>
 @endsection
 @section('content')
     @include('components.navbar')
     <div class="background flex flex-col overflow-x-hidden">
-        @include('homepage.partials.bombi')
+        @include('homepage.partials.welcome')
         @include('homepage.partials.penjelasan')
         @include('homepage.partials.divisi')
         @include('homepage.partials.requirement')
         @include('homepage.partials.timeline')
-        @include('homepage.partials.faq')
+        {{-- @include('homepage.partials.faq') --}}
         @include('homepage.partials.contact')
         @include('components.joinButton')
     </div>
 @endsection
 @section('script')
     <script>
-        var swiper = new Swiper('.swiper', {
-            effect: 'coverflow',
-            grabCursor: true,
-            centeredSlides: true,
-            loop: true,
-            initialSlide: 3,
-            speed: 600,
-            preventClicks: true,
-            slidesPerView: "auto",
-            coverflowEffect: {
-                rotate: 0,
-                stretch: 80,
-                depth: 350,
-                modifier: 1,
-                slideShadows: true,
-            },
-            on: {
-                click(event) {
-                    swiper.slideTo(event.clickedIndex);
+        document.addEventListener('DOMContentLoaded', function() {
+            const swiper = new Swiper('.swiper', {
+                effect: 'coverflow',
+                grabCursor: true,
+                centeredSlides: true,
+                loop: true,
+                initialSlide: 6,
+                speed: 400,
+                slidesPerView: 'auto',
+                watchSlidesProgress: true,
+                coverflowEffect: {
+                    rotate: 0,
+                    stretch: 0,
+                    depth: 100,
+                    modifier: 2.5,
+                    slideShadows: false,
+                },
+                on: {
+                    setTranslate: function() {
+                        const slides = this.slides;
+                        const activeIndex = this.activeIndex;
+
+                        slides.forEach((slide, index) => {
+                            const distance = Math.abs(index - activeIndex);
+
+                            if (distance === 0) {
+                                slide.style.opacity = '1';
+                                slide.style.pointerEvents = 'auto';
+                            } else if (distance === 1) {
+                                slide.style.opacity = '0.8';
+                                slide.style.pointerEvents = 'auto';
+                            } else if (distance === 2) {
+                                slide.style.opacity = '0.5';
+                                slide.style.pointerEvents = 'auto';
+                            } else {
+                                slide.style.opacity = '0';
+                                slide.style.pointerEvents = 'none';
+                            }
+                        });
+                    }
                 }
-            },
+            });
+
+            const cardContainers = document.querySelectorAll('.card-container');
+
+            cardContainers.forEach(container => {
+                container.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    this.classList.toggle('flipped');
+                });
+            });
+
+            document.querySelector('.swiper').addEventListener('click', function(e) {
+                if (e.target.closest('.card-container')) {
+                    e.stopPropagation();
+                }
+            });
         });
     </script>
 @endsection
