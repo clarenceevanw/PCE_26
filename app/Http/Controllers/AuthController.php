@@ -26,6 +26,10 @@ class AuthController extends Controller
         $user = Socialite::driver('google')->redirectUrl(config('services.google.redirect_admin'))->stateless()->user();
         if ($user) {
             $email = strtolower($user->getEmail());
+            if (strpos($email, '@john.petra.ac.id') === false) {
+                return redirect()->route('admin.login')->with('invalidLogin', 'Mohon gunakan email Petra dengan @john.petra.ac.id');
+            }
+            
             $nrp = strtolower(explode('@', $email)[0]);
             $name = $user->getName();
 
@@ -51,6 +55,9 @@ class AuthController extends Controller
         $user = Socialite::driver('google')->redirectUrl(config('services.google.redirect_applicant'))->stateless()->user();
         if ($user) {
             $email = strtolower($user->getEmail());
+            if (strpos($email, '@john.petra.ac.id') === false) {
+                return redirect()->route('admin.login')->with('invalidLogin', 'Mohon gunakan email Petra dengan @john.petra.ac.id');
+            }
             $nrp = strtolower(explode('@', $email)[0]);
             $name = $user->getName();
             $angkatan = "20".substr($email, 3, 2);
