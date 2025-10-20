@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use App\Models\Applicant;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Cache;
 
 class RegistrationFormMiddleware
 {
@@ -19,33 +20,65 @@ class RegistrationFormMiddleware
     {
         $routeName = $request->route()->getName();
 
-        if($routeName === 'applicant.berkas'){
-            if($this->biodataMiddleware($request)){
-                return $next($request);
-            }else{
-                return redirect()->back()->with('error', 'Biodata belum diisi/belum disubmit');
-            }
+        // Pastikan user punya session login
+        if (!Session::has('nrp')) {
+            return redirect()->route('applicant.login')->with('error', 'Silakan login terlebih dahulu.');
         }
-        elseif($routeName === 'applicant.jadwal'){
-            if($this->biodataMiddleware($request) && $this->berkasMiddleware($request)){
+
+        if ($routeName === 'applicant.berkas') {
+            if ($this->biodataMiddleware()) {
                 return $next($request);
-            }else{
-                return redirect()->back()->with('error', 'Berkas belum diisi/belum disubmit');
             }
+
+            return $this->safeRedirect($request, 'Biodata belum diisi/belum disubmit');
         }
+
+        if ($routeName === 'applicant.jadwal') {
+            if ($this->biodataMiddleware() && $this->berkasMiddleware()) {
+                return $next($request);
+            }
+
+            return $this->safeRedirect($request, 'Berkas belum diisi/belum disubmit');
+        }
+
+        return $next($request);
     }
 
-    private function biodataMiddleware(Request $request)
+    /**
+     * Cek apakah biodata sudah diisi.
+     */
+    private function biodataMiddleware(): bool
     {
         $nrp = Session::get('nrp');
-        $isExists = Applicant::where('nrp', $nrp)->exists();
-        return $isExists;
+
+        // cache 60 detik biar gak query DB terus
+        return Cache::remember("biodata_exists_$nrp", 60, function () use ($nrp) {
+            return Applicant::where('nrp', $nrp)->exists();
+        });
     }
 
-    private function berkasMiddleware(Request $request)
+    /**
+     * Cek apakah berkas sudah diupload.
+     */
+    private function berkasMiddleware(): bool
     {
         $nrp = Session::get('nrp');
-        $isExists = Applicant::where('nrp', $nrp)->whereHas('applicantFile')->exists();
-        return $isExists;
+
+        return Cache::remember("berkas_exists_$nrp", 60, function () use ($nrp) {
+            return Applicant::where('nrp', $nrp)->whereHas('applicantFile')->exists();
+        });
+    }
+
+    /**
+     * Redirect aman agar tidak terjadi redirect loop.
+     */
+    private function safeRedirect(Request $request, string $message)
+    {
+        // Kalau halaman sebelumnya sama dengan halaman sekarang → hindari loop
+        if (url()->previous() === $request->fullUrl()) {
+            return redirect()->route('applicant.homepage')->with('error', $message);
+        }
+
+        return redirect()->back()->with('error', $message);
     }
 }
