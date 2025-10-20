@@ -154,7 +154,6 @@
 
     tanggalSelect.addEventListener('change', function() {
         jamSelect.disabled = false;
-        // CHANGED: Option background color
         jamSelect.innerHTML = '<option class="bg-cyan-950" selected disabled hidden value="">Pilih Jam</option>';
         
         var selectedDate = this.value;
@@ -162,15 +161,19 @@
         var twoHoursFromNow = new Date(currentTime.getTime() + 2 * 60 * 60 * 1000);
         var filteredSchedules = schedules.filter(sch => sch.isOnline == interviewMode);
 
+        var uniqueTimes = new Set();
+
         filteredSchedules.forEach(sch => {
             if (sch.tanggal === selectedDate) {
                 let [hours, minutes] = sch.jam_mulai.split(':').map(Number);
                 let scheduledTime = new Date(new Date(selectedDate).setHours(hours, minutes));
                 
                 if (scheduledTime >= twoHoursFromNow) {
-                    let formattedTime = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`;
-                    // CHANGED: Option background color
-                    jamSelect.innerHTML += `<option class="bg-cyan-950" value='${sch.jam_mulai}'>${formattedTime}</option>`;
+                    if(!uniqueTimes.has(sch.jam_mulai)) {
+                        uniqueTimes.add(sch.jam_mulai);
+                        let formattedTime = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`;
+                        jamSelect.innerHTML += `<option class="bg-cyan-950" value='${sch.jam_mulai}'>${formattedTime}</option>`;
+                    }
                 }
             }
         });
