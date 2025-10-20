@@ -7,6 +7,7 @@ use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Models\Admin;
+use App\Models\Applicant;
 use App\Models\Division;
 
 class AuthController extends Controller
@@ -66,7 +67,16 @@ class AuthController extends Controller
             session()->put('nrp', $nrp);
             session()->put('name', $name);
             session()->put('angkatan', $angkatan);
-            return redirect()->route('applicant.biodata')->with('login', 'Login success!');
+            $applicant = Applicant::where('nrp', $nrp)->first();
+            if (!$applicant) {
+                return redirect()->route('applicant.biodata')->with('login', 'Login success!');
+            }
+            if ($applicant->phase == 0) {
+                return redirect()->route('applicant.berkas')->with('login', 'Login success!');
+            }
+            if ($applicant->phase >= 1) {
+                return redirect()->route('applicant.jadwal')->with('login', 'Login success!');
+            }
         }
     }
 

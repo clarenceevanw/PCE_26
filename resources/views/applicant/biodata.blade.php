@@ -185,7 +185,7 @@
                                 Pengalaman Organisasi / Kepanitiaan
                             </label>
                             <textarea id="pengalaman" name="pengalaman" rows="3"
-                                placeholder="Ceritakan pengalaman Anda dalam organisasi atau kepanitiaan sebelumnya"
+                                placeholder="Sebutkan pengalaman Anda dalam organisasi atau kepanitiaan sebelumnya (pengalaman saat SMA boleh dicantumkan)"
                                 class="w-full px-4 py-3 bg-transparent border border-teal-400/50 rounded-2xl text-white text-sm sm:text-base placeholder-teal-300/50 resize-none transition-all duration-300 focus:outline-none focus:border-teal-300 focus:shadow-[0_0_12px_rgba(45,212,191,0.4)]"></textarea>
                         </div>
                     </div>

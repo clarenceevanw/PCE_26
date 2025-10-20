@@ -439,7 +439,7 @@ class ApplicantController extends Controller
                 $targetDivisions = ['Information Technology', 'Acara'];
                 $isTargetApplicant = in_array($div1Name, $targetDivisions) && in_array($div2Name, $targetDivisions);
                 if ($schedules->isEmpty() && !$isTargetApplicant) {
-                    $schedules = $this->getAllAvailableSchedules();
+                    $schedules = $this->getBphSchedules();
                     if ($schedules->isNotEmpty()){
                         $divisionName = 'Semua Divisi (Penuh - Slot Cadangan)';
                     }
