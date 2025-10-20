@@ -1,4 +1,8 @@
  <style>
+     #about {
+         overflow: visible;
+     }
+
      #aboutContent {
          animation: fadeInUp 0.8s ease-out forwards;
      }
@@ -17,6 +21,27 @@
 
      .badge {
          animation: badgeFadeIn 0.6s ease-out forwards;
+         position: relative;
+         overflow: hidden;
+     }
+
+     .badge::before {
+         content: '';
+         position: absolute;
+         inset: 0;
+         background: linear-gradient(to right, #047857, #059669, #10b981);
+         opacity: 0;
+         transition: opacity 0.5s ease-out;
+         border-radius: 0.75rem;
+     }
+
+     .badge:hover::before {
+         opacity: 1;
+     }
+
+     .badge span {
+         position: relative;
+         z-index: 1;
      }
 
      .badge:nth-child(1) {
@@ -48,7 +73,7 @@
      }
  </style>
  <section id="about"
-     class="w-screen min-h-screen relative overflow-hidden flex items-center justify-center px-6 py-20">
+     class="w-screen min-h-screen relative overflow-hidden flex items-center justify-center px-6 py-20 mt-20">
      <div
          class="absolute top-0 left-0 w-[25rem] h-[25rem] rounded-full mix-blend-multiply filter blur-3xl opacity-10 bg-green-500 animate-pulse">
      </div>
@@ -59,7 +84,7 @@
          <div
              class="w-full mx-auto p-8 md:p-12 rounded-3xl bg-white/80 backdrop-blur-md border border-white/20 shadow-2xl ring-1 ring-white/10">
              <h1
-                 class="font-return-grid text-4xl sm:text-5xl lg:text-6xl font-bold mb-8 bg-gradient-to-r from-green-600 via-green-500 to-green-300 bg-clip-text text-transparent leading-tight">
+                 class="font-return-grid text-4xl sm:text-5xl lg:text-6xl font-bold mb-8 bg-gradient-to-r from-green-600 via-green-500 to-green-300 bg-clip-text text-transparent leading-tight tracking-wider">
                  PETRA CIVIL EXPO 2026
              </h1>
 
@@ -82,15 +107,15 @@
 
              <div class="font-organetto flex flex-wrap justify-center gap-4 mt-6">
                  <div
-                     class="badge px-6 py-3 bg-gradient-to-r from-green-600 via-green-500 to-green-300  border border-green-500 rounded-xl backdrop-blur-sm hover:from-green-600 hover:to-green-800 hover:scale-105 transition-all duration-300 shadow-lg">
+                     class="badge px-6 py-3 bg-gradient-to-r from-green-600 via-green-500 to-green-300 border border-green-500 rounded-xl backdrop-blur-sm hover:from-green-700 hover:via-green-600 hover:to-green-400 hover:scale-105 hover:shadow-2xl hover:shadow-green-500/50 hover:-translate-y-1 transition-all duration-5000 ease-out shadow-lg cursor-pointer">
                      <span class="text-white font-semibold text-sm md:text-base">Bridge Competition</span>
                  </div>
                  <div
-                     class="badge px-6 py-3 bg-gradient-to-r from-green-600 via-green-500 to-green-500  border border-green-300 rounded-xl backdrop-blur-sm hover:from-green-600 hover:to-green-800 hover:scale-105 transition-all duration-300 shadow-lg">
-                     <span class="text-white font-semibold text-sm md:text-base">Concrete Strength Competition</span>
+                     class="badge px-6 py-3 bg-gradient-to-r from-green-600 via-green-500 to-green-500 border border-green-300 rounded-xl backdrop-blur-sm hover:from-green-700 hover:via-green-600 hover:to-green-600 hover:scale-105 hover:shadow-2xl hover:shadow-green-500/50 hover:-translate-y-1 transition-all duration-500 ease-out shadow-lg cursor-pointer">
+                     <span class="text-white font-semibold text-sm md:text-base">Lomba Kuat Tekan Beton</span>
                  </div>
                  <div
-                     class="badge px-6 py-3 bg-gradient-to-r from-green-600 via-green-500 to-green-300  border border-green-500  rounded-xl backdrop-blur-sm hover:from-green-600 hover:to-green-800 hover:scale-105 transition-all duration-300 shadow-lg">
+                     class="badge px-6 py-3 bg-gradient-to-r from-green-600 via-green-500 to-green-300 border border-green-500 rounded-xl backdrop-blur-sm hover:from-green-700 hover:via-green-600 hover:to-green-400 hover:scale-105 hover:shadow-2xl hover:shadow-green-500/50 hover:-translate-y-1 transition-all duration-500 ease-out shadow-lg cursor-pointer">
                      <span class="text-white font-semibold text-sm md:text-base">Earthquake Resistance Design
                          Competition</span>
                  </div>

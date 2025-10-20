@@ -157,9 +157,9 @@
                                 <div
                                     class="absolute -inset-2 bg-gradient-to-r from-cyan-400 to-blue-400 rounded-xl blur-lg opacity-10 group-hover:opacity-30 transition-opacity duration-500">
                                 </div>
-                                <img src="{{ asset('assets/LOGO-600px-FTSP.png') }}"
+                                <img src="{{ asset('assets/LOGO-SIPIL FINAL-04.png') }}"
                                     class="relative w-40 md:w-48 lg:w-56 transform group-hover:scale-105 transition-transform duration-500 drop-shadow-lg"
-                                    alt="FTSP Logo">
+                                    alt="SIPIL LOGO">
                             </div>
 
                             <div class="relative group" data-aos="fade-right" data-aos-duration="800"
@@ -167,9 +167,9 @@
                                 <div
                                     class="absolute -inset-2 bg-gradient-to-r from-indigo-400 to-purple-400 rounded-xl blur-lg opacity-10 group-hover:opacity-30 transition-opacity duration-500">
                                 </div>
-                                <img src="{{ asset('assets/LOGO-600px-FTI.png') }}"
+                                <img src="{{ asset('assets/Logo-HIMASITRA.png') }}"
                                     class="relative w-28 md:w-32 lg:w-36 transform group-hover:scale-105 transition-transform duration-500 drop-shadow-lg"
-                                    alt="FTI Logo">
+                                    alt="Logo HIMASITRA">
                             </div>
                         </div>
                     </div>
@@ -188,8 +188,9 @@
 
                         <div class="flex justify-center items-center gap-8 mb-10">
                             <!-- LINE -->
-                            <a href="https://line.me/" target="_blank" class="social-link group relative"
-                                data-aos="zoom-in" data-aos-duration="600" data-aos-delay="600">
+                            <a href="https://line.me/R/ti/p/@958jigfh" target="_blank"
+                                class="social-link group relative" data-aos="zoom-in" data-aos-duration="600"
+                                data-aos-delay="600">
                                 <div
                                     class="absolute -inset-2 bg-gradient-to-br from-green-400 to-green-500 rounded-2xl blur-lg opacity-0 group-hover:opacity-70 transition-all duration-500">
                                 </div>

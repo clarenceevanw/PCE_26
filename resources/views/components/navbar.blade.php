@@ -124,14 +124,14 @@
 </style>
 
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
+    document.addEventListener("DOMContentLoaded", function() {
         const navbar = document.getElementById("navbar");
         const mobileMenu = document.getElementById("mobileMenu");
         const menuBtn = document.getElementById("menuBtn");
         let lastScrollTop = 0;
 
         // Scroll effect
-        window.addEventListener("scroll", function () {
+        window.addEventListener("scroll", function() {
             const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
 
             if (currentScroll > 50) {
@@ -173,7 +173,7 @@
 
     <!-- Logo (Desktop Only) -->
     <div class="logo-desktop items-center space-x-3 hidden">
-        <img src="{{ asset('assets/logo.png') }}" alt="Logo PCE" class="h-[32px] w-auto object-contain">
+        <img src="{{ asset('assets/logo-PCE-new.png') }}" alt="Logo PCE" class="h-[32px] w-auto object-contain">
     </div>
 
     <!-- Desktop Navbar -->
@@ -199,7 +199,8 @@
 
     <!-- Mobile Navbar -->
     <div class="nav-mobile hidden items-center">
-        <button id="menuBtn" class="nav-mobile-btn flex flex-col justify-center items-center border-0 bg-transparent p-2">
+        <button id="menuBtn"
+            class="nav-mobile-btn flex flex-col justify-center items-center border-0 bg-transparent p-2">
             <span></span>
             <span></span>
             <span></span>
@@ -208,7 +209,7 @@
 
     <!-- Mobile Fullscreen Menu -->
     <div id="mobileMenu" class="nav-mobile-menu">
-        <img src="{{ asset('assets/logo.png') }}" alt="Logo PCE" class="h-[2.5rem] mb-4">
+        <img src="{{ asset('assets/logo-PCE-new.png') }}" alt="Logo PCE" class="h-[2.5rem] mb-4">
         @foreach ($navItems as $item)
             <a href="{{ $item['href'] }}" class="text-black font-semibold text-lg">{{ $item['text'] }}</a>
         @endforeach
