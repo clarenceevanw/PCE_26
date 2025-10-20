@@ -436,7 +436,8 @@ class ApplicantController extends Controller
                         $divisionName = $div2Name;
                     }
                 }
-                $targetDivisions = ['Information Technology', 'Acara'];
+                //TODO: BELUM SELESAI SYARATNYA MSH TUNGGU DARI BPH
+                $targetDivisions = ['Information Technology'];
                 $isTargetApplicant = in_array($div1Name, $targetDivisions) && in_array($div2Name, $targetDivisions);
                 if ($schedules->isEmpty() && !$isTargetApplicant) {
                     $schedules = $this->getBphSchedules();
@@ -496,7 +497,8 @@ class ApplicantController extends Controller
                 'schedules.tanggal', 
                 'schedules.jam_mulai', 
                 'admin_schedules.isOnline',
-                'admins.id_line'
+                'admins.id_line',
+                'admins.division_id'
             )
             ->join('schedules', 'admin_schedules.schedule_id', '=', 'schedules.id')
             ->join('admins', 'admin_schedules.admin_id', '=', 'admins.id')
@@ -518,6 +520,7 @@ class ApplicantController extends Controller
                 'schedules.jam_mulai', 
                 'admin_schedules.isOnline',
                 'admins.id_line',
+                'admins.division_id'
             )
             ->join('schedules', 'admin_schedules.schedule_id', '=', 'schedules.id')
             ->join('admins', 'admin_schedules.admin_id', '=', 'admins.id')
@@ -537,7 +540,8 @@ class ApplicantController extends Controller
                 'schedules.tanggal', 
                 'schedules.jam_mulai', 
                 'admin_schedules.isOnline',
-                'admins.id_line'
+                'admins.id_line',
+                'admins.division_id'
             )
             ->join('schedules', 'admin_schedules.schedule_id', '=', 'schedules.id')
             ->join('admins', 'admin_schedules.admin_id', '=', 'admins.id')
@@ -613,11 +617,14 @@ class ApplicantController extends Controller
                 ], 404);
             }
 
-            $adminSchedule = AdminSchedule::where('schedule_id', $schedule->id)
-                ->whereNull('applicant_id')
+            $adminSchedule = AdminSchedule::join('admins', 'admin_schedules.admin_id', '=', 'admins.id')
+                ->where('admin_schedules.schedule_id', $schedule->id)
+                ->where('admins.division_id', $request->division_id)
+                ->whereNull('admin_schedules.applicant_id')
                 ->lockForUpdate()
+                ->select('admin_schedules.*', 'admins.name', 'admins.nrp', 'admins.location', 'admins.link_gmeet')
                 ->first();
-            
+
             if (!$adminSchedule) {
                 DB::rollBack();
                 return response()->json([
@@ -636,25 +643,29 @@ class ApplicantController extends Controller
 
             $adminSchedule->applicant_id = $applicant->id;
             $adminSchedule->save();
+
+            if (!$adminSchedule->wasChanged('applicant_id')) {
+                throw new \Exception('Gagal memperbarui jadwal. Silakan coba lagi.');
+            }
+
             $applicant->phase = 2;
             $applicant->save();
 
             DB::commit();
+            Log::info("Applicant {$applicant->nrp} memilih jadwal {$schedule->tanggal} {$schedule->jam_mulai} (Admin: {$adminSchedule->nrp})");
 
             try {
-                $admin = $adminSchedule->admin;
-                $email = $admin->nrp . '@john.petra.ac.id';
-
+                $email = $adminSchedule->nrp . '@john.petra.ac.id';
                 $data = [
-                    'name' => $admin->name,
-                    'hari' => \Carbon\Carbon::parse($schedule->tanggal)->translatedFormat('l'),
-                    'tanggal' => \Carbon\Carbon::parse($schedule->tanggal)->format('d F Y'),
+                    'name' => $adminSchedule->name,
+                    'hari' => Carbon::parse($schedule->tanggal)->translatedFormat('l'),
+                    'tanggal' => Carbon::parse($schedule->tanggal)->format('d F Y'),
                     'jam' => $schedule->jam_mulai,
                     'isOnline' => $adminSchedule->isOnline,
-                    'lokasi' => $admin->location ?? null,
-                    'link_gmeet' => $admin->link_gmeet ?? null,
+                    'lokasi' => $adminSchedule->location ?? null,
+                    'link_gmeet' => $adminSchedule->link_gmeet ?? null,
                 ];
-                Log::info('Kirim email ke admin (' . $email . '): ' . json_encode($data));
+                Log::info("Kirim email ke admin ($email): " . json_encode($data));
                 Mail::to($email)->queue(new ScheduleNotif($data));
             } catch (\Exception $e) {
                 Log::error('Gagal kirim email ke admin: ' . $e->getMessage());

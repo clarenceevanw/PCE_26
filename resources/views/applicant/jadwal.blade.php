@@ -84,6 +84,7 @@
         <button type="submit" id="submitJadwal" class="w-full py-3 border-2 border-teal-400 text-white font-semibold uppercase rounded-full hover:bg-white hover:text-teal-500 transition-all">
           Submit Jadwal
         </button>
+        <input type="hidden" name="division_id" id="division_id">
       </form>
       @endif
       <div id="interview_details" class="hidden space-y-8">
@@ -104,6 +105,7 @@
 @section('script')
 <script>
     var schedules = JSON.parse(@json($schedules));
+    console.log(schedules);
     var interviewMode = 1;
     var tanggalSelect = document.getElementById('tanggal_choice');
     var jamSelect = document.getElementById('jam_choice');
@@ -172,11 +174,17 @@
                     if(!uniqueTimes.has(sch.jam_mulai)) {
                         uniqueTimes.add(sch.jam_mulai);
                         let formattedTime = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`;
-                        jamSelect.innerHTML += `<option class="bg-cyan-950" value='${sch.jam_mulai}'>${formattedTime}</option>`;
+                        jamSelect.innerHTML += `<option class="bg-cyan-950" value='${sch.jam_mulai}' data-division='${sch.division_id}'>${formattedTime}</option>`;
                     }
                 }
             }
         });
+    });
+
+    jamSelect.addEventListener('change', function() {
+        var selectedTime = this.value;
+        var selectedDivision = this.options[this.selectedIndex].getAttribute('data-division');
+        document.getElementById('division_id').value = selectedDivision;
     });
 
     // Load initial schedules
