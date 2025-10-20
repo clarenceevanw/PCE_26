@@ -190,10 +190,24 @@
     <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.1/dist/flowbite.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.1/dist/flowbite.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.8.162/pdf.min.js"></script>
+    <script src="https://unpkg.com/@studio-freight/lenis@1.0.28/dist/lenis.min.js"></script>
 
     @yield('script')
     <script>
         AOS.init();
+    </script>
+    <script>
+        const lenis = new Lenis({
+            duration: 1.4,   // makin besar = makin lembut
+            smooth: true,    // aktifkan efek halus
+        });
+
+        // Animasi loop biar smooth scroll aktif
+        function raf(time) {
+            lenis.raf(time)
+            requestAnimationFrame(raf)
+        }
+        requestAnimationFrame(raf)
     </script>
 
 </body>
