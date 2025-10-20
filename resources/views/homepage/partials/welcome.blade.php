@@ -450,7 +450,7 @@
             style="text-shadow: 0 0 15px rgba(255,255,255,0.8);">
             Sustaining Growth, Building Futures
         </p> --}}
-        <a href="{{ route('applicant.login') }}" class="gradient-button gradient-button-shimmer mt-2">
+        <a href="{{ route('applicant.registerNow') }}" class="gradient-button gradient-button-shimmer mt-2">
             Register Here
         </a>
     </div>

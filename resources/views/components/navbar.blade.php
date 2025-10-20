@@ -194,6 +194,15 @@
                     <a href="{{ $item['href'] }}" class="text-base">{{ $item['text'] }}</a>
                 </li>
             @endforeach
+            @if(session()->has('email'))
+                <li class="nav-desktop-item">
+                    <a href="{{ route('logout') }}" class="text-base">Logout</a>
+                </li>
+            @else
+                <li class="nav-desktop-item">
+                    <a href="{{ route('applicant.login') }}" class="text-base">Login</a>
+                </li>
+            @endif
         </ul>
     </div>
 
@@ -213,5 +222,10 @@
         @foreach ($navItems as $item)
             <a href="{{ $item['href'] }}" class="text-black font-semibold text-lg">{{ $item['text'] }}</a>
         @endforeach
+        @if(session()->has('email'))
+            <a href="{{ route('logout') }}" class="text-black font-semibold text-lg">Logout</a>
+        @else
+            <a href="{{ route('applicant.login') }}" class="text-black font-semibold text-lg">Login</a>
+        @endif
     </div>
 </div>

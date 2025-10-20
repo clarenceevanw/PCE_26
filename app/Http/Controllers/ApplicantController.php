@@ -682,4 +682,31 @@ class ApplicantController extends Controller
         }
         return view('applicant.login');
     }
+
+    public function registerNow()
+    {
+        $nrp = session('nrp');
+
+        if (!$nrp) {
+            return redirect()->route('applicant.login');
+        }
+
+        $applicant = Applicant::where('nrp', $nrp)->first();
+
+        if (!$applicant) {
+            return redirect()->route('applicant.register');
+        }
+
+        switch ($applicant->phase) {
+            case 0:
+                return redirect()->route('applicant.berkas');
+            case 1:
+                return redirect()->route('applicant.jadwal');
+            case 2:
+                return redirect()->route('applicant.jadwal');
+            default:
+                return redirect()->route('applicant.homepage');
+        }
+    }
+
 }

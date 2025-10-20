@@ -13,7 +13,7 @@ use App\Http\Middleware\RegistrationFormMiddleware;
 // Route::redirect('/', '/oprec');
 
 Route::get('/', [ApplicantController::class, 'homepage'])->name('applicant.homepage');
-
+Route::get('/register-now', [ApplicantController::class,  'registerNow'])->name('applicant.registerNow');
 Route::prefix('admin')->group(function () {
     // Login and Auth Route
     Route::get('login', [AdminController::class, 'login'])->name('admin.login');
