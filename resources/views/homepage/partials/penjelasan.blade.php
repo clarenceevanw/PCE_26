@@ -130,7 +130,7 @@
              p.appendChild(wrapper);
 
              const overlay = document.createElement("span");
-             overlay.className = "absolute bottom-0 left-0 bg-blue-500 rounded-sm";
+             overlay.className = "absolute bottom-0 left-0 bg-green-500 rounded-sm";
              overlay.style.height = "100%";
              overlay.style.width = "100%";
              overlay.style.transformOrigin = i % 2 === 0 ? "right" : "right";

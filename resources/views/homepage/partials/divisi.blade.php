@@ -23,7 +23,8 @@
         width: 75%;
         max-width: 1200px;
         padding: 50px 0;
-        overflow: hidden;
+        /* overflow: hidden; */
+        overflow: visible;
     }
 
     .swiper-wrapper {
@@ -123,10 +124,11 @@
 
     .title {
         position: absolute;
-        bottom: -15px;
+        bottom: -60px;
         left: 50%;
         transform: translateX(-50%);
         width: max-content;
+        margin-top: 0;
         text-align: center;
         padding: 10px 20px;
         background: #333;
@@ -136,6 +138,10 @@
         backdrop-filter: blur(10px);
         transition: all 0.3s ease;
         z-index: 10;
+    }
+
+    .swiper-slide-active .title {
+        bottom: -60px !important;
     }
 
     .title span {
@@ -256,8 +262,8 @@
                     </div>
                     <div class="card-face card-back">
                         <h3>Sponsor</h3>
-                        <p>Divisi yang bertanggung jawab mencari dan mengelola sponsor untuk mendukung keberlangsungan
-                            acara WGG.</p>
+                        <p>Divisi yang menjalin kerjasama dengan berbagai pihak guna mendapatkan dukungan dana demi
+                            keberlangsungan acara.</p>
                     </div>
                 </div>
                 <div class="title"><span>Sponsor</span></div>
@@ -272,8 +278,7 @@
                     </div>
                     <div class="card-face card-back">
                         <h3>Transkapman</h3>
-                        <p>Divisi yang mengatur transportasi dan akomodasi untuk memastikan kelancaran mobilitas selama
-                            acara berlangsung.</p>
+                        <p>Divisi yang bertanggung jawab atas transportasi, perlengkapan, dan keamanan acara.</p>
                     </div>
                 </div>
                 <div class="title"><span>Transkapman</span></div>
@@ -288,8 +293,7 @@
                     </div>
                     <div class="card-face card-back">
                         <h3>Acara</h3>
-                        <p>Divisi yang merancang, mempersiapkan, dan memimpin pelaksanaan seluruh rangkaian acara sesuai
-                            dengan esensi yang ingin disampaikan kepada mahasiswa baru.</p>
+                        <p>Divisi yang mengkonsep, merencanakan, hingga mengeksekusi acara di hari-H kegiatan.</p>
                     </div>
                 </div>
                 <div class="title"><span>Acara</span></div>
@@ -304,8 +308,8 @@
                     </div>
                     <div class="card-face card-back">
                         <h3>Creative</h3>
-                        <p>Divisi yang menjadi tempat kalian bertumbuh dan berkarya melalui ide kreatif yang
-                            diekspresikan dalam bentuk desain ilustrasi dan video.</p>
+                        <p>Divisi yang bertugas untuk membuat video, poster, animasi, dan berbagai aset lainnya yang
+                            mendukung kelancaran acara.</p>
                     </div>
                 </div>
                 <div class="title"><span>Creative</span></div>
@@ -320,14 +324,13 @@
                     </div>
                     <div class="card-face card-back">
                         <h3>IT</h3>
-                        <p>Divisi yang mengelola website dan aplikasi yang digunakan oleh mahasiswa baru dan panitia.
-                        </p>
+                        <p>Divisi yang bertugas untuk membuat website Petra Civil Expo.</p>
                     </div>
                 </div>
                 <div class="title"><span>IT</span></div>
             </div>
 
-            <!-- Kesehatan -->
+            <!-- Sekkonkes -->
             <div class="swiper-slide">
                 <div class="card-container">
                     <div class="card-face card-front">
@@ -335,14 +338,15 @@
                         <div class="flip-hint">Click to flip</div>
                     </div>
                     <div class="card-face card-back">
-                        <h3>Kesehatan</h3>
-                        <p>Divisi yang bertanggung jawab atas kesehatan mahasiswa baru dan panitia selama WGG
-                            berlangsung.</p>
+                        <h3>Sekkonkes</h3>
+                        <p>Divisi yang bertanggung jawab atas data panitia dan peserta. Mereka juga memastikan kesehatan
+                            dan ketersediaan konsumsi bagi panitia dan peserta ketika hari-H kegiatan.</p>
                     </div>
                 </div>
-                <div class="title"><span>Kesehatan</span></div>
+                <div class="title"><span>Sekkonkes</span></div>
             </div>
 
+            {{-- pr --}}
             <div class="swiper-slide">
                 <div class="card-container">
                     <div class="card-face card-front">
@@ -350,12 +354,12 @@
                         <div class="flip-hint">Click to flip</div>
                     </div>
                     <div class="card-face card-back">
-                        <h3>Kesehatan</h3>
-                        <p>Divisi yang bertanggung jawab atas kesehatan mahasiswa baru dan panitia selama WGG
-                            berlangsung.</p>
+                        <h3>Public Relation</h3>
+                        <p> Divisi yang bertugas untuk menjalin hubungan dengan pihak eksternal hingga mempromosikan PCE
+                            2026 di berbagai platform.</p>
                     </div>
                 </div>
-                <div class="title"><span>Kesehatan</span></div>
+                <div class="title"><span>Public Relation</span></div>
             </div>
         </div>
     </div>
