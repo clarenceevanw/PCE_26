@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Mail;
 use App\Mail\ScheduleNotif;
 use App\Jobs\SendMail;
 use App\Mail\NoScheduleAvailable;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
@@ -383,14 +384,14 @@ class ApplicantController extends Controller
         $title = 'Jadwal Interview';
         $nrp = Session::get('nrp');
         $applicant = Applicant::where('nrp', $nrp)->first();
-        
-        $currentStep = 1; // Default untuk pengguna baru
-        if ($applicant) {
-            // phase 0 -> selesai, aktif di step 2 (Berkas)
-            // phase 1 -> selesai, aktif di step 3 (Jadwal)
-            // phase 2 -> selesai, semua tuntas (kita sebut step 4)
-            $currentStep = $applicant->phase + 2;
+
+        if (!$applicant) {
+            // Redirect atau tampilkan error, misalnya:
+            return redirect()->route('login')->with('error', 'Data pendaftar tidak ditemukan.');
         }
+        
+        $currentStep = $applicant->phase + 2;
+        
 
         $divisionId1 = $applicant->division_choice1;
         $divisionId2 = $applicant->division_choice2;
@@ -421,27 +422,32 @@ class ApplicantController extends Controller
                 ];
             }
         } else {
-            // Logika pencarian jadwal dengan prioritas
             $schedules = $this->getAvailableSchedules($divisionId1);
-            
+            $div1Name = Division::find($divisionId1)->name ?? '';
+
             if ($schedules->isNotEmpty()) {
-                $divisionName = Division::where('id', $divisionId1)->first()->name;
-            } elseif ($divisionId2) {
-                $schedules = $this->getAvailableSchedules($divisionId2);
-                if ($schedules->isNotEmpty()) {
-                    $divisionName = Division::where('id', $divisionId2)->first()->name;
-                } else {
-                    $schedules = $this->getAllAvailableSchedules();
-                    $divisionName = 'Semua Divisi (Penuh - Slot Cadangan)';
-                }
+                $divisionName = $div1Name;
             } else {
-                $schedules = $this->getAllAvailableSchedules();
-                $divisionName = 'Semua Divisi (Penuh - Slot Cadangan)';
+                $div2Name = null;
+                if ($divisionId2) {
+                    $schedules = $this->getAvailableSchedules($divisionId2);
+                    $div2Name = Division::find($divisionId2)->name ?? '';
+                    if ($schedules->isNotEmpty()) {
+                        $divisionName = $div2Name;
+                    }
+                }
+                $targetDivisions = ['Information Technology', 'Acara'];
+                $isTargetApplicant = in_array($div1Name, $targetDivisions) && in_array($div2Name, $targetDivisions);
+                if ($schedules->isEmpty() && !$isTargetApplicant) {
+                    $schedules = $this->getAllAvailableSchedules();
+                    if ($schedules->isNotEmpty()){
+                        $divisionName = 'Semua Divisi (Penuh - Slot Cadangan)';
+                    }
+                }
             }
 
             //Jika semua jadwal habis
             if ($schedules->isEmpty()) {
-                //Ambil koor divisi 1
                 $adminsDivisi1 = Admin::where('division_id', $divisionId1)
                                         ->where('position', 'koordinator')
                                         ->first();
@@ -452,7 +458,7 @@ class ApplicantController extends Controller
                     $contactPersonLineId = $adminsDivisi1->id_line ?? $contactPersonLineId;
                     $email = $adminsDivisi1->nrp . '@john.petra.ac.id';
                     try{
-                        Log::info("Sending email to: " . $email);
+                        Log::info("No schedule available. Sending email to Koor: " . $email);
                         Mail::to($email)->queue(new NoScheduleAvailable($applicant));
                     } catch (\Exception $e) {
                         Log::error('Error sending email: ' . $e->getMessage());
@@ -491,6 +497,27 @@ class ApplicantController extends Controller
                 'schedules.jam_mulai', 
                 'admin_schedules.isOnline',
                 'admins.id_line'
+            )
+            ->join('schedules', 'admin_schedules.schedule_id', '=', 'schedules.id')
+            ->join('admins', 'admin_schedules.admin_id', '=', 'admins.id')
+            ->where('admins.division_id', $divisionId)
+            ->whereNull('admin_schedules.applicant_id')
+            ->where('schedules.tanggal', '>=', $tomorrow)
+            ->orderBy('schedules.tanggal', 'asc')
+            ->orderBy('schedules.jam_mulai', 'asc')
+            ->get();
+    }
+
+    private function getBphSchedules() 
+    {
+        $tomorrow = now()->addDay()->toDateString();
+        $divisionId = Division::where('slug', 'bph')->first()->id;
+        return AdminSchedule::select(
+                'admin_schedules.id as admin_schedule_id', 
+                'schedules.tanggal', 
+                'schedules.jam_mulai', 
+                'admin_schedules.isOnline',
+                'admins.id_line',
             )
             ->join('schedules', 'admin_schedules.schedule_id', '=', 'schedules.id')
             ->join('admins', 'admin_schedules.admin_id', '=', 'admins.id')
@@ -558,6 +585,17 @@ class ApplicantController extends Controller
                 'success' => false,
                 'message' => 'Anda sudah memilih jadwal interview sebelumnya'
             ], 400);
+        }
+
+        $now = now();
+        $tomorrowDateString = now()->addDay()->toDateString();
+        $chosenDate = $request->tanggal_choice;
+
+        if ($now->hour >= 15 && $chosenDate === $tomorrowDateString) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Pemesanan jadwal untuk besok ditutup setelah jam 21:00. Silakan pilih tanggal lain atau coba lagi besok.'
+            ]);
         }
 
         try {

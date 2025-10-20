@@ -65,10 +65,10 @@
           </div>
         </div>
 
-        <div class="bg-cyan-900/30 border border-teal-400/30 rounded-xl p-4 text-sm sm:text-base text-teal-200">
+        {{-- <div class="bg-cyan-900/30 border border-teal-400/30 rounded-xl p-4 text-sm sm:text-base text-teal-200">
           <p><span class="font-semibold">Divisi Interview:</span> <span class="text-white">{{ $divisionName }}</span></p>
           <p class="text-teal-300/70 text-xs mt-1">Pilih jadwal sesuai ketersediaan Anda.</p>
-        </div>
+        </div> --}}
 
         @foreach (['Tanggal' => 'tanggal_choice', 'Jam' => 'jam_choice'] as $label => $id)
           <div>
