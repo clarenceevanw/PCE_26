@@ -104,7 +104,6 @@
 @section('script')
 <script>
     var schedules = @json($schedules);
-    console.log(schedules);
     var interviewMode = 1;
     var tanggalSelect = document.getElementById('tanggal_choice');
     var jamSelect = document.getElementById('jam_choice');
@@ -184,7 +183,6 @@
     loadSchedules();
 
     var interviews = @json($interviews);
-    console.log(interviews);
     var isExists = @json($isExists);
     if (isExists) {
         document.getElementById('backToHomepage').classList.remove('hidden');
