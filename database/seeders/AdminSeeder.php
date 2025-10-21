@@ -270,7 +270,7 @@ class AdminSeeder extends Seeder
                 'division_slug' => 'sponsor',
                 'position' => 'wakil koordinator',
                 'anonymous_name' => 'Mirfak',
-                'id_line' => '',
+                'id_line' => 'jennifergrace_k',
                 'link_gmeet' => 'https://meet.google.com/uoz-nzmg-vdi',
                 'location' => 'Selasar P6',
             ],
