@@ -40,7 +40,7 @@
       @else
       <form id="form_jadwal" method="post" action="{{ route('applicant.jadwal.store') }}" class="space-y-6">
         @csrf
-
+        <input type="hidden" name="division_group" value="{{ $divisionName }}">
         <div>
           <label class="font-organetto block text-white text-sm sm:text-base font-semibold uppercase mb-2">Mode Interview</label>
           <div class="grid grid-cols-2 gap-3">
@@ -84,7 +84,6 @@
         <button type="submit" id="submitJadwal" class="w-full py-3 border-2 border-teal-400 text-white font-semibold uppercase rounded-full hover:bg-white hover:text-teal-500 transition-all">
           Submit Jadwal
         </button>
-        <input type="hidden" name="division_id" id="division_id">
       </form>
       @endif
       <div id="interview_details" class="hidden space-y-8">
@@ -104,7 +103,7 @@
 
 @section('script')
 <script>
-    var schedules = JSON.parse(@json($schedules));
+    var schedules = @json($schedules);
     console.log(schedules);
     var interviewMode = 1;
     var tanggalSelect = document.getElementById('tanggal_choice');
@@ -174,25 +173,19 @@
                     if(!uniqueTimes.has(sch.jam_mulai)) {
                         uniqueTimes.add(sch.jam_mulai);
                         let formattedTime = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`;
-                        jamSelect.innerHTML += `<option class="bg-cyan-950" value='${sch.jam_mulai}' data-division='${sch.division_id}'>${formattedTime}</option>`;
+                        jamSelect.innerHTML += `<option class="bg-cyan-950" value='${sch.jam_mulai}'>${formattedTime}</option>`;
                     }
                 }
             }
         });
     });
 
-    jamSelect.addEventListener('change', function() {
-        var selectedTime = this.value;
-        var selectedDivision = this.options[this.selectedIndex].getAttribute('data-division');
-        document.getElementById('division_id').value = selectedDivision;
-    });
-
     // Load initial schedules
     loadSchedules();
 
-    var interviews = JSON.parse(@json($interviews));
+    var interviews = @json($interviews);
     console.log(interviews);
-    var isExists = JSON.parse(@json($isExists));
+    var isExists = @json($isExists);
     if (isExists) {
         document.getElementById('backToHomepage').classList.remove('hidden');
         document.getElementById('form_jadwal').classList.add('hidden');

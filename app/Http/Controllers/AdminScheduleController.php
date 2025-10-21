@@ -40,7 +40,7 @@ class AdminScheduleController extends Controller
         try {
             $admin = Admin::where('nrp', Session::get('nrp'))->firstOrFail();
             //tanggal 22 Okt 2025
-            $limitDate = Carbon::create(2025, 10, 21, 23, 59, 0, "Asia/Jakarta");
+            $limitDate = Carbon::create(2025, 10, 22, 23, 59, 0, "Asia/Jakarta");
             $now = Carbon::now("Asia/Jakarta");
             
             $newSlotsInput = json_decode($request->input('selectedSlots'), true) ?? [];

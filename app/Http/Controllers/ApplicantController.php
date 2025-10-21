@@ -383,7 +383,7 @@ class ApplicantController extends Controller
     {
         $title = 'Jadwal Interview';
         $nrp = Session::get('nrp');
-        $applicant = Applicant::where('nrp', $nrp)->first();
+        $applicant = Applicant::with(['division1', 'division2'])->where('nrp', $nrp)->first();
 
         if (!$applicant) {
             // Redirect atau tampilkan error, misalnya:
@@ -392,9 +392,6 @@ class ApplicantController extends Controller
         
         $currentStep = $applicant->phase + 2;
         
-
-        $divisionId1 = $applicant->division_choice1;
-        $divisionId2 = $applicant->division_choice2;
         
         // Cek apakah sudah ada interview yang terjadwal
         $isExists = AdminSchedule::where('applicant_id', $applicant->id)->exists();
@@ -422,29 +419,39 @@ class ApplicantController extends Controller
                 ];
             }
         } else {
-            $schedules = $this->getAvailableSchedules($divisionId1);
-            $div1Name = Division::find($divisionId1)->name ?? '';
+            $allSchedules = $this->getAllAvailableSchedules();
+            $divisionId1 = $applicant->division_choice1;
+            $divisionId2 = $applicant->division_choice2;
+            $div1Name = $applicant->division1->name ?? '';
+            $div2Name = $applicant->division2->name ?? '';
 
-            if ($schedules->isNotEmpty()) {
+            $bphId = Division::where('slug', 'bph')->value('id');
+            $schedulesDiv1 = $allSchedules->where('division_id', $divisionId1);
+            $schedulesDiv2 = $divisionId2 ? $allSchedules->where('division_id', $divisionId2) : collect();
+            $schedulesBph = $allSchedules->where('division_id', $bphId);
+
+            $targetDivisions = ['Information Technology', 'Acara'];
+            $isTargetApplicant = in_array($div1Name, $targetDivisions) || in_array($div2Name, $targetDivisions);
+
+            if ($schedulesDiv1->isNotEmpty()) {
+                $schedules = $schedulesDiv1;
                 $divisionName = $div1Name;
+            }else if ($schedulesDiv2->isNotEmpty()) {
+                $schedules = $schedulesDiv2;
+                $divisionName = $div2Name;
+            } elseif ($isTargetApplicant && $schedulesBph->isNotEmpty()) {
+                $schedules = $schedulesBph;
+                $divisionName = 'Divisi BPH';
+            } elseif (!$isTargetApplicant) {
+                   // Non-IT/Acara: Ambil sisanya
+                $excludeIds = array_filter([$divisionId1, $divisionId2, $bphId]);
+                $schedules = $allSchedules->whereNotIn('division_id', $excludeIds);
+                
+                if ($schedules->isNotEmpty()) {
+                    $divisionName = "Semua Divisi (Penuh - Slot Cadangan)";
+                }
             } else {
-                $div2Name = null;
-                if ($divisionId2) {
-                    $schedules = $this->getAvailableSchedules($divisionId2);
-                    $div2Name = Division::find($divisionId2)->name ?? '';
-                    if ($schedules->isNotEmpty()) {
-                        $divisionName = $div2Name;
-                    }
-                }
-                //TODO: BELUM SELESAI SYARATNYA MSH TUNGGU DARI BPH
-                $targetDivisions = ['Information Technology'];
-                $isTargetApplicant = in_array($div1Name, $targetDivisions) && in_array($div2Name, $targetDivisions);
-                if ($schedules->isEmpty() && !$isTargetApplicant) {
-                    $schedules = $this->getBphSchedules();
-                    if ($schedules->isNotEmpty()){
-                        $divisionName = 'Semua Divisi (Penuh - Slot Cadangan)';
-                    }
-                }
+                $schedules = collect();
             }
 
             //Jika semua jadwal habis
@@ -468,8 +475,8 @@ class ApplicantController extends Controller
                 
                 return view('applicant.jadwal', [
                     'title' => $title,
-                    'schedules' => '[]',
-                    'interviews' => '[]',
+                    'schedules' => [],
+                    'interviews' => [],
                     'isExists' => $isExists,
                     'divisionName' => '',
                     'noSchedulesAvailable' => true,
@@ -481,55 +488,12 @@ class ApplicantController extends Controller
         
         return view('applicant.jadwal', [
             'title' => $title,
-            'schedules' => json_encode($schedules),
-            'interviews' => json_encode($interviews),
-            'isExists' => json_encode($isExists),
+            'schedules' => $schedules->values(),
+            'interviews' => $interviews,
+            'isExists' => $isExists,
             'divisionName' => $divisionName,
             'currentStep' => $currentStep
         ]);
-    }
-
-    private function getAvailableSchedules($divisionId)
-    {
-        $tomorrow = now()->addDay()->toDateString();
-        return AdminSchedule::select(
-                'admin_schedules.id as admin_schedule_id', 
-                'schedules.tanggal', 
-                'schedules.jam_mulai', 
-                'admin_schedules.isOnline',
-                'admins.id_line',
-                'admins.division_id'
-            )
-            ->join('schedules', 'admin_schedules.schedule_id', '=', 'schedules.id')
-            ->join('admins', 'admin_schedules.admin_id', '=', 'admins.id')
-            ->where('admins.division_id', $divisionId)
-            ->whereNull('admin_schedules.applicant_id')
-            ->where('schedules.tanggal', '>=', $tomorrow)
-            ->orderBy('schedules.tanggal', 'asc')
-            ->orderBy('schedules.jam_mulai', 'asc')
-            ->get();
-    }
-
-    private function getBphSchedules() 
-    {
-        $tomorrow = now()->addDay()->toDateString();
-        $divisionId = Division::where('slug', 'bph')->first()->id;
-        return AdminSchedule::select(
-                'admin_schedules.id as admin_schedule_id', 
-                'schedules.tanggal', 
-                'schedules.jam_mulai', 
-                'admin_schedules.isOnline',
-                'admins.id_line',
-                'admins.division_id'
-            )
-            ->join('schedules', 'admin_schedules.schedule_id', '=', 'schedules.id')
-            ->join('admins', 'admin_schedules.admin_id', '=', 'admins.id')
-            ->where('admins.division_id', $divisionId)
-            ->whereNull('admin_schedules.applicant_id')
-            ->where('schedules.tanggal', '>=', $tomorrow)
-            ->orderBy('schedules.tanggal', 'asc')
-            ->orderBy('schedules.jam_mulai', 'asc')
-            ->get();
     }
 
     private function getAllAvailableSchedules()
@@ -557,8 +521,10 @@ class ApplicantController extends Controller
         $val = Validator::make($request->all(), [
             'interview_mode' => 'required|in:0,1',
             'tanggal_choice' => 'required|exists:schedules,tanggal',
-            'jam_choice' => 'required|exists:schedules,jam_mulai'
+            'jam_choice' => 'required|exists:schedules,jam_mulai',
+            'division_group' => 'required|string'
         ], [
+            'division_group.required' => 'Terjadi kesalahan, silakan muat ulang halaman.',
             'interview_mode.required' => 'Mode interview harus dipilih',
             'interview_mode.in' => 'Mode interview tidak valid',
             'tanggal_choice.required' => 'Tanggal interview harus dipilih',
@@ -573,7 +539,7 @@ class ApplicantController extends Controller
         }
 
         $nrp = Session::get('nrp');
-        $applicant = Applicant::where('nrp', $nrp)->first();
+        $applicant = Applicant::with(['division1', 'division2'])->where('nrp', $nrp)->first();
         
         if (!$applicant) {
             return response()->json([
@@ -581,7 +547,6 @@ class ApplicantController extends Controller
                 'message' => 'Data applicant tidak ditemukan'
             ], 404);
         }
-
         $existingSchedule = AdminSchedule::where('applicant_id', $applicant->id)->exists();
         
         if ($existingSchedule) {
@@ -617,13 +582,50 @@ class ApplicantController extends Controller
                 ], 404);
             }
 
-            $adminSchedule = AdminSchedule::join('admins', 'admin_schedules.admin_id', '=', 'admins.id')
+            $division_group = $request->division_group;
+            $adminSchedule = null;
+
+            $division1 = $applicant->division1;
+            $division2 = $applicant->division2;
+            $bphDivisionId = Division::where('slug', 'bph')->value('id');
+
+            if ($division1 && $division_group == $division1->name) {
+                $adminSchedule = AdminSchedule::join('admins', 'admin_schedules.admin_id', '=', 'admins.id')
+                    ->where('admin_schedules.schedule_id', $schedule->id)
+                    ->where('admins.division_id', $division1->id)
+                    ->whereNull('admin_schedules.applicant_id')
+                    ->lockForUpdate()
+                    ->select('admin_schedules.*', 'admins.name', 'admins.nrp', 'admins.location', 'admins.link_gmeet')
+                    ->first();
+            } elseif ($division2 && $division_group == $division2->name) {
+                $adminSchedule = AdminSchedule::join('admins', 'admin_schedules.admin_id', '=', 'admins.id')
+                    ->where('admin_schedules.schedule_id', $schedule->id)
+                    ->where('admins.division_id', $division2->id)
+                    ->whereNull('admin_schedules.applicant_id')
+                    ->lockForUpdate()
+                    ->select('admin_schedules.*', 'admins.name', 'admins.nrp', 'admins.location', 'admins.link_gmeet')
+                    ->first();
+            } else if ($division_group == 'Divisi BPH') {
+                $adminSchedule = AdminSchedule::join('admins', 'admin_schedules.admin_id', '=', 'admins.id')
                 ->where('admin_schedules.schedule_id', $schedule->id)
-                ->where('admins.division_id', $request->division_id)
+                ->where('admins.division_id', $bphDivisionId)
                 ->whereNull('admin_schedules.applicant_id')
                 ->lockForUpdate()
                 ->select('admin_schedules.*', 'admins.name', 'admins.nrp', 'admins.location', 'admins.link_gmeet')
                 ->first();
+            } elseif ($division_group == 'Semua Divisi (Penuh - Slot Cadangan)') {
+                $excludeIds = [$division1->id];
+                if ($division2) $excludeIds[] = $division2->id;
+                if ($bphDivisionId) $excludeIds[] = $bphDivisionId;
+            
+                $adminSchedule = AdminSchedule::join('admins', 'admin_schedules.admin_id', '=', 'admins.id')
+                    ->where('admin_schedules.schedule_id', $schedule->id)
+                    ->whereNotIn('admins.division_id', $excludeIds)
+                    ->whereNull('admin_schedules.applicant_id')
+                    ->lockForUpdate()
+                    ->select('admin_schedules.*', 'admins.name', 'admins.nrp', 'admins.location', 'admins.link_gmeet')
+                    ->first();
+            }
 
             if (!$adminSchedule) {
                 DB::rollBack();
@@ -632,6 +634,8 @@ class ApplicantController extends Controller
                     'message' => 'Jadwal yang dipilih sudah penuh. Silakan pilih jadwal lain.'
                 ], 400);
             }
+
+            Log::info($adminSchedule);
 
             if ($adminSchedule->isOnline !== (int) $request->interview_mode) {
                 DB::rollBack();
