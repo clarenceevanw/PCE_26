@@ -30,7 +30,7 @@
                         ['id' => 'skkk', 'label' => 'SKKK', 'type' => 'file', 'route' => route('applicant.berkas.skkk.store')],
                         ['id' => 'bukti_kecurangan', 'label' => 'Bukti Kecurangan', 'type' => 'file', 'route' => route('applicant.berkas.bukti_kecurangan.store')],
                         ['id' => 'transkrip', 'label' => 'Transkrip Nilai', 'type' => 'file', 'route' => route('applicant.berkas.transkrip.store')],
-                        ['id' => 'portofolio', 'label' => 'Portofolio (Divisi Kreatif)', 'type' => 'text', 'route' => route('applicant.berkas.portofolio.store')],
+                        ['id' => 'portofolio', 'label' => 'Portofolio (Divisi Creative)', 'type' => 'text', 'route' => route('applicant.berkas.portofolio.store')],
                     ];
                 @endphp
 
