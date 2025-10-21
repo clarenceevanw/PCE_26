@@ -23,6 +23,7 @@
             </h1>
 
             <div class="card-glowing-border rounded-2xl p-6 sm:p-8 border-2 border-teal-400/40 space-y-10">
+                <p class="font-organetto text-white text-sm sm:text-base">Notes: Upload file satu per satu dengan cara pilih satu file, lalu klik submit sebelum mengupload file berikutnya.</p>
                 @php
                     $inputs = [
                         ['id' => 'ktm', 'label' => 'KTM', 'type' => 'file', 'route' => route('applicant.berkas.ktm.store')],
@@ -92,7 +93,7 @@
                                         </button>
                                     </div>
                                     <p class="text-teal-300/60 text-[11px] sm:text-xs mt-1 font-organetto">
-                                        Format: PDF | Max: 10MB
+                                        Format: PDF | Max: 5MB
                                     </p>
                                 @else
                                     <p class="text-teal-300 text-[11px] sm:text-xs mt-1 font-organetto mb-3">Notes: Untuk divisi selain Creative, bisa langsung next page</p>

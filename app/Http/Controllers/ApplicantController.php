@@ -83,7 +83,7 @@ class ApplicantController extends Controller
             'ipk' => 'required|numeric|min:0|max:4',
             'jenis_kelamin' => 'required|in:laki-laki,perempuan',
             'line_id' => 'required|string|min:1',
-            'no_hp' => ['required', 'string', 'regex:/^(?:\+62|0)[0-9]{9,13}$/'],
+            'no_hp' => ['required', 'string', 'regex:/^0[0-9]{9,13}$/'],
             'instagram' => 'required|string|min:1',
             'motivasi' => 'required|string|min:1',
             'komitmen' => 'required|string|min:1',
@@ -94,7 +94,7 @@ class ApplicantController extends Controller
             'division_choice2' => 'required',
         ], [
             'nrp.size' => 'NRP must be exactly 9 characters',
-            'no_hp.regex' => 'Whatsapp Number must start with 0',
+            'no_hp.regex' => 'Whatsapp Number must start with 0 and be 10-13 digits long',
             'jenis_kelamin.in' => 'Jenis kelamin harus Laki-laki atau Perempuan',
         ]);
 
