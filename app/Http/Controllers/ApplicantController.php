@@ -395,6 +395,17 @@ class ApplicantController extends Controller
         
         // Cek apakah sudah ada interview yang terjadwal
         $isExists = AdminSchedule::where('applicant_id', $applicant->id)->exists();
+
+        $adminsDivisi1 = Admin::where('division_id', $applicant->division_choice1) // Gunakan $applicant->division_choice1
+                           ->where('position', 'koordinator')
+                           ->first();
+        Log::info("Admins Divisi 1: " . json_encode($adminsDivisi1));
+
+        $contactPersonLineId = '@958jigfh'; 
+        
+        if ($adminsDivisi1) {
+            $contactPersonLineId = $adminsDivisi1->id_line ?? $contactPersonLineId;
+        }
         
         $interviews = [];
         $schedules = collect();
@@ -456,14 +467,7 @@ class ApplicantController extends Controller
 
             //Jika semua jadwal habis
             if ($schedules->isEmpty()) {
-                $adminsDivisi1 = Admin::where('division_id', $divisionId1)
-                                        ->where('position', 'koordinator')
-                                        ->first();
-                Log::info("Admins Divisi 1: " . json_encode($adminsDivisi1));
-                $contactPersonLineId = '@958jigfh';
-
                 if ($adminsDivisi1) {
-                    $contactPersonLineId = $adminsDivisi1->id_line ?? $contactPersonLineId;
                     $email = $adminsDivisi1->nrp . '@john.petra.ac.id';
                     try{
                         Log::info("No schedule available. Sending email to Koor: " . $email);
@@ -492,6 +496,7 @@ class ApplicantController extends Controller
             'interviews' => $interviews,
             'isExists' => $isExists,
             'divisionName' => $divisionName,
+            'contactPersonLineId' => $contactPersonLineId,
             'currentStep' => $currentStep
         ]);
     }
