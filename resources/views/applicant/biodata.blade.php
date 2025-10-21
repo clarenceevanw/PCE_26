@@ -84,14 +84,14 @@
                         <div>
                             <label for="angkatan"
                                 class="font-organetto block mb-2 text-sm sm:text-base font-semibold text-white uppercase tracking-wider">Angkatan</label>
-                            <input type="number" id="angkatan" name="angkatan" placeholder="2024"
+                            <input type="number" id="angkatan" name="angkatan" placeholder="Co: 2024"
                                 class="w-full px-4 py-2.5 bg-transparent border border-teal-400/50 rounded-full text-white text-sm sm:text-base placeholder-teal-300/50 transition-all duration-300 focus:outline-none focus:border-teal-300 focus:shadow-[0_0_12px_rgba(45,212,191,0.4)]"
                                 required />
                         </div>
                         <div>
                             <label for="prodi"
                                 class="font-organetto block mb-2 text-sm sm:text-base font-semibold text-white uppercase tracking-wider">Prodi</label>
-                            <input type="text" id="prodi" name="prodi" placeholder="Informatika"
+                            <input type="text" id="prodi" name="prodi" placeholder="Co: Informatika"
                                 class="w-full px-4 py-2.5 bg-transparent border border-teal-400/50 rounded-full text-white text-sm sm:text-base placeholder-teal-300/50 transition-all duration-300 focus:outline-none focus:border-teal-300 focus:shadow-[0_0_12px_rgba(45,212,191,0.4)]"
                                 required />
                         </div>
