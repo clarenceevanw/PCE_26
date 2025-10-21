@@ -263,7 +263,7 @@
             <div class="swiper-slide">
                 <div class="card-container">
                     <div class="card-face card-front">
-                        <img src="{{ asset('assets/logo sponsor.png') }}" alt="Sponsor">
+                        <img src="{{ asset('assets/logo sponsor.webp') }}" alt="Sponsor">
                         <div class="flip-hint">Click to flip</div>
                     </div>
                     <div class="card-face card-back">
@@ -279,7 +279,7 @@
             <div class="swiper-slide">
                 <div class="card-container">
                     <div class="card-face card-front">
-                        <img src="{{ asset('assets/logo transkapman.png') }}" alt="Transkapman">
+                        <img src="{{ asset('assets/logo transkapman.webp') }}" alt="Transkapman">
                         <div class="flip-hint">Click to flip</div>
                     </div>
                     <div class="card-face card-back">
@@ -294,7 +294,7 @@
             <div class="swiper-slide">
                 <div class="card-container">
                     <div class="card-face card-front">
-                        <img src="{{ asset('assets/logo acara.png') }}" alt="Acara">
+                        <img src="{{ asset('assets/logo acara.webp') }}" alt="Acara">
                         <div class="flip-hint">Click to flip</div>
                     </div>
                     <div class="card-face card-back">
@@ -309,7 +309,7 @@
             <div class="swiper-slide">
                 <div class="card-container">
                     <div class="card-face card-front">
-                        <img src="{{ asset('assets/logo creative.png') }}" alt="Creative">
+                        <img src="{{ asset('assets/logo creative.webp') }}" alt="Creative">
                         <div class="flip-hint">Click to flip</div>
                     </div>
                     <div class="card-face card-back">
@@ -325,7 +325,7 @@
             <div class="swiper-slide">
                 <div class="card-container">
                     <div class="card-face card-front">
-                        <img src="{{ asset('assets/logo IT.png') }}" alt="IT">
+                        <img src="{{ asset('assets/logo IT.webp') }}" alt="IT">
                         <div class="flip-hint">Click to flip</div>
                     </div>
                     <div class="card-face card-back">
@@ -340,7 +340,7 @@
             <div class="swiper-slide">
                 <div class="card-container">
                     <div class="card-face card-front">
-                        <img src="{{ asset('assets/logo sekkonkes.png') }}" alt="sekkon">
+                        <img src="{{ asset('assets/logo sekkonkes.webp') }}" alt="sekkon">
                         <div class="flip-hint">Click to flip</div>
                     </div>
                     <div class="card-face card-back">
@@ -356,7 +356,7 @@
             <div class="swiper-slide">
                 <div class="card-container">
                     <div class="card-face card-front">
-                        <img src="{{ asset('assets/logo PR.png') }}" alt="pr">
+                        <img src="{{ asset('assets/logo PR.webp') }}" alt="pr">
                         <div class="flip-hint">Click to flip</div>
                     </div>
                     <div class="card-face card-back">

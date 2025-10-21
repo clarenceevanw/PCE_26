@@ -34,42 +34,62 @@
         }
 
         body {
-            margin: 0;
-            padding: 0;
-            min-height: 100vh;
-            min-width: 100vw;
-            /* background: radial-gradient(circle at 30% 20%, #203a2b 0%, transparent 40%),
-            radial-gradient(circle at 80% 70%, #1b2d2a 0%, transparent 50%),
-            linear-gradient(135deg, #0c1c18 0%, #122622 100%); */
-            background-image: url('{{ asset('assets/1. LANGIT.png') }}');
-            /* background: radial-gradient(circle at 30% 20%, #203a2b 0%, transparent 40%),
-            radial-gradient(circle at 80% 70%, #1b2d2a 0%, transparent 50%),
-            linear-gradient(135deg, #0c1c18 0%, #122622 100%); */
-            background-size: 150% 150%;
-            position: relative;
+            background-image: url("{{ asset('assets/welcome-awan.webp') }}"), linear-gradient(180deg, rgba(198, 234, 255, 1) 0%, rgba(56, 182, 255, 1) 14%);
+            background-color: #C6EAFF;
 
-            /* background-size: cover; */
-            background-attachment: fixed;
-            /* Membuat background tetap saat scroll */
-            background-repeat: no-repeat;
-            background-position: center top;
-            /* Membuat background di tengah atas */
-            animation: gradient 25s ease-in-out infinite alternate;
+            background-size: cover, cover;
+            background-attachment: fixed, fixed;
+            background-repeat: no-repeat, no-repeat;
+
+            background-position: 0% 10%, center top;
+
+            animation: bg-slide 30s ease-in-out infinite;
         }
+
+        @keyframes bg-slide {
+            0% {
+                background-position: 0% 10%, center top;
+            }
+
+            50% {
+                background-position: 100% 10%, center top;
+            }
+
+            100% {
+                background-position: 0% 10%, center top;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            body {
+                background-size: 110% auto, cover;
+            }
+        }
+
+        @media (min-width: 1920px) {
+            body {
+                background-size: 200% auto, cover;
+            }
+        }
+
 
         @keyframes gradient-flow {
             0% {
                 background-position: 0% 50%;
             }
+
             25% {
                 background-position: 50% 0%;
             }
+
             50% {
                 background-position: 100% 50%;
             }
+
             75% {
                 background-position: 50% 100%;
             }
+
             100% {
                 background-position: 0% 50%;
             }
@@ -82,7 +102,7 @@
 
         }
 
-        
+
 
         .swal2-confirm {
             background-color: rgba(45, 72, 56, 1);
@@ -121,6 +141,7 @@
                 background-position: 0% 50%;
             }
         }
+
         @font-face {
             font-family: 'Squids';
             src: url('{{ asset('fonts/Game Of Squids.ttf') }}') format('truetype');
@@ -146,7 +167,7 @@
             font-family: 'Squids', sans-serif;
         }
 
-        @font-face{
+        @font-face {
             font-family: 'ReturnoftheGrid';
             src: url('{{ asset('fonts/return-of-the-grid.otf') }}') format('truetype');
             font-weight: normal;
@@ -185,11 +206,16 @@
 
         .card-glowing-border {
             position: relative;
-            background-color: rgba(6, 40, 61, 0.5); /* Warna background card, sesuaikan jika perlu */
-            backdrop-filter: blur(10px); /* Efek blur */
-            border: 2px solid transparent; /* Border awal transparan */
-            border-radius: 0.5rem; /* rounded-lg */
-            overflow: hidden; /* Penting untuk animasi pseudo-element */
+            background-color: rgba(6, 40, 61, 0.5);
+            /* Warna background card, sesuaikan jika perlu */
+            backdrop-filter: blur(10px);
+            /* Efek blur */
+            border: 2px solid transparent;
+            /* Border awal transparan */
+            border-radius: 0.5rem;
+            /* rounded-lg */
+            overflow: hidden;
+            /* Penting untuk animasi pseudo-element */
         }
 
         .card-glowing-border::before {
@@ -199,21 +225,34 @@
             left: -2px;
             right: -2px;
             bottom: -2px;
-            background: linear-gradient(45deg, 
-                        rgba(0, 255, 255, 0.5), /* Cyan */
-                        rgba(0, 200, 255, 0.5), /* Light Blue */
-                        rgba(0, 255, 255, 0.5)); /* Cyan kembali */
+            background: linear-gradient(45deg,
+                    rgba(0, 255, 255, 0.5),
+                    /* Cyan */
+                    rgba(0, 200, 255, 0.5),
+                    /* Light Blue */
+                    rgba(0, 255, 255, 0.5));
+            /* Cyan kembali */
             background-size: 400% 400%;
             z-index: -1;
-            animation: gradientBorder 10s ease infinite alternate; /* Animasi berkedip */
-            border-radius: 0.5rem; /* Sama dengan border-radius card */
+            animation: gradientBorder 10s ease infinite alternate;
+            /* Animasi berkedip */
+            border-radius: 0.5rem;
+            /* Sama dengan border-radius card */
         }
 
         /* [NEW] Keyframes untuk animasi glowing border */
         @keyframes gradientBorder {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
         }
 
         @media screen and (max-width: 1000px) {
@@ -256,10 +295,12 @@
     <section class="min-h-screen w-full flex justify-center items-center p-4">
 
         {{-- [UPDATE] Ganti class di sini untuk glowing border --}}
-        <div class="w-11/12 max-w-[45rem] card-glowing-border 
+        <div
+            class="w-11/12 max-w-[45rem] card-glowing-border 
                     rounded-lg shadow-2xl p-6 md:p-8 flex flex-col items-center space-y-8">
-            
-            <h1 class="font-return-grid mix-blend-lighten glowing text-white drop-shadow-md font-bold 
+
+            <h1
+                class="font-return-grid mix-blend-lighten glowing text-white drop-shadow-md font-bold 
                        text-xl md:text-5xl text-center uppercase">
                 Open Recruitment
                 <br>

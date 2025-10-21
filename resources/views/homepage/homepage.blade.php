@@ -19,7 +19,7 @@
         }
 
         body {
-            background-image: url("{{ asset('assets/welcome-awan.png') }}"), linear-gradient(180deg, rgba(198, 234, 255, 1) 0%, rgba(56, 182, 255, 1) 14%);
+            background-image: url("{{ asset('assets/welcome-awan.webp') }}"), linear-gradient(180deg, rgba(198, 234, 255, 1) 0%, rgba(56, 182, 255, 1) 14%);
             background-color: #C6EAFF;
 
             /* Make the image cover the container (scales and is cropped instead of stretched) */

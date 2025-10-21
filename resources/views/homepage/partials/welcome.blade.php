@@ -283,7 +283,7 @@
             height: 150vh;
         }
     }
-    
+
     @media (max-width: 768px) {
 
         .building-left,
@@ -430,16 +430,16 @@
     class="relative w-screen h-screen flex flex-col justify-center items-center text-center text-black px-4">
 
     <!-- Background Buildings & Land -->
-    <img src="{{ asset('assets/welcome-left-building.png') }}" alt="Left Building" class="building-left">
-    <img src="{{ asset('assets/welcome-full-Kincir.gif') }}" alt="Left Building" class="building-left">
-    <img src="{{ asset('assets/welcome-land.png') }}" alt="Land" class="land-center">
-    <img src="{{ asset('assets/CLOUD-SEGARIS-02.png') }}" alt="Cloud" class="cloud-bottom cloud-bottom-1">
-    <img src="{{ asset('assets/welcome-pohon-pinggirnya.png') }}" alt="Land" class="land-center"
+    <img src="{{ asset('assets/welcome-left-building.webp') }}" alt="Left Building" class="building-left">
+    <img src="{{ asset('assets/welcome-full-Kincir.webp') }}" alt="Left Building" class="building-left">
+    <img src="{{ asset('assets/welcome-land.webp') }}" alt="Land" class="land-center">
+    <img src="{{ asset('assets/CLOUD-SEGARIS-02.webp') }}" alt="Cloud" class="cloud-bottom cloud-bottom-1">
+    <img src="{{ asset('assets/welcome-pohon-pinggirnya.webp') }}" alt="Land" class="land-center"
         id="left-right-tree">
-    <img src="{{ asset('assets/welcome-the-left-of-right-building.png') }}" alt="Middle Right Building"
+    <img src="{{ asset('assets/welcome-the-left-of-right-building.webp') }}" alt="Middle Right Building"
         class="the-left-of-right-building">
-    <img src="{{ asset('assets/welcome-right-building.png') }}" alt="Right Building" class="building-right">
-    <img src="{{ asset('assets/PLANE-CUT.png') }}" alt="Plane" class="plane">
+    <img src="{{ asset('assets/welcome-right-building.webp') }}" alt="Right Building" class="building-right">
+    <img src="{{ asset('assets/PLANE-CUT.webp') }}" alt="Plane" class="plane">
 
     <!-- Hero Content -->
     <div class="hero-content">

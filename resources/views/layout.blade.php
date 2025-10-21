@@ -4,6 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Petra Civil Expo 2026 — ajang kompetisi, workshop, dan seminar teknik sipil terbesar di Universitas Kristen Petra. Lomba ini terbuka untuk seluruh siswa SMA dan mahasiswa teknik sipil di Indonesia dengan berbagai tiga bidang lomba menarik dan hadiah yang menarik. Bergabunglah sekarang dan tunjukkan kemampuan terbaikmu di dunia teknik sipil!">
+
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>PCE 2026</title>
     <link rel="icon" href="{{ asset('assets/logoAja.png') }}" type="image/x-icon" />
@@ -94,20 +97,16 @@
 
 
         body {
-            background-image: url("{{ asset('assets/welcome-awan.png') }}"), linear-gradient(180deg, rgba(198, 234, 255, 1) 0%, rgba(56, 182, 255, 1) 14%);
+            background-image: url("{{ asset('assets/welcome-awan.webp') }}"), linear-gradient(180deg, rgba(198, 234, 255, 1) 0%, rgba(56, 182, 255, 1) 14%);
             background-color: #C6EAFF;
 
-            /* Make the image cover the container (scales and is cropped instead of stretched) */
             background-size: cover, cover;
 
-            /* allow separate settings per layer */
             background-attachment: fixed, fixed;
             background-repeat: no-repeat, no-repeat;
 
-            /* start image at left; keep gradient fixed */
             background-position: 0% 10%, center top;
 
-            /* slide the first (image) layer right then back left */
             animation: bg-slide 30s ease-in-out infinite;
         }
 
