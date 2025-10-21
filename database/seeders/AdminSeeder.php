@@ -140,6 +140,16 @@ class AdminSeeder extends Seeder
                 'link_gmeet' => 'https://meet.google.com/hoi-eezo-xqe',
                 'location' => 'Selasar T5',
             ],
+            [
+                'name' => 'Felix Augurius Leneka',
+                'nrp' => 'C14240053',
+                'division_slug' => 'creative',
+                'position' => 'sub koordinator',
+                'anonymous_name' => 'Cassiopeia',
+                'id_line' => 'kinokoku',
+                'link_gmeet' => 'https://meet.google.com/noe-gtrc-uwe',
+                'location' => 'Kolam Jodoh W',
+            ],
             // Transkapman
             [
                 'name' => 'Darian Joseph Setiabudi',
@@ -229,9 +239,9 @@ class AdminSeeder extends Seeder
                 'division_slug' => 'pr',
                 'position' => 'koordinator',
                 'anonymous_name' => 'Antares',
-                'id_line' => '',
+                'id_line' => 'g7wian',
                 'link_gmeet' => 'https://meet.google.com/fhg-swuw-fpw',
-                'location' => '',
+                'location' => 'Selasar T3',
             ],
             [
                 'name' => 'Luna Olivia Keniko',
@@ -239,9 +249,9 @@ class AdminSeeder extends Seeder
                 'division_slug' => 'pr',
                 'position' => 'wakil koordinator',
                 'anonymous_name' => 'Polaris',
-                'id_line' => '',
+                'id_line' => 'lunaoliviaa11',
                 'link_gmeet' => 'https://meet.google.com/pyh-gyud-bnt',
-                'location' => '',
+                'location' => 'Selasar T4',
             ],
             // Sponsor
             [
