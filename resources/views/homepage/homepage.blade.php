@@ -18,23 +18,23 @@
             text-shadow: 6px 4px 15px #ffffff;
         }
 
-        body {
-            background-image: url("{{ asset('assets/welcome-awan.webp') }}"), linear-gradient(180deg, rgba(198, 234, 255, 1) 0%, rgba(56, 182, 255, 1) 14%);
-            background-color: #C6EAFF;
+        /* body { */
+            /* background-image: url("{{ asset('assets/welcome-awan.webp') }}"), linear-gradient(180deg, rgba(198, 234, 255, 1) 0%, rgba(56, 182, 255, 1) 14%); */
+            /* background-color: #C6EAFF; */
 
             /* Make the image cover the container (scales and is cropped instead of stretched) */
-            background-size: cover, cover;
+            /* background-size: cover, cover; */
 
             /* allow separate settings per layer */
-            background-attachment: fixed, fixed;
-            background-repeat: no-repeat, no-repeat;
+            /* background-attachment: fixed, fixed; */
+            /* background-repeat: no-repeat, no-repeat; */
 
             /* start image at left; keep gradient fixed */
-            background-position: 0% 10%, center top;
+            /* background-position: 0% 10%, center top; */
 
             /* slide the first (image) layer right then back left */
-            animation: bg-slide 30s ease-in-out infinite;
-        }
+            /* animation: bg-slide 30s ease-in-out infinite; */
+        /* } */
 
         /* @keyframes bg-slide {
             0% {
