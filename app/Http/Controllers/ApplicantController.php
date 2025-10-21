@@ -709,7 +709,7 @@ class ApplicantController extends Controller
         $applicant = Applicant::where('nrp', $nrp)->first();
 
         if (!$applicant) {
-            return redirect()->route('applicant.register');
+            return redirect()->route('applicant.registerNow');
         }
 
         switch ($applicant->phase) {
