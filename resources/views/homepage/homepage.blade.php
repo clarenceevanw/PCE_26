@@ -36,7 +36,7 @@
             animation: bg-slide 30s ease-in-out infinite;
         }
 
-        @keyframes bg-slide {
+        /* @keyframes bg-slide {
             0% {
                 background-position: 0% 10%, center top;
             }
@@ -48,7 +48,7 @@
             100% {
                 background-position: 0% 10%, center top;
             }
-        }
+        } */
 
         @media (min-width: 1024px) {
             body {
