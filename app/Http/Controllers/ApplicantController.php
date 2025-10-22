@@ -555,6 +555,7 @@ class ApplicantController extends Controller
         $existingSchedule = AdminSchedule::where('applicant_id', $applicant->id)->exists();
         
         if ($existingSchedule) {
+            Log::error('Jadwal interview sudah ada');
             return response()->json([
                 'success' => false,
                 'message' => 'Anda sudah memilih jadwal interview sebelumnya'
@@ -581,6 +582,7 @@ class ApplicantController extends Controller
             
             if (!$schedule) {
                 DB::rollBack();
+                Log::error('Jadwal interview tidak ditemukan');
                 return response()->json([
                     'success' => false,
                     'message' => 'Jadwal tidak ditemukan'
@@ -634,6 +636,7 @@ class ApplicantController extends Controller
 
             if (!$adminSchedule) {
                 DB::rollBack();
+                Log::error('Jadwal yang dipilih sudah penuh');
                 return response()->json([
                     'success' => false,
                     'message' => 'Jadwal yang dipilih sudah penuh. Silakan pilih jadwal lain.'
@@ -644,6 +647,7 @@ class ApplicantController extends Controller
 
             if ($adminSchedule->isOnline !== (int) $request->interview_mode) {
                 DB::rollBack();
+                Log::error('Mode interview tidak sesuai dengan jadwal yang dipilih');
                 return response()->json([
                     'success' => false,
                     'message' => 'Mode interview tidak sesuai dengan jadwal yang dipilih'
@@ -687,7 +691,7 @@ class ApplicantController extends Controller
 
         } catch (\Exception $e) {
             DB::rollBack();
-            
+            Log::error('Gagal memilih jadwal: ' . $e->getMessage());
             return response()->json([
                 'success' => false,
                 'message' => 'Terjadi kesalahan: ' . $e->getMessage()
