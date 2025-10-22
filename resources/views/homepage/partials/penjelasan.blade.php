@@ -107,15 +107,15 @@
 
              <div class="font-organetto flex flex-wrap justify-center gap-4 mt-6">
                  <div
-                     class="badge px-6 py-3 bg-gradient-to-r from-green-600 via-green-500 to-green-300 border border-green-500 rounded-xl backdrop-blur-sm hover:from-green-700 hover:via-green-600 hover:to-green-400 hover:scale-105 hover:shadow-2xl hover:shadow-green-500/50 hover:-translate-y-1 transition-all duration-5000 ease-out shadow-lg cursor-pointer">
+                     class="badge px-6 py-3 bg-gradient-to-r from-green-600 via-green-500 to-green-300 border border-green-500 rounded-xl backdrop-blur-sm hover:from-green-700 hover:via-green-600 hover:to-green-400 hover:scale-105 hover:shadow-2xl hover:shadow-green-500/50 hover:-translate-y-1 transition-all duration-5000 ease-out shadow-lg">
                      <span class="text-white font-semibold text-sm md:text-base">Bridge Competition</span>
                  </div>
                  <div
-                     class="badge px-6 py-3 bg-gradient-to-r from-green-600 via-green-500 to-green-500 border border-green-300 rounded-xl backdrop-blur-sm hover:from-green-700 hover:via-green-600 hover:to-green-600 hover:scale-105 hover:shadow-2xl hover:shadow-green-500/50 hover:-translate-y-1 transition-all duration-500 ease-out shadow-lg cursor-pointer">
+                     class="badge px-6 py-3 bg-gradient-to-r from-green-600 via-green-500 to-green-500 border border-green-300 rounded-xl backdrop-blur-sm hover:from-green-700 hover:via-green-600 hover:to-green-600 hover:scale-105 hover:shadow-2xl hover:shadow-green-500/50 hover:-translate-y-1 transition-all duration-500 ease-out shadow-lg">
                      <span class="text-white font-semibold text-sm md:text-base">Lomba Kuat Tekan Beton</span>
                  </div>
                  <div
-                     class="badge px-6 py-3 bg-gradient-to-r from-green-600 via-green-500 to-green-300 border border-green-500 rounded-xl backdrop-blur-sm hover:from-green-700 hover:via-green-600 hover:to-green-400 hover:scale-105 hover:shadow-2xl hover:shadow-green-500/50 hover:-translate-y-1 transition-all duration-500 ease-out shadow-lg cursor-pointer">
+                     class="badge px-6 py-3 bg-gradient-to-r from-green-600 via-green-500 to-green-300 border border-green-500 rounded-xl backdrop-blur-sm hover:from-green-700 hover:via-green-600 hover:to-green-400 hover:scale-105 hover:shadow-2xl hover:shadow-green-500/50 hover:-translate-y-1 transition-all duration-500 ease-out shadow-lg ">
                      <span class="text-white font-semibold text-sm md:text-base">Earthquake Resistance Design
                          Competition</span>
                  </div>
