@@ -63,6 +63,17 @@
         opacity: 0.95;
     }
 
+    .cloud-bg {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
+        z-index: 0;
+    }
+
     @keyframes floatCloud1 {
 
         0%,
@@ -440,6 +451,7 @@
         class="the-left-of-right-building">
     <img src="{{ asset('assets/welcome-right-building.webp') }}" alt="Right Building" class="building-right">
     <img src="{{ asset('assets/PLANE-CUT.webp') }}" alt="Plane" class="plane">
+    <img src="{{ asset('assets/welcome-awan.webp') }}" alt="cloud" class="cloud-bg">
 
     <!-- Hero Content -->
     <div class="hero-content">
