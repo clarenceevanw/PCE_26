@@ -182,7 +182,7 @@
                         <div class="sm:col-span-2">
                             <label for="pengalaman"
                                 class="font-organetto block mb-2 text-sm sm:text-base font-semibold text-white uppercase tracking-wider">
-                                Pengalaman Organisasi / Kepanitiaan (Pengalaman saat SMA boleh dicantumkan)
+                                Pengalaman Organisasi / Kepanitiaan <small class="text-muted">(Pengalaman saat SMA boleh dicantumkan)</small>
                             </label>
                             <textarea id="pengalaman" name="pengalaman" rows="3"
                                 placeholder="Sebutkan pengalaman Anda dalam organisasi atau kepanitiaan sebelumnya (Co: Ketua OSIS 24/25, Anggota PCE 23/24, Ketua Media Bersama 22/23)"
