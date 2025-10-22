@@ -23,7 +23,7 @@
             ])>
                 @if ($currentStep > $biodataStep) ✓ @else {{ $biodataStep }} @endif
             </div>
-            <div class="absolute top-12 text-xs sm:text-sm font-semibold">Biodata</div>
+            <div class="absolute top-12 text-xs sm:text-sm font-semibold text-white">Biodata</div>
         </a>
 
         <div @class([
@@ -47,7 +47,7 @@
             ])>
                 @if ($currentStep > $berkasStep) ✓ @else {{ $berkasStep }} @endif
             </div>
-            <div class="absolute top-12 text-xs sm:text-sm font-semibold">Berkas</div>
+            <div class="absolute top-12 text-xs sm:text-sm font-semibold text-white">Berkas</div>
         </a>
 
         <div @class([
@@ -71,7 +71,7 @@
             ])>
                 @if ($currentStep > $jadwalStep) ✓ @else {{ $jadwalStep }} @endif
             </div>
-            <div class="absolute top-12 text-xs sm:text-sm font-semibold">Jadwal</div>
+            <div class="absolute top-12 text-xs sm:text-sm font-semibold text-white">Jadwal</div>
         </a>
     </div>
 </div>
