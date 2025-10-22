@@ -523,6 +523,7 @@ class ApplicantController extends Controller
 
     public function storeJadwal(Request $request)
     {
+        Log::info('Data request storeJadwal', $request->all());
         $val = Validator::make($request->all(), [
             'interview_mode' => 'required|in:0,1',
             'tanggal_choice' => 'required|exists:schedules,tanggal',
