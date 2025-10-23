@@ -55,11 +55,11 @@ class ApplicantsExport implements FromQuery, WithHeadings, WithMapping
             $applicant->kekurangan,
             $applicant->komitmen,
             $applicant->pengalaman,
-            $applicant->applicantFile->ktm ? $url . $applicant->applicantFile->ktm : "",
-            $applicant->applicantFile->transkrip ? $url . $applicant->applicantFile->transkrip : "",
-            $applicant->applicantFile->bukti_kecurangan ? $url . $applicant->applicantFile->bukti_kecurangan : "",
-            $applicant->applicantFile->skkk ? $url . $applicant->applicantFile->skkk : "",
-            $applicant->applicantFile->portofolio
+            $applicant->applicantFile?->ktm ? $url . $applicant->applicantFile?->ktm : "",
+            $applicant->applicantFile?->transkrip ? $url . $applicant->applicantFile?->transkrip : "",
+            $applicant->applicantFile?->bukti_kecurangan ? $url . $applicant->applicantFile?->bukti_kecurangan : "",
+            $applicant->applicantFile?->skkk ? $url . $applicant->applicantFile?->skkk : "",
+            $applicant->applicantFile?->portofolio
         ];
     }
 
