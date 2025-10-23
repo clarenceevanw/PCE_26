@@ -41,6 +41,7 @@ Route::prefix('admin')->group(function () {
 
         Route::get('/detail/{applicantId}', [AdminController::class, 'applicantDetailIndex'])->name('admin.applicantDetail');
 
+        Route::get('/export', [AdminController::class, 'exportApplicants'])->name('admin.exportApplicants');
     });
     
 });

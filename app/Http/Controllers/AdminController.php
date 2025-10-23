@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\ApplicantsExport;
 use App\Http\Resources\ApplicantDetailResource;
 use Illuminate\Http\Request;
 use App\Models\AdminSchedule;
@@ -16,6 +17,7 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+use Maatwebsite\Excel\Facades\Excel;
 
 class AdminController extends Controller
 {
@@ -256,6 +258,11 @@ class AdminController extends Controller
             'title' => $title,
             'data' => (new ApplicantDetailResource($applicant))->toArray(request()),
         ]);
+    }
+
+    public function exportApplicants()
+    {
+        return Excel::download(new ApplicantsExport(), 'applicants.xlsx');
     }
 
     public function login()
