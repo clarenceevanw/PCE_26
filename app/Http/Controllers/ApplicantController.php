@@ -587,7 +587,7 @@ class ApplicantController extends Controller
                 return response()->json([
                     'success' => false,
                     'message' => 'Jadwal tidak ditemukan'
-                ], 404);
+                ]);
             }
 
             $division_group = $request->division_group;
@@ -645,7 +645,7 @@ class ApplicantController extends Controller
                 return response()->json([
                     'success' => false,
                     'message' => 'Jadwal yang dipilih sudah penuh. Silakan pilih jadwal lain.'
-                ], 400);
+                ]);
             }
 
             Log::info($adminSchedule);
