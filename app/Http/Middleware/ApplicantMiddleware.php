@@ -24,7 +24,7 @@ class ApplicantMiddleware
             if (!$applicant) {
                 Log::info("now: " . Carbon::now());
                 $now = Carbon::now();
-                $closeDate = Carbon::createFromDate($now->year, 11, 3, 23, 59, 59);
+                $closeDate = Carbon::create($now->year, 11, 3, 23, 59, 59);
                 Log::info("closeDate: " . $closeDate);
                 if ($now->isAfter($closeDate)) {
                     return redirect()->route('applicant.homepage')->with('error', 'Pendaftaran sudah tutup');
