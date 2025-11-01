@@ -19,36 +19,36 @@
         }
 
         /* body { */
-            /* background-image: url("{{ asset('assets/welcome-awan.webp') }}"), linear-gradient(180deg, rgba(198, 234, 255, 1) 0%, rgba(56, 182, 255, 1) 14%); */
-            /* background-color: #C6EAFF; */
+        /* background-image: url("{{ asset('assets/welcome-awan.webp') }}"), linear-gradient(180deg, rgba(198, 234, 255, 1) 0%, rgba(56, 182, 255, 1) 14%); */
+        /* background-color: #C6EAFF; */
 
-            /* Make the image cover the container (scales and is cropped instead of stretched) */
-            /* background-size: cover, cover; */
+        /* Make the image cover the container (scales and is cropped instead of stretched) */
+        /* background-size: cover, cover; */
 
-            /* allow separate settings per layer */
-            /* background-attachment: fixed, fixed; */
-            /* background-repeat: no-repeat, no-repeat; */
+        /* allow separate settings per layer */
+        /* background-attachment: fixed, fixed; */
+        /* background-repeat: no-repeat, no-repeat; */
 
-            /* start image at left; keep gradient fixed */
-            /* background-position: 0% 10%, center top; */
+        /* start image at left; keep gradient fixed */
+        /* background-position: 0% 10%, center top; */
 
-            /* slide the first (image) layer right then back left */
-            /* animation: bg-slide 30s ease-in-out infinite; */
+        /* slide the first (image) layer right then back left */
+        /* animation: bg-slide 30s ease-in-out infinite; */
         /* } */
 
         /* @keyframes bg-slide {
-            0% {
-                background-position: 0% 10%, center top;
-            }
+                                    0% {
+                                        background-position: 0% 10%, center top;
+                                    }
 
-            50% {
-                background-position: 100% 10%, center top;
-            }
+                                    50% {
+                                        background-position: 100% 10%, center top;
+                                    }
 
-            100% {
-                background-position: 0% 10%, center top;
-            }
-        } */
+                                    100% {
+                                        background-position: 0% 10%, center top;
+                                    }
+                                } */
 
         @media (min-width: 1024px) {
             body {
@@ -88,6 +88,13 @@
                 speed: 400,
                 slidesPerView: 'auto',
                 watchSlidesProgress: true,
+
+                autoplay: {
+                    delay: 1000, 
+                    disableOnInteraction: false,
+                    pauseOnMouseEnter: true,
+                },
+
                 coverflowEffect: {
                     rotate: 0,
                     stretch: 0,
@@ -127,6 +134,11 @@
                 container.addEventListener('click', function(e) {
                     e.stopPropagation();
                     this.classList.toggle('flipped');
+
+                    // swiper.autoplay.stop();
+                    // setTimeout(() => {
+                    //     swiper.autoplay.start();
+                    // }, 2000);
                 });
             });
 

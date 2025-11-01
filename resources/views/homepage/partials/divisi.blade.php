@@ -116,7 +116,7 @@
     .card-back p {
         font-size: 0.95rem;
         line-height: 1.6;
-        text-align: justify;
+        text-align: center;
         flex: 1;
         display: flex;
         align-items: center;
@@ -254,7 +254,7 @@
 
     <h1 class="font-return-grid text-4xl sm:text-5xl lg:text-6xl font-bold bg-gradient-to-r text-white drop-shadow-[0_0_15px_rgba(22,163,74,0.9)] tracking-wider bg-clip-text  mb-12 leading-tight"
         data-aos="fade-down" data-aos-duration="800" data-aos-easing="ease-out-cubic">
-        DIVISI
+        DIVISION
     </h1>
 
     <div class="swiper">

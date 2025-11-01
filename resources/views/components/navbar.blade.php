@@ -23,7 +23,8 @@
     .nav-desktop-item a {
         position: relative;
         font-weight: 600;
-        color: #000;
+        color: rgb(22, 163, 74);
+        /* background-shadow: 0px 0px 15px rgba(22,163,74,0.9); */
         transition: color 0.3s ease;
     }
 
@@ -34,7 +35,7 @@
         bottom: -3px;
         width: 0%;
         height: 2px;
-        background: #000;
+        background: rgb(255, 255, 255);
         transition: width 0.3s ease;
     }
 
@@ -190,16 +191,16 @@
             @endphp
 
             @foreach ($navItems as $item)
-                <li class="nav-desktop-item">
+                <li class="nav-desktop-item font-organetto ">
                     <a href="{{ $item['href'] }}" class="text-base">{{ $item['text'] }}</a>
                 </li>
             @endforeach
-            @if(session()->has('email'))
+            @if (session()->has('email'))
                 <li class="nav-desktop-item">
                     <a href="{{ route('logout') }}" class="text-base">Logout</a>
                 </li>
             @else
-                <li class="nav-desktop-item">
+                <li class="nav-desktop-item font-organetto ">
                     <a href="{{ route('applicant.login') }}" class="text-base">Login</a>
                 </li>
             @endif
@@ -222,10 +223,10 @@
         @foreach ($navItems as $item)
             <a href="{{ $item['href'] }}" class="text-black font-semibold text-lg">{{ $item['text'] }}</a>
         @endforeach
-        @if(session()->has('email'))
-            <a href="{{ route('logout') }}" class="text-black font-semibold text-lg">Logout</a>
+        @if (session()->has('email'))
+            <a href="{{ route('logout') }}" class="text-black font-semibold text-lg font-organetto ">Logout</a>
         @else
-            <a href="{{ route('applicant.login') }}" class="text-black font-semibold text-lg">Login</a>
+            <a href="{{ route('applicant.login') }}" class="text-black font-semibold text-lg font-organetto ">Login</a>
         @endif
     </div>
 </div>

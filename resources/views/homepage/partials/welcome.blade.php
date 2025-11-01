@@ -455,16 +455,16 @@
 
     <!-- Hero Content -->
     <div class="hero-content">
-        <h2 class="font-organetto text-2xl md:text-3xl font-bold text-white"
-            style="text-shadow: 0 0 15px rgba(255,255,255,0.8);">
+        <h2 class="font-organetto text-2xl md:text-5xl font-bold text-white  drop-shadow-[0_0_15px_rgba(22,163,74,0.9)]"
+            style="">
             OPEN RECRUITMENT
         </h2>
         <h1
             class="font-return-grid text-6xl md:text-7xl font-extrabol mt-1 sm:mt-3 md:mt-3 lg:mt-6 text-white drop-shadow-[0_0_15px_rgba(22,163,74,0.9)] tracking-wider">
             PETRA CIVIL EXPO
         </h1>
-        <h2 class="font-return-grid text-3xl md:text-5xl font-extrabold -mt-5 md:-mt-10 text-white"
-            style="text-shadow: 0 0 15px rgba(255,255,255,0.8);">2026</h2>
+        <h2 class="font-return-grid text-3xl md:text-5xl font-extrabold -mt-5 md:-mt-10 text-white  drop-shadow-[0_0_15px_rgba(22,163,74,0.9)]"
+            style="">2026</h2>
         {{-- <p class="font-organetto mt-4 text-lg
             md:text-xl font-medium text-green-600"
             style="text-shadow: 0 0 15px rgba(255,255,255,0.8);">
