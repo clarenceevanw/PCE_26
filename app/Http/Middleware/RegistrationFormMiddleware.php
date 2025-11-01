@@ -6,8 +6,10 @@ use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use App\Models\Applicant;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
 
 class RegistrationFormMiddleware
 {
@@ -23,6 +25,18 @@ class RegistrationFormMiddleware
         // Pastikan user punya session login
         if (!Session::has('nrp')) {
             return redirect()->route('applicant.login')->with('error', 'Silakan login terlebih dahulu.');
+        }
+
+        $applicant = Applicant::where('nrp', session()->get('nrp'))->first();
+        Log::info("applicant: " . $applicant);
+        if (!$applicant) {
+            Log::info("now: " . Carbon::now());
+            $now = Carbon::now();
+            $closeDate = Carbon::createFromDate($now->year, 11, 3, 23, 59, 59);
+            Log::info("closeDate: " . $closeDate);
+            if ($now->isAfter($closeDate)) {
+                return redirect()->route('applicant.homepage')->with('error', 'Pendaftaran sudah tutup');
+            }
         }
 
         if ($routeName === 'applicant.berkas') {
