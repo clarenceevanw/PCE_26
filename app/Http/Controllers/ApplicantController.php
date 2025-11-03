@@ -512,7 +512,8 @@ class ApplicantController extends Controller
     private function getAllAvailableSchedules()
     {
         $tomorrow = now()->addDay()->toDateString();
-        return AdminSchedule::select(
+        
+        $query = AdminSchedule::select(
                 'admin_schedules.id as admin_schedule_id', 
                 'schedules.tanggal', 
                 'schedules.jam_mulai', 
@@ -523,8 +524,35 @@ class ApplicantController extends Controller
             ->join('schedules', 'admin_schedules.schedule_id', '=', 'schedules.id')
             ->join('admins', 'admin_schedules.admin_id', '=', 'admins.id')
             ->whereNull('admin_schedules.applicant_id')
-            ->where('schedules.tanggal', '>=', $tomorrow)
-            ->orderBy('schedules.tanggal', 'asc')
+            ->where('schedules.tanggal', '>=', $tomorrow);
+
+        // --- LOGIKA BARU UNTUK 4 NOV ---
+        $now = now();
+        // Waktu mulai aturan: 3 Nov 2025, jam 21:00
+        $specialWindowStart = Carbon::create(2025, 11, 3, 21, 0, 0);
+        // Waktu akhir aturan (deadline): 4 Nov 2025, jam 10:00
+        $specialWindowEnd = Carbon::create(2025, 11, 4, 10, 0, 0);
+        
+        // Cek apakah user mengakses DI DALAM jendela waktu spesial
+        $isSpecialWindow = $now->between($specialWindowStart, $specialWindowEnd);
+
+        if ($isSpecialWindow) {
+            $targetDate = '2025-11-04';
+            $minTime = '12:00:00';
+
+            // Tambahkan kondisi WHERE:
+            // 1. Tampilkan jadwal yang BUKAN tanggal 4 Nov (misal 5 Nov, 6 Nov, dst)
+            // 2. ATAU Tampilkan jadwal tanggal 4 Nov, TAPI HANYA yang jam_mulai >= 12:00
+            $query->where(function ($q) use ($targetDate, $minTime) {
+                $q->where('schedules.tanggal', '!=', $targetDate)
+                  ->orWhere(function ($q2) use ($targetDate, $minTime) {
+                      $q2->where('schedules.tanggal', '=', $targetDate)
+                         ->where('schedules.jam_mulai', '>=', $minTime);
+                  });
+            });
+        }
+
+        return $query->orderBy('schedules.tanggal', 'asc')
             ->orderBy('schedules.jam_mulai', 'asc')
             ->get();
     }
@@ -571,11 +599,55 @@ class ApplicantController extends Controller
             ], 400);
         }
 
-        $now = now();
-        $tomorrowDateString = now()->addDay()->toDateString();
-        $chosenDate = $request->tanggal_choice;
+        // $now = now();
+        // $tomorrowDateString = now()->addDay()->toDateString();
+        // $chosenDate = $request->tanggal_choice;
 
-        if ($now->hour >= 21 && $chosenDate === $tomorrowDateString) {
+        // if ($now->hour >= 21 && $chosenDate === $tomorrowDateString) {
+        //     return response()->json([
+        //         'success' => false,
+        //         'message' => 'Pemesanan jadwal untuk besok ditutup setelah jam 21:00. Silakan pilih tanggal lain atau coba lagi besok.'
+        //     ]);
+        // }
+
+        $now = now();
+        $chosenDate = $request->tanggal_choice;
+        $chosenTime = $request->jam_mulai;
+
+        // --- Aturan 1: Batas Akhir (Deadline) ---
+        // 4 Nov 2025, jam 10:00:00
+        $finalDeadline = Carbon::create(2025, 11, 4, 10, 0, 0); 
+
+        if ($now->gt($finalDeadline)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Kesempatan untuk mengisi berkas atau memilih jadwal interview telah berakhir pada 4 November 2025 jam 10:00.'
+            ]);
+        }
+
+        // --- Aturan 2: Pembatasan Jadwal 4 Nov ---
+        // 3 Nov 2025, jam 21:00:00
+        $specialWindowStart = Carbon::create(2025, 11, 3, 21, 0, 0); 
+        $isSpecialWindow = $now->between($specialWindowStart, $finalDeadline);
+
+        $targetDate = '2025-11-04';
+        $minTime = '12:00:00';
+
+        // Jika user memesan DI DALAM jendela spesial
+        // DAN memilih tanggal 4 Nov
+        // DAN memilih jam SEBELUM 12:00
+        if ($isSpecialWindow && $chosenDate === $targetDate && $chosenTime < $minTime) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Interview yang diisi di atas jam 9 malam (3 Nov) sampai 4 Nov (10:00) hanya dapat memilih jadwal interview pada 4 Nov minimal jam 12:00 siang.'
+            ]);
+        }
+
+        // --- Aturan Lama (H-1 jam 21:00) ---
+        // Aturan ini tetap berlaku JIKA KITA DI LUAR JENDELA SPESIAL
+        // (Misalnya, berlaku lagi pada 4 Nov jam 21:01 untuk jadwal 5 Nov)
+        $tomorrowDateString = now()->addDay()->toDateString();
+        if (!$isSpecialWindow && $now->hour >= 21 && $chosenDate === $tomorrowDateString) {
             return response()->json([
                 'success' => false,
                 'message' => 'Pemesanan jadwal untuk besok ditutup setelah jam 21:00. Silakan pilih tanggal lain atau coba lagi besok.'
