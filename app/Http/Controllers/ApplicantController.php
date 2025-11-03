@@ -612,7 +612,7 @@ class ApplicantController extends Controller
 
         $now = now();
         $chosenDate = $request->tanggal_choice;
-        $chosenTime = $request->jam_mulai;
+        $chosenTime = $request->jam_choice;
 
         // --- Aturan 1: Batas Akhir (Deadline) ---
         // 4 Nov 2025, jam 10:00:00
