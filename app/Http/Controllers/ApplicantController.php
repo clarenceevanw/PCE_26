@@ -106,7 +106,11 @@ class ApplicantController extends Controller
         $data = $valid->validated();
 
         if ($data['division_choice1'] == 'sekkonkes' || $data['division_choice2'] == 'sekkonkes') {
-            return response()->json(['success' => false, 'message' => 'Divisi Sekkonkes sudah penuh, silahkan pilih divisi lain']);
+            return response()->json(['success' => false, 'message' => 'Divisi Sekkonkes sudah penuh, silahkan pilih divisi lain.']);
+        }
+
+        if ($data['division_choice1'] == 'transkapman' || $data['division_choice2'] == 'transkapman') {
+            return response()->json(['success' => false, 'message' => 'Divisi Transkapman sudah penuh, silakan pilih divisi lain.']);
         }
 
         if ($data['division_choice1'] === $data['division_choice2']) {
