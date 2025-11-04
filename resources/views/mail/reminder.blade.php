@@ -26,7 +26,7 @@
                             </p>
                             <p style="font-size: 15px; line-height: 1.6; margin-bottom: 24px;">
                                 Kami perhatikan kamu <strong>belum mengisi jadwal wawancara</strong> untuk proses seleksi Petra Civil Expo 2026.
-                                Mohon segera memilih jadwal agar kami dapat menyesuaikan sesi wawancaramu dengan lancar.
+                                Mohon segera memilih jadwal karena pada tanggal 4 November 2026 jam 10.00 WIB akan ditutup untuk pengisian jadwal.
                             </p>
 
                             <div style="text-align: center; margin: 28px 0;">
